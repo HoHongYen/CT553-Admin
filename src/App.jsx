@@ -17,7 +17,6 @@ import CreateEmployee from "./pages/CreateEmployee";
 import Bookings from "./pages/Products";
 import Booking from "./pages/Product";
 import Categories from "./pages/Categories";
-import CreateCategory from "./pages/CreateCategory";
 import PageNotFound from "./pages/PageNotFound";
 
 const queryClient = new QueryClient({
@@ -56,7 +55,6 @@ function App() {
                 <Route path="san-pham" element={<Bookings />} />
                 <Route path="san-pham/:bookingId" element={<Booking />} />
                 <Route path="danh-muc" element={<Categories />} />
-                <Route path="danh-muc/tao-moi" element={<CreateCategory />} />
               </Route>
               <Route path="dang-nhap" element={<Login />} />
               <Route path="*" element={<PageNotFound />} />
