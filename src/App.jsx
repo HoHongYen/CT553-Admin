@@ -9,15 +9,16 @@ import GlobalStyles from "@/styles/GlobalStyles";
 import ProtectedRoute from "@/components/ui/ProtectedRoute";
 import AppLayout from "@/components/layouts/AppLayout";
 
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Bookings from "./pages/Products";
+import Account from "./pages/Account";
 import Users from "./pages/Users";
 import CreateEmployee from "./pages/CreateEmployee";
-import Account from "./pages/Account";
-import Login from "./pages/Login";
-import PageNotFound from "./pages/PageNotFound";
+import Bookings from "./pages/Products";
 import Booking from "./pages/Product";
+import Categories from "./pages/Categories";
 import CreateCategory from "./pages/CreateCategory";
+import PageNotFound from "./pages/PageNotFound";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,7 +55,8 @@ function App() {
                 />
                 <Route path="san-pham" element={<Bookings />} />
                 <Route path="san-pham/:bookingId" element={<Booking />} />
-                <Route path="danh-muc" element={<CreateCategory />} />
+                <Route path="danh-muc" element={<Categories />} />
+                <Route path="danh-muc/tao-moi" element={<CreateCategory />} />
               </Route>
               <Route path="dang-nhap" element={<Login />} />
               <Route path="*" element={<PageNotFound />} />

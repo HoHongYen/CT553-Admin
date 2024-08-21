@@ -7,7 +7,6 @@ import { useDarkMode } from "@/context/DarkModeContext";
 import { useUploadImage } from "@/hooks/upload/useUploadImage";
 import { useDeleteImage } from "@/hooks/upload/useDeleteImage";
 
-
 import slugify from "slugify";
 import { HiOutlineCamera } from "react-icons/hi2";
 
@@ -20,7 +19,7 @@ import SpinnerMini from "@/components/ui/SpinnerMini";
 import Select from "@/components/ui/Select";
 import UploadCategories from "@/components/categories/UploadCategories";
 
-function CreateCategoryForm() {
+function CreateCategoryForm({onCloseModal}) {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
 
@@ -67,6 +66,7 @@ function CreateCategoryForm() {
           setSlug("");
           setParentId(null);
           setThumbnailImage(null);
+          onCloseModal?.();
         },
       }
     );
@@ -83,6 +83,7 @@ function CreateCategoryForm() {
         },
       });
     }
+    onCloseModal?.();
   }
 
   useEffect(() => {
@@ -107,7 +108,7 @@ function CreateCategoryForm() {
             <div className="w-[80px] h-[80px] lg:w-[180px] lg:h-[180px] border border-gray-300 rounded-full overflow-hidden flex items-end justify-center">
               <img
                 className="w-[80px] h-[80px] lg:w-[180px] lg:h-[180px] object-cover"
-                src={thumbnailImage ? thumbnailImage.path : "/default-user.jpg"}
+                src={thumbnailImage ? thumbnailImage.path : "/default-image.jpg"}
               />
             </div>
             <div
