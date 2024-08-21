@@ -1,8 +1,8 @@
-import Heading from "../ui/Heading";
-import Row from "../ui/Row";
-import UserTable from "../features/users/UserTable";
-import AddCabin from "../features/users/AddCabin";
-import CabinTableOperations from "../features/users/CabinTableOperations";
+import Heading from "@/components/ui/Heading";
+import Row from "@/components/ui/Row";
+import UserTable from "@/components/users/UserTable";
+import AddCabin from "@/components/users/AddCabin";
+import CabinTableOperations from "@/components/users/CabinTableOperations";
 
 function Users() {
   return (

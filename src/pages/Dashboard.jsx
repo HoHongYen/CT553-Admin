@@ -1,7 +1,7 @@
-import Heading from "../ui/Heading";
-import Row from "../ui/Row";
-import DashboardLayout from "../features/dashboard/DashboardLayout";
-import DashboardFilter from "../features/dashboard/DashboardFilter";
+import Heading from "@/components/ui/Heading";
+import Row from "@/components/ui/Row";
+import DashboardLayout from "@/components/layouts/DashboardLayout";
+import DashboardFilter from "@/components/dashboard/DashboardFilter";
 
 function Dashboard() {
   return (

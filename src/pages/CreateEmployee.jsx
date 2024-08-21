@@ -1,5 +1,5 @@
-import RegisterForm from "../features/authentication/RegisterForm";
-import Heading from "../ui/Heading";
+import RegisterForm from "@/components/auth/RegisterForm";
+import Heading from "@/components/ui/Heading";
 
 function CreateEmployee() {
   return (

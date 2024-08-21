@@ -1,6 +1,6 @@
-import CreateCategoryForm from "../features/category/CreateCategoryForm";
-import Heading from "../ui/Heading";
-import Row from "../ui/Row";
+import CreateCategoryForm from "@/components/categories/CreateCategoryForm";
+import Heading from "@/components/ui/Heading";
+import Row from "@/components/ui/Row";
 
 function CreateCategory() {
 
