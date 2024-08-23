@@ -41,7 +41,7 @@ function ProductDetail() {
   if (!booking) return <Empty resourceName="booking" />;
 
   const statusToTagName = {
-    unconfirmed: "blue",
+    "unconfirmed": "blue",
     "checked-in": "green",
     "checked-out": "silver",
   };

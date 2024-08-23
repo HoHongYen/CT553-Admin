@@ -19,7 +19,7 @@ import SpinnerMini from "@/components/ui/SpinnerMini";
 import Select from "@/components/ui/Select";
 import UploadCategories from "@/components/categories/UploadCategories";
 
-function CreateCategoryForm({onCloseModal}) {
+function CreateCategoryForm({ onCloseModal }) {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
 
@@ -108,7 +108,9 @@ function CreateCategoryForm({onCloseModal}) {
             <div className="w-[80px] h-[80px] lg:w-[180px] lg:h-[180px] border border-gray-300 rounded-full overflow-hidden flex items-end justify-center">
               <img
                 className="w-[80px] h-[80px] lg:w-[180px] lg:h-[180px] object-cover"
-                src={thumbnailImage ? thumbnailImage.path : "/default-image.jpg"}
+                src={
+                  thumbnailImage ? thumbnailImage.path : "/default-image.jpg"
+                }
               />
             </div>
             <div
@@ -142,7 +144,9 @@ function CreateCategoryForm({onCloseModal}) {
               {...register("name", {
                 required: "Không được để trống",
                 onChange: (e) =>
-                  setSlug(slugify(e.target.value, { lower: true })),
+                  setSlug(
+                    slugify(e.target.value, { lower: true, locale: "vi" })
+                  ),
               })}
             />
           </FormRow>

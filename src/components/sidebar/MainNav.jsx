@@ -3,11 +3,12 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 import {
-  HiOutlineHome,
   HiOutlineGift,
   HiOutlineNewspaper,
   HiOutlineUser,
   HiOutlineShoppingBag,
+  HiOutlineChartPie,
+  HiOutlineChartBar,
 } from "react-icons/hi2";
 
 const NavList = styled.ul`
@@ -61,7 +62,8 @@ function MainNav() {
       <NavList>
         <li>
           <StyledNavLink to="/">
-            <HiOutlineHome />
+            <HiOutlineChartPie />
+            {/* <HiOutlineChartBar /> */}
             <span>Dashboard</span>
           </StyledNavLink>
         </li>
