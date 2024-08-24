@@ -15,6 +15,13 @@ export async function getCategories() {
     return categories;
 }
 
+export async function updateCategory(categoryId, updatedAddress) {
+    return (await api.put("/" + categoryId, updatedAddress)).data;
+}
+
+export async function deleteCategory(categoryId) {
+    return (await api.delete("/" + categoryId)).data;
+}
 
 
 // createCategoryWithUrl

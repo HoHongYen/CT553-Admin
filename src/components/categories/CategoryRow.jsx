@@ -1,20 +1,17 @@
-import styled from "styled-components";
-import { HiLockClosed, HiPencil } from "react-icons/hi2";
+import { HiPencil, HiTrash } from "react-icons/hi2";
 
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import RoundImage from "@/components/ui/RoundImage";
+import CreateCategoryForm from "./CreateCategoryForm";
+import { useDeleteCategory } from "@/hooks/categories/useDeleteCategory";
 
 function CategoryRow({ category }) {
-  // const { isDeleting, deleteCabin } = useDeleteCabin();
+  const { isDeleting, deleteCategory } = useDeleteCategory();
 
-  const {
-    id: categoryId,
-    name, 
-    thumbnailImage,
-  } = category;
+  const { id: categoryId, name, thumbnailImage } = category;
 
   return (
     <>
@@ -32,22 +29,20 @@ function CategoryRow({ category }) {
                 </Modal.Open>
 
                 <Modal.Open opens="delete">
-                  <Menus.Button icon={<HiLockClosed />}>
-                    Xóa danh mục
-                  </Menus.Button>
+                  <Menus.Button icon={<HiTrash />}>Xóa danh mục</Menus.Button>
                 </Modal.Open>
               </Menus.List>
             </Menus.Menu>
 
             <Modal.Window name="edit">
-              {/* <CreateCabinForm cabinToEdit={user} /> */}
+              <CreateCategoryForm categoryToEdit={category} />
             </Modal.Window>
 
             <Modal.Window name="delete">
               <ConfirmCertain
-                resourceName="categories"
-                // disabled={isDeleting}
-                // onConfirm={() => deleteCabin(userId)}
+                resourceName="Bạn có chắc chắn muốn xóa danh mục này?"
+                disabled={isDeleting}
+                onConfirm={() => deleteCategory(categoryId)}
               />
             </Modal.Window>
           </Modal>

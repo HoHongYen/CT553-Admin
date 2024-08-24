@@ -18,14 +18,23 @@ import Input from "@/components/ui/Input";
 import SpinnerMini from "@/components/ui/SpinnerMini";
 import Select from "@/components/ui/Select";
 import UploadCategories from "@/components/categories/UploadCategories";
+import { useUpdateCategory } from "@/hooks/categories/useUpdateCategory";
 
-function CreateCategoryForm({ onCloseModal }) {
-  const { register, handleSubmit, formState } = useForm();
+function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {
+  const { createCategory, isLoading: isCreating } = useCreateCategory();
+  const { updateCategory, isLoading: isUpdating } = useUpdateCategory();
+  const { id: editId, ...editValues } = categoryToEdit;
+  const isEditSession = Boolean(editId);
+  const isWorking = isCreating || isUpdating;
+
+  const { register, handleSubmit, formState } = useForm({
+    defaultValues: isEditSession ? editValues : {},
+  });
   const { errors } = formState;
 
   const { isDarkMode } = useDarkMode();
   const { categories } = useCategories();
-  const { createCategory, isLoading } = useCreateCategory();
+
   const { uploadImage } = useUploadImage();
   const { deleteImage } = useDeleteImage();
 
@@ -53,23 +62,42 @@ function CreateCategoryForm({ onCloseModal }) {
 
     console.log(name, parentId, thumbnailImage?.id, slug);
 
-    createCategory(
-      {
-        name,
-        parentId: parentId ? +parentId : null,
-        thumbnailImageId: thumbnailImage?.id,
-        slug,
-      },
-      {
-        onSuccess: () => {
-          e.target.reset();
-          setSlug("");
-          setParentId(null);
-          setThumbnailImage(null);
-          onCloseModal?.();
+    if (isEditSession)
+      updateCategory(
+        {
+          categoryId: editId,
+          updatedCategory: {
+            name,
+            parentId: parentId ? +parentId : null,
+            thumbnailImageId: thumbnailImage?.id,
+            slug,
+          },
         },
-      }
-    );
+        {
+          onSuccess: (data) => {
+            console.log(data);
+            onCloseModal?.();
+          },
+        }
+      );
+    else
+      createCategory(
+        {
+          name,
+          parentId: parentId ? +parentId : null,
+          thumbnailImageId: thumbnailImage?.id,
+          slug,
+        },
+        {
+          onSuccess: () => {
+            e.target.reset();
+            setSlug("");
+            setParentId(null);
+            setThumbnailImage(null);
+            onCloseModal?.();
+          },
+        }
+      );
   }
 
   async function handleCancel() {
@@ -87,6 +115,14 @@ function CreateCategoryForm({ onCloseModal }) {
   }
 
   useEffect(() => {
+    if (isEditSession) {
+      setThumbnailImage(editValues.thumbnailImage);
+      setParentId(editValues.parentId);
+      setSlug(editValues.slug);
+    }
+  }, []);
+
+  useEffect(() => {
     if (categories?.length > 0) {
       setOptions([
         { value: null, label: "Không có" },
@@ -102,12 +138,12 @@ function CreateCategoryForm({ onCloseModal }) {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex justify-around">
-        <div className="relative w-[80px] h-[80px] lg:w-[180px] lg:h-[180px]">
+      <div className="flex gap-10">
+        <div className="relative w-[80px] h-[80px] lg:w-[150px] lg:h-[150px]">
           <div className="flex justify-center">
-            <div className="w-[80px] h-[80px] lg:w-[180px] lg:h-[180px] border border-gray-300 rounded-full overflow-hidden flex items-end justify-center">
+            <div className="w-[80px] h-[80px] lg:w-[150px] lg:h-[150px] border border-gray-300 rounded-full overflow-hidden flex items-end justify-center">
               <img
-                className="w-[80px] h-[80px] lg:w-[180px] lg:h-[180px] object-cover"
+                className="w-[80px] h-[80px] lg:w-[150px] lg:h-[150px] object-cover"
                 src={
                   thumbnailImage ? thumbnailImage.path : "/default-image.jpg"
                 }
@@ -124,7 +160,7 @@ function CreateCategoryForm({ onCloseModal }) {
                   id="thumbImage"
                   accept="image/*"
                   onChange={handleUploadImage}
-                  disabled={isLoading}
+                  disabled={isWorking}
                 />
                 {!isUploadingImage ? (
                   <HiOutlineCamera className="lg:w-14 lg:h-14" />
@@ -140,7 +176,7 @@ function CreateCategoryForm({ onCloseModal }) {
             <Input
               type="text"
               id="name"
-              disabled={isLoading}
+              disabled={isWorking}
               {...register("name", {
                 required: "Không được để trống",
                 onChange: (e) =>
@@ -155,7 +191,7 @@ function CreateCategoryForm({ onCloseModal }) {
           </FormRow>
           <FormRow label="Danh mục cha">
             <Select
-              disabled={isLoading}
+              disabled={isWorking}
               options={options}
               value={parentId}
               onChange={(e) => setParentId(e.target.value)}
@@ -167,15 +203,23 @@ function CreateCategoryForm({ onCloseModal }) {
         <Button
           type="reset"
           variation="secondary"
-          disabled={isLoading}
+          disabled={isWorking}
           onClick={handleCancel}
         >
           Hủy
         </Button>
-        <Button disabled={isLoading}>
-          {!isLoading ? "Tạo danh mục" : <SpinnerMini />}
+        <Button disabled={isWorking}>
+          {!isWorking ? (
+            isEditSession ? (
+              "Lưu chỉnh sửa"
+            ) : (
+              "Tạo danh mục"
+            )
+          ) : (
+            <SpinnerMini />
+          )}
         </Button>
-        <UploadCategories />
+        {/* <UploadCategories /> */}
       </FormRow>
     </Form>
   );
