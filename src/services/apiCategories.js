@@ -15,6 +15,10 @@ export async function getCategories() {
     return categories;
 }
 
+export async function getChildrenCategory(categoryId) {
+    return (await api.get("/children/" + categoryId)).data;
+}
+
 export async function updateCategory(categoryId, updatedAddress) {
     return (await api.put("/" + categoryId, updatedAddress)).data;
 }

@@ -3,14 +3,13 @@ import { useCategories } from "@/hooks/categories/useCategories";
 import Spinner from "@/components/ui/Spinner";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
-import Empty from "@/components/ui/Empty";
 import CategoryRow from "./CategoryRow";
 
 function CategoryTable() {
   const { isLoading, categories } = useCategories();
 
   if (isLoading) return <Spinner />;
-  if (!categories.length) return <Empty resourceName="categories" />;
+  if (!categories.length) return <p>Không có danh mục nào!</p>;
 
   // 1. Filter
   // const filterValue = searchParams.get("discount") || "all";

@@ -1,6 +1,5 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
-import { PAGE_SIZE } from "../utils/constants";
 
 export async function getBookings({ filter, sortBy, page }) {
   let query = supabase
@@ -118,4 +117,61 @@ export async function deleteBooking(id) {
     throw new Error("Booking could not be deleted");
   }
   return data;
+}
+
+
+
+
+
+import createApiClient from "./api";
+const baseUrl = "/api/products";
+const api = createApiClient(baseUrl);
+import { PAGE_SIZE, PRODUCT_ALL } from "../utils/constants";
+
+export async function createProduct(data) {
+  return (await api.post("/", data)).data; // name, price, description, material, overview, instruction, categoryId, (array) uploadedImageIds  
+}
+
+export async function uploadImage(id, data) {
+  return (await api.post(`/${id}/add-image`, data)).data; // name, price, description, material, overview, instruction, categoryId, (array) uploadedImageIds  
+}
+
+export async function getProducts(limit = 10, page = 1) {
+  const products = (await api.get("", { params: { limit, page } })).data;
+  console.log("products", products);
+  return products;
+}
+
+export async function getAll() {
+  return await getByType(PRODUCT_ALL);
+}
+
+async function getByType(type, limit = 10, page = 1) {
+  console.log("getByType");
+  const products = (await api.get("/", { params: { type, limit, page } })).data;
+  console.log("products", products);
+  return products;
+  // return (await api.get("/", { params: { type, limit, page } })).data;
+}
+
+export async function getByCategories({ categoryIds = [], type, limit = 10, page = 1 }) {
+  console.log(categoryIds);
+  return (
+    await api.get("/", { params: { type, limit, categoryIds, page } })
+  ).data;
+}
+
+export async function getByProductIds({
+  productIds = [],
+  type = "All",
+  limit = 10,
+  page = 1,
+}) {
+  return (
+    await api.get("/", { params: { type, limit, productIds, page } })
+  ).data;
+}
+
+export async function getOneBySlug(slug) {
+  return (await api.get(`/slug/${slug}`)).data;
 }

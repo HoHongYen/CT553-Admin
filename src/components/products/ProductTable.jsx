@@ -1,38 +1,37 @@
-import { useBookings } from "@/hooks/products/useBookings";
+import { useProducts } from "@/hooks/products/useProducts";
 
 import ProductRow from "./ProductRow";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
-import Empty from "@/components/ui/Empty";
 import Spinner from "@/components/ui/Spinner";
 import Pagination from "@/components/ui/Pagination";
 
 function ProductTable() {
-  const { isLoading, bookings, count } = useBookings();
+  const { isLoading, products, totalProducts } = useProducts();
   if (isLoading) return <Spinner />;
-  if (!bookings.length) return <Empty resourceName="bookings" />;
+  if (!products.length) return <p>Không có sản phẩm nào!</p>;
 
   return (
     <Menus>
       <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
         <Table.Header>
-          <div>Cabin</div>
-          <div>Guest</div>
-          <div>Dates</div>
-          <div>Status</div>
-          <div>Amount</div>
+          <div></div>
+          <div>Mã sản phẩm</div>
+          <div>Tên sản phẩm</div>
+          <div>Ngày thêm</div>
+          <div>Đã bán</div>
           <div></div>
         </Table.Header>
 
         <Table.Body
-          data={bookings}
-          render={(booking) => (
-            <ProductRow key={booking.id} booking={booking} />
+          data={products}
+          render={(product) => (
+            <ProductRow key={product.id} product={product} />
           )}
         />
 
         <Table.Footer>
-          <Pagination count={count} />
+          <Pagination count={totalProducts} />
         </Table.Footer>
       </Table>
     </Menus>

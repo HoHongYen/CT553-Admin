@@ -14,10 +14,11 @@ import Dashboard from "./pages/Dashboard";
 import Account from "./pages/Account";
 import Users from "./pages/Users";
 import CreateEmployee from "./pages/CreateEmployee";
-import Bookings from "./pages/Products";
-import Booking from "./pages/Product";
+import Products from "./pages/products/Products";
+import Product from "./pages/products/Product";
 import Categories from "./pages/Categories";
 import PageNotFound from "./pages/PageNotFound";
+import AddProduct from "./pages/products/AddProduct";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,8 +53,9 @@ function App() {
                   path="/nguoi-dung/tao-moi"
                   element={<CreateEmployee />}
                 />
-                <Route path="san-pham" element={<Bookings />} />
-                <Route path="san-pham/:bookingId" element={<Booking />} />
+                <Route path="san-pham" element={<Products />} />
+                <Route path="san-pham/tao-moi" element={<AddProduct />} />
+                <Route path="san-pham/:bookingId" element={<Product />} />
                 <Route path="danh-muc" element={<Categories />} />
               </Route>
               <Route path="dang-nhap" element={<Login />} />
@@ -80,6 +82,7 @@ function App() {
               },
             }}
           />
+          c
         </QueryClientProvider>
       </DarkModeProvider>
     </>

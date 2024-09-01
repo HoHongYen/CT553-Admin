@@ -16,7 +16,6 @@ import ButtonText from "@/components/ui/ButtonText";
 import Spinner from "@/components/ui/Spinner";
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
-import Empty from "@/components/ui/Empty";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -38,10 +37,10 @@ function ProductDetail() {
   const navigate = useNavigate();
 
   if (isLoading) return <Spinner />;
-  if (!booking) return <Empty resourceName="booking" />;
+  if (!booking) return <p>Không tìm thấy sản phẩm nào!</p>;
 
   const statusToTagName = {
-    "unconfirmed": "blue",
+    unconfirmed: "blue",
     "checked-in": "green",
     "checked-out": "silver",
   };
@@ -53,7 +52,7 @@ function ProductDetail() {
           <Heading as="h1">Booking #{bookingId}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
-        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+        <ButtonText onClick={moveBack}>&larr; Quay lại</ButtonText>
       </Row>
 
       <ProductDataBox booking={booking} />
@@ -64,11 +63,7 @@ function ProductDetail() {
             Check in
           </Button>
         )}
-        {status === "checked-in" && (
-          <Button disabled>
-            Check out
-          </Button>
-        )}
+        {status === "checked-in" && <Button disabled>Check out</Button>}
 
         <Modal>
           <Modal.Open opens="delete">

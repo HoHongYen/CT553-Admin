@@ -3,14 +3,13 @@ import { useUsers } from "@/hooks/users/useUsers";
 import Spinner from "@/components/ui/Spinner";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
-import Empty from "@/components/ui/Empty";
 import UserRow from "./UserRow";
 
 function UserTable() {
   const { isLoading, users } = useUsers();
 
   if (isLoading) return <Spinner />;
-  if (!users.length) return <Empty resourceName="users" />;
+  if (!users.length) return <p>Không có người dùng nào!</p>;
 
   // 1. Filter
   // const filterValue = searchParams.get("discount") || "all";
