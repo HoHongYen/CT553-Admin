@@ -7,6 +7,8 @@ import Input from "@/components/ui/Input";
 import Row from "@/components/ui/Row";
 import Select from "@/components/ui/Select";
 import SpinnerMini from "@/components/ui/SpinnerMini";
+import Editor from "@/components/ui/Editor";
+
 import { useCategories } from "@/hooks/categories/useCategories";
 import { useMoveBack } from "@/hooks/common/useMoveBack";
 import { useCreateProduct } from "@/hooks/products/useCreateProduct";
@@ -42,6 +44,11 @@ function AddProduct({ productToEdit = {} }) {
     { value: null, label: "Không có" },
   ]);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  const [overview, setOverview] = useState("");
+  const [material, setMaterial] = useState("");
+  const [specification, setSpecification] = useState("");
+  const [instruction, setInstruction] = useState("");
 
   async function handleUploadImage(e) {
     const form = new FormData();
@@ -199,10 +206,52 @@ function AddProduct({ productToEdit = {} }) {
             />
           </FormRow>
 
-         {/* add variant begin */}
-         {/* add variant end */}
+          {/* add variant begin */}
+          {/* add variant end */}
 
-         
+          {/* overview begin */}
+          <Editor
+            data={overview}
+            onChange={(event, editor) => {
+              setOverview(editor.getData());
+            }}
+            placeholder="Nhập thông tin tổng quan"
+          />
+          {JSON.stringify(overview)}
+          {/* overview begin */}
+
+          {/* material begin */}
+          <Editor
+            data={material}
+            onChange={(event, editor) => {
+              setMaterial(editor.getData());
+            }}
+            placeholder="Nhập thông tin chất liệu tranh"
+          />
+          {JSON.stringify(material)}
+          {/* material end */}
+
+          {/* specification begin */}
+          <Editor
+            data={specification}
+            onChange={(event, editor) => {
+              setSpecification(editor.getData());
+            }}
+            placeholder="Nhập thông tin chi tiết sản phẩm"
+          />
+          {JSON.stringify(specification)}
+          {/* specification end */}
+
+          {/* instruction begin */}
+          <Editor
+            data={instruction}
+            onChange={(event, editor) => {
+              setInstruction(editor.getData());
+            }}
+            placeholder="Nhập hướng dẫn vệ sinh tranh"
+          />
+          {JSON.stringify(instruction)}
+          {/* instruction end */}
 
           <FormRow>
             <Button
