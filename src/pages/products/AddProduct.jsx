@@ -1,3 +1,4 @@
+import { TreeSelect } from "antd";
 import Button from "@/components/ui/Button";
 import ButtonText from "@/components/ui/ButtonText";
 import Form from "@/components/ui/Form";
@@ -5,14 +6,12 @@ import FormRow from "@/components/ui/FormRow";
 import Heading from "@/components/ui/Heading";
 import Input from "@/components/ui/Input";
 import Row from "@/components/ui/Row";
-import Select from "@/components/ui/Select";
 import SpinnerMini from "@/components/ui/SpinnerMini";
 import Editor from "@/components/ui/Editor";
 
 import { useCategories } from "@/hooks/categories/useCategories";
 import { useMoveBack } from "@/hooks/common/useMoveBack";
 import { useCreateProduct } from "@/hooks/products/useCreateProduct";
-import { getChildrenCategory } from "@/services/apiCategories";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
@@ -35,14 +34,8 @@ function AddProduct({ productToEdit = {} }) {
   const { categories } = useCategories();
 
   const [slug, setSlug] = useState("");
-  const [parentCategoryId, setParentCategoryId] = useState(null);
-  const [childCategoryId, setChildCategoryId] = useState(null);
-  const [parentCategoryOptions, setParentCategoryOptions] = useState([
-    { value: null, label: "Không có" },
-  ]);
-  const [childCategoryOptions, setChildCategoryOptions] = useState([
-    { value: null, label: "Không có" },
-  ]);
+  const [categoryOptions, setCategoryOptions] = useState();
+  const [category, setCategory] = useState();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const [overview, setOverview] = useState("");
@@ -108,9 +101,7 @@ function AddProduct({ productToEdit = {} }) {
   async function handleCancel() {
     // khong can e.preventDefault() vi day la button type="reset"
     setSlug("");
-    setParentCategoryId(null);
-    setChildCategoryId(null);
-
+    setCategory(null);
     // if (thumbnailImage) {
     //   deleteImage(thumbnailImage?.id, {
     //     onSuccess: () => {
@@ -129,38 +120,23 @@ function AddProduct({ productToEdit = {} }) {
 
   useEffect(() => {
     if (categories?.length > 0) {
-      setParentCategoryOptions([
-        { value: null, label: "Không có" },
-        ...categories.map((category) => {
+      setCategoryOptions(
+        categories.map((category) => {
           return {
+            title: category.name,
             value: category.id,
-            label: category.name,
+            disabled: category.children.length !== 0,
+            children: category.children.map((child) => {
+              return {
+                title: child.name,
+                value: child.id,
+              };
+            }),
           };
-        }),
-      ]);
+        })
+      );
     }
   }, [categories]);
-
-  useEffect(() => {
-    async function helper(parentCategoryId) {
-      const childCategories = (await getChildrenCategory(parentCategoryId))
-        .metadata;
-
-      if (childCategories?.length > 0) {
-        setChildCategoryOptions([
-          { value: null, label: "Không có" },
-          ...childCategories.map((category) => {
-            return {
-              value: category.id,
-              label: category.name,
-            };
-          }),
-        ]);
-      }
-    }
-
-    helper(parentCategoryId);
-  }, [parentCategoryId]);
 
   return (
     <>
@@ -188,70 +164,87 @@ function AddProduct({ productToEdit = {} }) {
             <Input type="text" id="slug" disabled value={slug} />
           </FormRow>
 
-          <FormRow label="Danh mục cha">
-            <Select
+          <FormRow label="Danh mục">
+            <TreeSelect
+              style={{ width: "100%" }}
+              value={category}
+              dropdownStyle={{ maxHeight: 500, overflow: "auto" }}
+              treeData={categoryOptions}
+              placeholder="Chọn danh mục"
               disabled={isWorking}
-              options={parentCategoryOptions}
-              value={parentCategoryId}
-              onChange={(e) => setParentCategoryId(e.target.value)}
-            />
-          </FormRow>
-
-          <FormRow label="Danh mục con">
-            <Select
-              disabled={isWorking}
-              options={childCategoryOptions}
-              value={childCategoryId}
-              onChange={(e) => setChildCategoryId(e.target.value)}
+              treeDefaultExpandAll
+              onChange={(newValue) => setCategory(newValue)}
             />
           </FormRow>
 
           {/* add variant begin */}
           {/* add variant end */}
 
-          {/* overview begin */}
-          <Editor
-            data={overview}
-            onChange={(event, editor) => {
-              setOverview(editor.getData());
-            }}
-            placeholder="Nhập thông tin tổng quan"
-          />
-          {JSON.stringify(overview)}
-          {/* overview begin */}
+          <div className="mt-8 flex flex-col gap-8">
+            {/* overview begin */}
+            <div className="flex flex-col gap-4">
+              <label htmlFor="overview" className="font-[500]">
+                Tổng quan sản phẩm
+              </label>
+              <Editor
+                data={material}
+                onChange={(event, editor) => {
+                  setOverview(editor.getData());
+                }}
+                placeholder="Nhập thông tin chất liệu tranh"
+              />
+              {/* {JSON.stringify(overview)} */}
+            </div>
+            {/* overview end */}
 
-          {/* material begin */}
-          <Editor
-            data={material}
-            onChange={(event, editor) => {
-              setMaterial(editor.getData());
-            }}
-            placeholder="Nhập thông tin chất liệu tranh"
-          />
-          {JSON.stringify(material)}
-          {/* material end */}
+            {/* material begin */}
+            <div className="flex flex-col gap-4">
+              <label htmlFor="material" className="font-[500]">
+                Chất liệu tranh
+              </label>
+              <Editor
+                data={material}
+                onChange={(event, editor) => {
+                  setMaterial(editor.getData());
+                }}
+                placeholder="Nhập thông tin chất liệu tranh"
+              />
+              {/* {JSON.stringify(material)} */}
+            </div>
+            {/* material end */}
 
-          {/* specification begin */}
-          <Editor
-            data={specification}
-            onChange={(event, editor) => {
-              setSpecification(editor.getData());
-            }}
-            placeholder="Nhập thông tin chi tiết sản phẩm"
-          />
-          {JSON.stringify(specification)}
-          {/* specification end */}
+            {/* specification begin */}
+            <div className="flex flex-col gap-4">
+              <label htmlFor="specification" className="font-[500]">
+                Thông tin chi tiết
+              </label>
+              <Editor
+                data={specification}
+                onChange={(event, editor) => {
+                  setSpecification(editor.getData());
+                }}
+                placeholder="Nhập thông tin chi tiết sản phẩm"
+              />
+              {/* {JSON.stringify(specification)} */}
+            </div>
+            {/* specification end */}
 
-          {/* instruction begin */}
-          <Editor
-            data={instruction}
-            onChange={(event, editor) => {
-              setInstruction(editor.getData());
-            }}
-            placeholder="Nhập hướng dẫn vệ sinh tranh"
-          />
-          {JSON.stringify(instruction)}
-          {/* instruction end */}
+            {/* instruction begin */}
+            <div className="flex flex-col gap-4">
+              <label htmlFor="instruction" className="font-[500]">
+                Hướng dẫn vệ sinh tranh
+              </label>
+              <Editor
+                data={instruction}
+                onChange={(event, editor) => {
+                  setInstruction(editor.getData());
+                }}
+                placeholder="Nhập hướng dẫn vệ sinh tranh"
+              />
+              {/* {JSON.stringify(instruction)} */}
+            </div>
+            {/* instruction end */}
+          </div>
 
           <FormRow>
             <Button
