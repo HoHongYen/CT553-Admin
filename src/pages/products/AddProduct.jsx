@@ -18,8 +18,7 @@ import slugify from "slugify";
 import { HiCamera, HiPencil, HiTrash } from "react-icons/hi2";
 import CreateVariantForm from "@/components/products/CreateVariantForm";
 import Modal from "@/components/ui/Modal";
-
-import { Space, Table, Tag } from "antd";
+import VariantTable from "@/components/products/VariantTable";
 
 function AddProduct({ productToEdit = {} }) {
   const { createProduct, isLoading: isCreating } = useCreateProduct();
@@ -209,40 +208,6 @@ function AddProduct({ productToEdit = {} }) {
     setImages((images) => images.filter((_, i) => i !== index));
   };
 
-  const columns = [
-    {
-      title: "STT",
-      dataIndex: "index",
-      key: "index",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Kích thước",
-      dataIndex: "size",
-      key: "size",
-    },
-    {
-      title: "Giá",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: "Số lượng",
-      dataIndex: "quantity",
-      key: "quantity",
-    },
-    {
-      title: "Tùy chọn",
-      key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <a>Chỉnh sửa {record.name}</a>
-          <a>Xóa</a>
-        </Space>
-      ),
-    },
-  ];
-
   return (
     <>
       <Row type="horizontal">
@@ -348,37 +313,16 @@ function AddProduct({ productToEdit = {} }) {
               <label htmlFor="size" className="font-[500]">
                 Kích thước tranh:
               </label>
-              <Table columns={columns} dataSource={variants} />;
-              {/* <Menus>
-                <Table columns="0.5fr 3fr 1fr 1fr 1fr">
-                  <Table.Header>
-                    <div>STT</div>
-                    <div>Kích thước</div>
-                    <div>Giá</div>
-                    <div>Số lượng</div>
-                    <div></div>
-                  </Table.Header>
-                  <Table.Body
-                    data={variants}
-                    render={(variant, index) => (
-                      <VariantRow
-                        key={variant.size}
-                        variant={variant}
-                        index={index}
-                      />
-                    )}
-                  />
-                </Table>
-              </Menus> */}
+              <VariantTable variants={variants} setVariants={setVariants} />
             </div>
 
             <div>
               <Modal>
                 <Modal.Open opens="product-form">
-                  <Button>Thêm thông tin cho từng kích thước tranh</Button>
+                  <Button>Thêm kích thước tranh</Button>
                 </Modal.Open>
                 <Modal.Window name="product-form">
-                  <CreateVariantForm />
+                  <CreateVariantForm variants={variants} setVariants={setVariants} />
                 </Modal.Window>
               </Modal>
             </div>

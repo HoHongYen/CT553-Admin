@@ -6,8 +6,14 @@ import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import CreateVariantForm from "./CreateVariantForm";
 
-function VariantRow({ variant, index }) {
+function VariantRow({ variant, index, variants, setVariants }) {
   const { size, price, quantity } = variant;
+
+  const handleDeleteVariant = () => {
+    setVariants((prevVariants) =>
+      prevVariants.filter((_, variantIndex) => variantIndex !== index)
+    );
+  };
 
   return (
     <>
@@ -32,13 +38,18 @@ function VariantRow({ variant, index }) {
             </Menus.Menu>
 
             <Modal.Window name="edit">
-              <CreateVariantForm variantToEdit={variant} />
+              <CreateVariantForm
+                variantToEdit={variant}
+                index={index}
+                setVariants={setVariants}
+                variants={variants}
+              />
             </Modal.Window>
 
             <Modal.Window name="delete">
               <ConfirmCertain
                 resourceName="Bạn có chắc chắn muốn xóa kích thước này?"
-                // onConfirm={() => deleteCategory(categoryId)}
+                onConfirm={handleDeleteVariant}
               />
             </Modal.Window>
           </Modal>

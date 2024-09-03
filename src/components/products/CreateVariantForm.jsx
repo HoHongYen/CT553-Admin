@@ -5,49 +5,61 @@ import Button from "@/components/ui/Button";
 import Form from "@/components/ui/Form";
 import FormRow from "@/components/ui/FormRow";
 import Input from "@/components/ui/Input";
-import { format } from "date-fns";
-import { formatCurrency } from "@/utils/helpers";
 import Heading from "../ui/Heading";
+import Textarea from "../ui/Textarea";
+import toast from "react-hot-toast";
 
-function CreateVariantForm({ variantToEdit = {}, onCloseModal }) {
-  const { id: editId, ...editValues } = variantToEdit;
-  const isEditSession = Boolean(editId);
+function CreateVariantForm({
+  index = null,
+  variantToEdit = {},
+  onCloseModal,
+  setVariants,
+  variants,
+}) {
+  const isEditSession = index !== null;
 
-  const { register, handleSubmit, formState } = useForm({
-    defaultValues: isEditSession ? editValues : {},
+  const { register, handleSubmit, formState, reset } = useForm({
+    defaultValues: isEditSession ? variantToEdit : {},
   });
   const { errors } = formState;
 
-  const [size, setSize] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-
-  async function onSubmit({ name }, e) {
+  async function onSubmit({ size, price, quantity }, e) {
     e.preventDefault();
-
-    // if (isEditSession)
+    if (isEditSession) {
+      setVariants((prevVariants) =>
+        prevVariants.map((variant, idx) =>
+          idx === index ? { size, price, quantity } : variant
+        )
+      );
+      toast.success("Cập nhật kích thước thành công!");
+      onCloseModal?.();
+    } else {
+      if (variants.some((variant) => variant.size === size)) {
+        toast.error("Kích thước đã tồn tại!");
+        return;
+      }
+      setVariants((prevVariants) => [
+        ...prevVariants,
+        { size, price, quantity },
+      ]);
+      toast.success("Thêm kích thước thành công!");
+      reset();
+    }
   }
 
   async function handleCancel() {
     // khong can e.preventDefault() vi day la button type="reset"
-    setSize("");
     onCloseModal?.();
   }
-
-  useEffect(() => {
-    if (isEditSession) {
-      setSize("");
-    }
-  }, []);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-5 mb-10">
         <div className="flex justify-center">
-        <Heading as="h2">Thêm thông tin kích thước tranh</Heading>
+          <Heading as="h2">Thêm thông tin kích thước tranh</Heading>
         </div>
         <FormRow label="Kích thước:" error={errors?.size?.message}>
-          <Input
+          <Textarea
             type="text"
             id="size"
             {...register("size", {
@@ -86,9 +98,7 @@ function CreateVariantForm({ variantToEdit = {}, onCloseModal }) {
         <Button type="reset" variation="secondary" onClick={handleCancel}>
           Hủy
         </Button>
-        <Button>
-          {isEditSession ? "Lưu chỉnh sửa" : "Lưu thông tin kích thước"}
-        </Button>
+        <Button>{isEditSession ? "Lưu chỉnh sửa" : "Lưu kích thước"}</Button>
       </FormRow>
     </Form>
   );
