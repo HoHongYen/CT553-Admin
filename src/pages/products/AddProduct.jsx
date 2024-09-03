@@ -16,6 +16,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import slugify from "slugify";
 import { HiCamera, HiPencil, HiTrash } from "react-icons/hi2";
+import CreateVariantForm from "@/components/products/CreateVariantForm";
+import Modal from "@/components/ui/Modal";
+
+import { Space, Table, Tag } from "antd";
 
 function AddProduct({ productToEdit = {} }) {
   const { createProduct, isLoading: isCreating } = useCreateProduct();
@@ -57,6 +61,19 @@ function AddProduct({ productToEdit = {} }) {
     },
     {
       path: "https://tuongxinh.com.vn/wp-content/uploads/2023/12/maket-3-2.jpg",
+    },
+  ]);
+
+  const [variants, setVariants] = useState([
+    {
+      size: "40x60cm (bộ 3 tấm). Tổng cao 60cm và rộng 1,2m",
+      price: 1100000,
+      quantity: 10,
+    },
+    {
+      size: "50x70cm (bộ 3 tấm). Tổng cao 70cm và rộng 1,5m",
+      price: 1400000,
+      quantity: 20,
     },
   ]);
 
@@ -192,6 +209,40 @@ function AddProduct({ productToEdit = {} }) {
     setImages((images) => images.filter((_, i) => i !== index));
   };
 
+  const columns = [
+    {
+      title: "STT",
+      dataIndex: "index",
+      key: "index",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Kích thước",
+      dataIndex: "size",
+      key: "size",
+    },
+    {
+      title: "Giá",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: "Tùy chọn",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <a>Chỉnh sửa {record.name}</a>
+          <a>Xóa</a>
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <>
       <Row type="horizontal">
@@ -214,6 +265,7 @@ function AddProduct({ productToEdit = {} }) {
               })}
             />
           </FormRow>
+
           <FormRow label="Slug:">
             <Input type="text" id="slug" disabled value={slug} />
           </FormRow>
@@ -231,7 +283,7 @@ function AddProduct({ productToEdit = {} }) {
             />
           </FormRow>
 
-          <div className="mt-8 flex flex-col gap-4">
+          <div className="mt-8 flex flex-col gap-8">
             <label htmlFor="image" className="font-[500]">
               Hình ảnh:
             </label>
@@ -291,11 +343,52 @@ function AddProduct({ productToEdit = {} }) {
           </div>
 
           {/* add variant begin */}
+          <div className="mt-10 flex flex-col gap-8">
+            <div className="flex flex-col gap-5">
+              <label htmlFor="size" className="font-[500]">
+                Kích thước tranh:
+              </label>
+              <Table columns={columns} dataSource={variants} />;
+              {/* <Menus>
+                <Table columns="0.5fr 3fr 1fr 1fr 1fr">
+                  <Table.Header>
+                    <div>STT</div>
+                    <div>Kích thước</div>
+                    <div>Giá</div>
+                    <div>Số lượng</div>
+                    <div></div>
+                  </Table.Header>
+                  <Table.Body
+                    data={variants}
+                    render={(variant, index) => (
+                      <VariantRow
+                        key={variant.size}
+                        variant={variant}
+                        index={index}
+                      />
+                    )}
+                  />
+                </Table>
+              </Menus> */}
+            </div>
+
+            <div>
+              <Modal>
+                <Modal.Open opens="product-form">
+                  <Button>Thêm thông tin cho từng kích thước tranh</Button>
+                </Modal.Open>
+                <Modal.Window name="product-form">
+                  <CreateVariantForm />
+                </Modal.Window>
+              </Modal>
+            </div>
+          </div>
+
           {/* add variant end */}
 
-          <div className="mt-8 flex flex-col gap-8">
+          <div className="mt-10 flex flex-col gap-8">
             {/* overview begin */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5">
               <label htmlFor="overview" className="font-[500]">
                 Tổng quan sản phẩm:
               </label>
@@ -311,7 +404,7 @@ function AddProduct({ productToEdit = {} }) {
             {/* overview end */}
 
             {/* material begin */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5">
               <label htmlFor="material" className="font-[500]">
                 Chất liệu tranh:
               </label>
@@ -327,7 +420,7 @@ function AddProduct({ productToEdit = {} }) {
             {/* material end */}
 
             {/* specification begin */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5">
               <label htmlFor="specification" className="font-[500]">
                 Thông tin chi tiết:
               </label>
@@ -343,7 +436,7 @@ function AddProduct({ productToEdit = {} }) {
             {/* specification end */}
 
             {/* instruction begin */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5">
               <label htmlFor="instruction" className="font-[500]">
                 Hướng dẫn vệ sinh tranh:
               </label>
