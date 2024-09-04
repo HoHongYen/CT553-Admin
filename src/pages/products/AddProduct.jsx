@@ -19,6 +19,8 @@ import { HiCamera, HiPencil, HiTrash } from "react-icons/hi2";
 import CreateVariantForm from "@/components/products/CreateVariantForm";
 import Modal from "@/components/ui/Modal";
 import VariantTable from "@/components/products/VariantTable";
+import { uploadImages } from "@/services/apiUpload";
+import { createVariant } from "@/services/apiProducts";
 
 function AddProduct({ productToEdit = {} }) {
   const { createProduct, isLoading: isCreating } = useCreateProduct();
@@ -28,7 +30,6 @@ function AddProduct({ productToEdit = {} }) {
   const { id: editId, ...editValues } = productToEdit;
   const isEditSession = Boolean(editId);
   // const isWorking = isCreating || isUpdating;
-  const isWorking = isCreating;
 
   const { register, handleSubmit, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
@@ -42,25 +43,27 @@ function AddProduct({ productToEdit = {} }) {
   const [category, setCategory] = useState();
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
+  const isWorking = isCreating || isUploadingImage;
+
   const [images, setImages] = useState([
-    {
-      path: "https://tuongxinh.com.vn/wp-content/uploads/2024/02/z5122716454948_6df55452e093e488987ba4213857f458.jpg",
-    },
-    {
-      path: "https://res.cloudinary.com/dphzvfcmy/image/upload/v1725026756/CT553/canh_hong_view_ooezqt.png",
-    },
-    {
-      path: "https://tuongxinh.com.vn/wp-content/uploads/2023/12/3-2.jpg",
-    },
-    {
-      path: "https://tuongxinh.com.vn/wp-content/uploads/2023/12/6.jpg",
-    },
-    {
-      path: "https://tuongxinh.com.vn/wp-content/uploads/2023/12/4.jpg",
-    },
-    {
-      path: "https://tuongxinh.com.vn/wp-content/uploads/2023/12/maket-3-2.jpg",
-    },
+    // {
+    //   path: "https://tuongxinh.com.vn/wp-content/uploads/2024/02/z5122716454948_6df55452e093e488987ba4213857f458.jpg",
+    // },
+    // {
+    //   path: "https://res.cloudinary.com/dphzvfcmy/image/upload/v1725026756/CT553/canh_hong_view_ooezqt.png",
+    // },
+    // {
+    //   path: "https://tuongxinh.com.vn/wp-content/uploads/2023/12/3-2.jpg",
+    // },
+    // {
+    //   path: "https://tuongxinh.com.vn/wp-content/uploads/2023/12/6.jpg",
+    // },
+    // {
+    //   path: "https://tuongxinh.com.vn/wp-content/uploads/2023/12/4.jpg",
+    // },
+    // {
+    //   path: "https://tuongxinh.com.vn/wp-content/uploads/2023/12/maket-3-2.jpg",
+    // },
   ]);
 
   const [variants, setVariants] = useState([
@@ -76,23 +79,42 @@ function AddProduct({ productToEdit = {} }) {
     },
   ]);
 
-  const [overview, setOverview] = useState("");
-  const [material, setMaterial] = useState("");
-  const [specification, setSpecification] = useState("");
-  const [instruction, setInstruction] = useState("");
+  // const [overview, setOverview] = useState("");
+  // const [material, setMaterial] = useState("");
+  // const [specification, setSpecification] = useState("");
+  // const [instruction, setInstruction] = useState("");
 
-  async function handleUploadImage(e) {
+  const [overview, setOverview] = useState(
+    "<p>“Cành hồng trĩu quả” (mã HL951) là một tác phẩm tranh hoa quả đầy sức sống và ấm áp, khắc họa hình ảnh một cành cây hồng nặng trĩu</p>"
+  );
+  const [material, setMaterial] = useState(
+    "<ul><li>Vải Canvas: Nhập khẩu Nhật Bản, in trên công nghệ UV chuẩn Châu Âu. Chất liệu này kết hợp với mực nhập khẩu chất lượng giúp nổi rõ đường vân trên tranh, nên màu sắc, đường nét vô cùng tinh tế, tạo hiệu ứng 3D cho bức tranh. Vì thế, tranh Canvas Aloha giống tranh sơn dầu đến 90%.</li><li>Gương pha lê: Được in bằng công nghệ UV trên bề mặt MiCa trong suốt và tráng gương pha lê ngoài cùng, tạo độ bóng sáng, lấp lánh cho mọi bức tranh. Mặt sau tranh được ép &nbsp;1 lớp fomex giúp tranh cứng cáp và hút ẩm tốt nhất. Đây là loại tranh sang trọng bậc nhất thị trường hiện nay.<br>Cả hai chất liệu canvas và gương pha lê đều có khả năng chống thấm nước, chống phai màu. Vì thế, tranh Aloha đảm bảo bền đẹp theo thời gian.</li></ul>"
+  );
+  const [specification, setSpecification] = useState(
+    '<p>Quy cách chất liệu tráng gương cao cấp:</p><ul style="list-style-type:disc;"><li>Công nghệ in Uv in trực tiếp lên mica, mực UV Mỹ.</li><li>Bề mặt tranh được phủ thêm 1 lớp nhựa epoxy bóng siêu nét.</li><li>Mặt sau được đỡ thêm tấm fomex dày 8mm.</li><li>Đóng khung tranh composite: trắng, đen, vàng.</li></ul>'
+  );
+  const [instruction, setInstruction] = useState(
+    "<p>Chỉ cần dùng khăn ẩm lau trên bề mặt tranh là loại bỏ được bụi bẩn bám trên tranh. Đối với tranh của Decorpic, khách hàng không cần sử dụng chất tẩy rửa để làm sạch tranh.</p>"
+  );
+
+  const [createdProductId, setCreatedProductId] = useState(null);
+
+  const handleUploadProductImages = async () => {
     const form = new FormData();
-    form.append("image", e.target.files[0]);
-
-    setIsUploadingImage(true);
-    // uploadImage(form, {
-    //   onSuccess: (res) => {
-    //     setThumbnailImage(res.metadata);
-    //     setIsUploadingImage(false);
-    //   },
-    // });
-  }
+    images.forEach((image) => {
+      form.append("images", image.file);
+    });
+    try {
+      setIsUploadingImage(true);
+      const res = await uploadImages(form);
+      const idArray = res.metadata.map((item) => item.id);
+      return idArray;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
 
   async function onSubmit({ name }, e) {
     e.preventDefault();
@@ -111,30 +133,56 @@ function AddProduct({ productToEdit = {} }) {
     //     {
     //       onSuccess: (data) => {
     //         console.log(data);
-    //         onCloseModal?.();
     //       },
     //     }
     //   );
     // else
 
-    // createCategory(
-    //   {
-    //     name,
-    //     parentId: parentId ? +parentId : null,
-    //     thumbnailImageId: thumbnailImage?.id,
-    //     slug,
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       e.target.reset();
-    //       setSlug("");
-    //       setParentId(null);
-    //       setThumbnailImage(null);
-    //       onCloseModal?.();
-    //     },
-    //   }
-    // );
+    const uploadedProductImageIds = await handleUploadProductImages();
+
+    console.log("uploadedProductImageIds", uploadedProductImageIds);
+
+    createProduct(
+      {
+        name,
+        slug,
+        categoryId: category,
+        uploadedImageIds: uploadedProductImageIds,
+        overview,
+        material,
+        specification,
+        instruction,
+      },
+      {
+        onSuccess: async (data) => {
+          console.log(data);
+          setCreatedProductId(data.metadata.id);
+          // e.target.reset();
+          // setSlug("");
+        },
+      }
+    );
   }
+
+  useEffect(() => {
+    console.log("Create variants", "Product ID", createdProductId);
+    async function createVariants() {
+      await Promise.all(
+        variants.map(async (variant) => {
+          const createdVariant = await createVariant(createdProductId, {
+            size: variant.size,
+            price: variant.price,
+            quantity: variant.quantity,
+            productId: createdProductId,
+          });
+          console.log("variant", createdVariant.metadata);
+        })
+      );
+    }
+    if (createdProductId) {
+      createVariants();
+    }
+  }, [createdProductId]);
 
   async function handleCancel() {
     // khong can e.preventDefault() vi day la button type="reset"
@@ -322,7 +370,10 @@ function AddProduct({ productToEdit = {} }) {
                   <Button>Thêm kích thước tranh</Button>
                 </Modal.Open>
                 <Modal.Window name="product-form">
-                  <CreateVariantForm variants={variants} setVariants={setVariants} />
+                  <CreateVariantForm
+                    variants={variants}
+                    setVariants={setVariants}
+                  />
                 </Modal.Window>
               </Modal>
             </div>
@@ -341,9 +392,9 @@ function AddProduct({ productToEdit = {} }) {
                 onChange={(event, editor) => {
                   setOverview(editor.getData());
                 }}
-                placeholder="Nhập thông tin chất liệu tranh"
+                placeholder="Nhập thông tin tổng quan sản phẩm"
               />
-              {/* {JSON.stringify(overview)} */}
+              {JSON.stringify(overview)}
             </div>
             {/* overview end */}
 

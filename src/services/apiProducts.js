@@ -129,26 +129,31 @@ const api = createApiClient(baseUrl);
 import { PAGE_SIZE, PRODUCT_ALL } from "../utils/constants";
 
 export async function createProduct(data) {
-  return (await api.post("/", data)).data; // name, price, description, material, overview, instruction, categoryId, (array) uploadedImageIds  
+  return (await api.post("/", data)).data; // name, slug, overview, material, specification, instruction, categoryId, (array) uploadedImageIds  
 }
 
 export async function uploadImage(id, data) {
-  return (await api.post(`/${id}/add-image`, data)).data; // name, price, description, material, overview, instruction, categoryId, (array) uploadedImageIds  
+  return (await api.post(`/${id}/add-image`, data)).data;
 }
 
-export async function getProducts(limit = 10, page = 1) {
-  const products = (await api.get("", { params: { limit, page } })).data;
-  console.log("products", products);
-  return products;
+export async function createVariant(id, data) {
+  return (await api.post(`/${id}/variants`, data)).data; // size, price,  quantity
 }
+
+// export async function getProducts(limit = 10, page = 1) {
+//   const products = (await api.get("", { params: { limit, page } })).data;
+//   console.log("products", products);
+//   return products;
+// }
 
 export async function getAll() {
-  return await getByType(PRODUCT_ALL);
+  return await getByType("All");
 }
 
-async function getByType(type, limit = 10, page = 1) {
+// async function getByType(type, limit = 10, page = 1) {
+async function getByType(type, limit = 10) {
   console.log("getByType");
-  const products = (await api.get("/", { params: { type, limit, page } })).data;
+  const products = (await api.get("/", { params: { type, limit } })).data;
   console.log("products", products);
   return products;
   // return (await api.get("/", { params: { type, limit, page } })).data;

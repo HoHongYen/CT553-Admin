@@ -10,6 +10,7 @@ import {
   HiArrowDownOnSquare,
   HiArrowUpOnSquare,
   HiEye,
+  HiPencil,
   HiTrash,
 } from "react-icons/hi2";
 
@@ -50,7 +51,7 @@ function ProductRow({
 
   return (
     <Table.Row>
-      <RoundImage path={images[0].path} alt={name} />
+      <RoundImage path={images[0].image.path} alt={name} />
       <div>{productId}</div>
       <div>{name}</div>
       <div>{createdAt}</div>
@@ -62,32 +63,15 @@ function ProductRow({
             <Menus.List id={productId}>
               <Menus.Button
                 icon={<HiEye />}
-                // onClick={() => navigate(`/san-pham/${bookingId}`)}
+                onClick={() => navigate(`/san-pham/${productId}`)}
               >
                 See details
               </Menus.Button>
 
-              {status === "unconfirmed" && (
-                <Menus.Button
-                  icon={<HiArrowDownOnSquare />}
-                  // onClick={() => navigate(`/checkin/${bookingId}`)}
-                >
-                  Check in
-                </Menus.Button>
-              )}
-
-              {status === "checked-in" && (
-                <Menus.Button
-                  icon={<HiArrowUpOnSquare />}
-                  // onClick={() => checkout(bookingId)}
-                  // disabled={isCheckingout}
-                >
-                  Check out
-                </Menus.Button>
-              )}
+              <Menus.Button icon={<HiPencil />}>Chỉnh sửa</Menus.Button>
 
               <Modal.Open opens="delete">
-                <Menus.Button icon={<HiTrash />}>Delete booking</Menus.Button>
+                <Menus.Button icon={<HiTrash />}>Xóa sản phẩm</Menus.Button>
               </Modal.Open>
             </Menus.List>
 
