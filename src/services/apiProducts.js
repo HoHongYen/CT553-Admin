@@ -120,9 +120,6 @@ export async function deleteBooking(id) {
 }
 
 
-
-
-
 import createApiClient from "./api";
 const baseUrl = "/api/products";
 const api = createApiClient(baseUrl);
