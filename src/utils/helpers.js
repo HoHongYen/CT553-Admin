@@ -27,3 +27,12 @@ export const formatCurrency = (value) =>
   new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(
     value
   );
+
+export const handleClickElement = (id) => {
+  document.getElementById(id).click();
+};
+
+export const jumpToReleventDiv = (id) => {
+  const releventDiv = document.getElementById(id);
+  releventDiv.scrollIntoView({ behavior: "smooth" });
+};

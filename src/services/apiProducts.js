@@ -132,12 +132,20 @@ export async function createProduct(data) {
   return (await api.post("/", data)).data; // name, slug, overview, material, specification, instruction, categoryId, (array) uploadedImageIds  
 }
 
-export async function uploadImage(id, data) {
-  return (await api.post(`/${id}/add-image`, data)).data;
+export async function updateProduct(productId, data) {
+  return (await api.put("/" + productId, data)).data; // name, slug, overview, material, specification, instruction, categoryId, (array) uploadedImageIds  
 }
 
-export async function createVariant(id, data) {
-  return (await api.post(`/${id}/variants`, data)).data; // size, price,  quantity
+export async function createVariant(productId, data) {
+  return (await api.post(`/${productId}/variants`, data)).data; // size, price,  quantity
+}
+
+export async function updateVariant(productId, data) {
+  return (await api.put(`/${productId}/variants`, data)).data; // size, price,  quantity
+}
+
+export async function uploadImage(id, data) {
+  return (await api.post(`/${id}/add-image`, data)).data;
 }
 
 // export async function getProducts(limit = 10, page = 1) {
