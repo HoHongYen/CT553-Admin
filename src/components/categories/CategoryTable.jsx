@@ -4,12 +4,26 @@ import Spinner from "@/components/ui/Spinner";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import CategoryRow from "./CategoryRow";
+import { useEffect, useState } from "react";
 
 function CategoryTable() {
   const { isLoading, categories } = useCategories();
 
+  const [allCategories, setAllCategories] = useState([]);
+
+  useEffect(() => {
+    if (categories?.length > 0) {
+      let arr = [...categories];
+      categories.map((category) => {
+        arr = [...arr, ...category.children];
+      });
+      setAllCategories(arr);
+      console.log(arr);
+    }
+  }, [categories]);
+
   if (isLoading) return <Spinner />;
-  if (!categories.length) return <p>Không có danh mục nào!</p>;
+  if (!allCategories.length) return <p>Không có danh mục nào!</p>;
 
   // 1. Filter
   // const filterValue = searchParams.get("discount") || "all";
@@ -39,8 +53,10 @@ function CategoryTable() {
         </Table.Header>
         <Table.Body
           // data={sortedCabins}
-          data={categories}
-          render={(category) => <CategoryRow key={category.id} category={category} />}
+          data={allCategories}
+          render={(category) => (
+            <CategoryRow key={category.id} category={category} />
+          )}
         />
       </Table>
     </Menus>
