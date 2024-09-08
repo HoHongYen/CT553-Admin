@@ -130,6 +130,7 @@ export async function createProduct(data) {
 }
 
 export async function updateProduct(productId, data) {
+  console.log("updateProduct", productId, data);
   return (await api.put("/" + productId, data)).data; // name, slug, overview, material, specification, instruction, categoryId, (array) uploadedImageIds  
 }
 

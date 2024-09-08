@@ -1,15 +1,16 @@
+import slugify from "slugify";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import slugify from "slugify";
 
 import { useCategories } from "@/hooks/categories/useCategories";
 import { useMoveBack } from "@/hooks/common/useMoveBack";
+import { useProduct } from "@/hooks/products/useProduct";
 import { useUpdateProduct } from "@/hooks/products/useUpdateProduct";
 
 import { uploadImages } from "@/services/apiUpload";
-import { createVariant } from "@/services/apiProducts";
+import { createVariant, updateVariant } from "@/services/apiProducts";
 
-import { jumpToReleventDiv, handleClickElement } from "@/utils/helpers";
+import { jumpToRelevantDiv, handleClickElement } from "@/utils/helpers";
 
 import { TreeSelect } from "antd";
 import { HiCamera, HiPencil, HiTrash } from "react-icons/hi2";
@@ -22,30 +23,34 @@ import FormRow from "@/components/ui/FormRow";
 import Heading from "@/components/ui/Heading";
 import Input from "@/components/ui/Input";
 import Row from "@/components/ui/Row";
+import Spinner from "@/components/ui/Spinner";
 import SpinnerMini from "@/components/ui/SpinnerMini";
 import Editor from "@/components/ui/Editor";
 import TickRoundIcon from "@/components/icons/TickRoundIcon";
 import EmptyRoundBoxIcon from "@/components/icons/EmptyRoundBoxIcon";
 
-import CreateVariantForm from "@/components/products/CreateVariantForm";
 import VariantTable from "@/components/products/VariantTable";
+import CreateVariantForm from "@/components/products/CreateVariantForm";
+import Menus from "@/components/ui/Menus";
 
 function UpdateProduct() {
-  const { updateProduct, isLoading } = useUpdateProduct();
+  const { product, isLoading: isLoadingProduct } = useProduct();
+  const { updateProduct, isLoading: isEditing } = useUpdateProduct();
+
   const moveBack = useMoveBack();
 
-  const { register, handleSubmit, formState } = useForm();
+  const { register, handleSubmit, formState, setValue } = useForm();
   const { errors } = formState;
 
   const { categories } = useCategories();
 
   const [slug, setSlug] = useState("");
-  const [categoryOptions, setCategoryOptions] = useState();
-  const [category, setCategory] = useState();
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [category, setCategory] = useState(null);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
-  const isWorking = isLoading || isUploadingImage;
+  const isWorking = isLoadingProduct || isEditing || isUploadingImage;
 
   const [images, setImages] = useState([]);
   const [variants, setVariants] = useState([]);
@@ -63,12 +68,13 @@ function UpdateProduct() {
   const [specificationError, setSpecificationError] = useState(null);
   const [instructionError, setInstructionError] = useState(null);
 
-  const [createdProductId, setCreatedProductId] = useState(null);
-
   const handleUploadProductImages = async () => {
     const form = new FormData();
     images.forEach((image) => {
-      form.append("images", image.file);
+      if (!image.id) {
+        console.log("image", image);
+        form.append("images", image.file);
+      }
     });
     try {
       setIsUploadingImage(true);
@@ -87,90 +93,100 @@ function UpdateProduct() {
 
     if (!category) {
       setCategoryError("Không được bỏ trống!");
-      jumpToReleventDiv("category");
+      jumpToRelevantDiv("category");
       return;
     }
 
     if (images.length === 0) {
       setErrorImage("Thêm ít nhất một hình ảnh!");
-      jumpToReleventDiv("image");
+      jumpToRelevantDiv("image");
       return;
     }
 
     if (variants.length === 0) {
       setVariantError("Thêm ít nhất một kích thước!");
-      jumpToReleventDiv("variant");
+      jumpToRelevantDiv("variant");
       return;
     }
 
     if (!overview) {
       setOverviewError("Không được bỏ trống!");
-      jumpToReleventDiv("overview");
+      jumpToRelevantDiv("overview");
       return;
     }
 
     if (!material) {
       setMaterialError("Không được bỏ trống!");
-      jumpToReleventDiv("material");
+      jumpToRelevantDiv("material");
       return;
     }
 
     if (!specification) {
       setSpecificationError("Không được bỏ trống!");
-      jumpToReleventDiv("specification");
+      jumpToRelevantDiv("specification");
       return;
     }
 
     if (!instruction) {
       setInstructionError("Không được bỏ trống!");
-      jumpToReleventDiv("instruction");
+      jumpToRelevantDiv("instruction");
       return;
     }
 
     const uploadedProductImageIds = await handleUploadProductImages();
     console.log("uploadedProductImageIds", uploadedProductImageIds);
 
+    // update variants
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i];
+      if (variant.id) {
+        // update variant
+        const updatedVariant = await updateVariant(product.id, {
+          id: variant.id,
+          size: variant.size,
+          price: parseFloat(variant.price),
+          quantity: variant.quantity,
+        });
+        console.log("updatedVariant", updatedVariant);
+      } else {
+        // create variant
+        console.log(variant);
+        const createdVariant = await createVariant(product.id, {
+          size: variant.size,
+          price: parseFloat(variant.price),
+          quantity: parseInt(variant.quantity),
+          productId: product.id,
+        });
+        console.log("createdVariant", createdVariant);
+      }
+    }
+
     updateProduct(
       {
-        name,
-        slug,
-        visible,
-        categoryId: category,
-        uploadedImageIds: uploadedProductImageIds,
-        overview,
-        material,
-        specification,
-        instruction,
+        productId: product.id,
+        data: {
+          name,
+          slug,
+          categoryId: category,
+          visible,
+          // uploadedImageIds: uploadedProductImageIds,
+          overview,
+          material,
+          specification,
+          instruction,
+        },
       },
       {
         onSuccess: async (data) => {
           console.log(data);
-          setCreatedProductId(data.metadata.id);
-          handleCancel();
         },
       }
     );
   }
 
   useEffect(() => {
-    console.log("Create variants", "Product ID", createdProductId);
-    async function createVariants() {
-      await Promise.all(
-        variants.map(async (variant) => {
-          const createdVariant = await createVariant(createdProductId, {
-            size: variant.size,
-            price: variant.price,
-            quantity: variant.quantity,
-            productId: createdProductId,
-          });
-          console.log("variant", createdVariant.metadata);
-        })
-      );
-    }
-    if (createdProductId) {
-      createVariants();
-    }
-  }, [createdProductId]);
+    handleCancel();
+  }, [product]);
 
   useEffect(() => {
     if (category) setCategoryError(null);
@@ -190,17 +206,31 @@ function UpdateProduct() {
     instruction,
   ]);
 
-  async function handleCancel() {
+  function handleCancel() {
     // khong can e.preventDefault() vi day la button type="reset"
-    setSlug("");
-    setCategory(null);
-    setImages([]);
-    setVariants([]);
-    setOverview("");
-    setMaterial("");
-    setSpecification("");
-    setInstruction("");
+    setImages(
+      product?.images.map((image) => ({
+        file: { name: image.image.filename },
+        path: image.image.path,
+      })) || []
+    );
+
+    setVariants(product?.variants || []);
+
+    setValue("name", product?.name);
+    setSlug(product?.slug);
+    setCategory(product?.categoryId);
+    setVisible(product?.visible);
+
+    setOverview(product?.overview);
+    setMaterial(product?.material);
+    setSpecification(product?.specification);
+    setInstruction(product?.instruction);
   }
+
+  useEffect(() => {
+    console.log("variants", variants);
+  }, [variants]);
 
   useEffect(() => {
     if (categories?.length > 0) {
@@ -249,6 +279,8 @@ function UpdateProduct() {
     e.preventDefault();
     setImages((images) => images.filter((_, i) => i !== index));
   };
+
+  if (isLoadingProduct) return <Spinner />;
 
   return (
     <>
@@ -398,10 +430,10 @@ function UpdateProduct() {
 
             <div>
               <Modal>
-                <Modal.Open opens="product-form">
+                <Modal.Open opens="variant-form">
                   <Button>Thêm kích thước tranh</Button>
                 </Modal.Open>
-                <Modal.Window name="product-form">
+                <Modal.Window name="variant-form">
                   <CreateVariantForm
                     variants={variants}
                     setVariants={setVariants}

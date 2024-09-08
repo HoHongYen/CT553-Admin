@@ -32,7 +32,7 @@ export const handleClickElement = (id) => {
   document.getElementById(id).click();
 };
 
-export const jumpToReleventDiv = (id) => {
+export const jumpToRelevantDiv = (id) => {
   const releventDiv = document.getElementById(id);
   releventDiv.scrollIntoView({ behavior: "smooth" });
 };

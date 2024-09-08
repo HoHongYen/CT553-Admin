@@ -1,13 +1,19 @@
-import { HiPencil, HiTrash } from "react-icons/hi2";
+import { formatCurrency } from "@/utils/helpers";
 
+import { HiPencil, HiTrash } from "react-icons/hi2";
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
-import CreateVariantForm from "./CreateVariantForm";
+import UpdateVariantForm from "./UpdateVariantForm";
+import { useEffect } from "react";
 
-function VariantRow({ variant, index, variants, setVariants }) {
+function VariantRow({ variant, index, setVariants }) {
   const { size, price, quantity } = variant;
+
+  useEffect(() => {
+    console.log("variant", variant, "index", index);
+  }, [variant, index]);
 
   const handleDeleteVariant = () => {
     setVariants((prevVariants) =>
@@ -20,7 +26,7 @@ function VariantRow({ variant, index, variants, setVariants }) {
       <Table.Row>
         <div>{index + 1}</div>
         <div>{size}</div>
-        <div>{price}</div>
+        <div>{formatCurrency(price)}</div>
         <div>{quantity}</div>
         <div>
           <Modal>
@@ -38,11 +44,10 @@ function VariantRow({ variant, index, variants, setVariants }) {
             </Menus.Menu>
 
             <Modal.Window name="edit">
-              <CreateVariantForm
+              <UpdateVariantForm
                 variantToEdit={variant}
                 index={index}
                 setVariants={setVariants}
-                variants={variants}
               />
             </Modal.Window>
 

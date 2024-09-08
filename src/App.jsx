@@ -56,7 +56,7 @@ function App() {
                 />
                 <Route path="san-pham" element={<Products />} />
                 <Route path="san-pham/tao-moi" element={<AddProduct />} />
-                <Route path="san-pham/cap-nhat" element={<UpdateProduct />} />
+                <Route path="san-pham/:slug" element={<UpdateProduct />} />
                 <Route path="danh-muc" element={<Categories />} />
               </Route>
               <Route path="dang-nhap" element={<Login />} />

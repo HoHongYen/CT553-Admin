@@ -9,42 +9,28 @@ import Heading from "../ui/Heading";
 import Textarea from "../ui/Textarea";
 import toast from "react-hot-toast";
 
-function CreateVariantForm({
+function UpdateVariantForm({
   index = null,
   variantToEdit = {},
   onCloseModal,
   setVariants,
-  variants,
 }) {
-  const isEditSession = index !== null;
-
   const { register, handleSubmit, formState, reset } = useForm({
-    defaultValues: isEditSession ? variantToEdit : {},
+    defaultValues: variantToEdit,
   });
   const { errors } = formState;
 
   async function onSubmit({ size, price, quantity }) {
     // e.preventDefault();
-    if (isEditSession) {
-      setVariants((prevVariants) =>
-        prevVariants.map((variant, idx) =>
-          idx === index ? { size, price, quantity } : variant
-        )
+    setVariants((prevVariants) => {
+      console.log("prevVariants", prevVariants);
+      return prevVariants.map((variant, idx) =>
+        idx === index ? { size, price, quantity } : variant
       );
-      toast.success("Cập nhật kích thước thành công!");
-      onCloseModal?.();
-    } else {
-      if (variants.some((variant) => variant.size === size)) {
-        toast.error("Kích thước đã tồn tại!");
-        return;
-      }
-      setVariants((prevVariants) => [
-        ...prevVariants,
-        { size, price, quantity },
-      ]);
-      toast.success("Thêm kích thước thành công!");
-      reset();
-    }
+    });
+    toast.success("Cập nhật kích thước thành công!");
+    reset();
+    onCloseModal?.();
   }
 
   async function handleCancel() {
@@ -56,7 +42,7 @@ function CreateVariantForm({
     <Form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-5 mb-10">
         <div className="flex justify-center">
-          <Heading as="h2">Thêm thông tin kích thước tranh</Heading>
+          <Heading as="h2">Cập nhật thông tin kích thước tranh</Heading>
         </div>
         <FormRow label="Kích thước:" error={errors?.size?.message}>
           <Textarea
@@ -98,15 +84,17 @@ function CreateVariantForm({
         <Button type="reset" variation="secondary" onClick={handleCancel}>
           Hủy
         </Button>
-        <Button onClick={(e) => {
-          e.preventDefault();
-          handleSubmit(onSubmit)();
-        }}>
-          {isEditSession ? "Lưu chỉnh sửa" : "Lưu kích thước"}
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            handleSubmit(onSubmit)();
+          }}
+        >
+          Lưu chỉnh sửa
         </Button>
       </FormRow>
     </Form>
   );
 }
 
-export default CreateVariantForm;
+export default UpdateVariantForm;

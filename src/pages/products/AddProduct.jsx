@@ -9,7 +9,7 @@ import { useCreateProduct } from "@/hooks/products/useCreateProduct";
 import { uploadImages } from "@/services/apiUpload";
 import { createVariant } from "@/services/apiProducts";
 
-import { jumpToReleventDiv, handleClickElement } from "@/utils/helpers";
+import { jumpToRelevantDiv, handleClickElement } from "@/utils/helpers";
 
 import { TreeSelect } from "antd";
 import { HiCamera, HiPencil, HiTrash } from "react-icons/hi2";
@@ -87,43 +87,43 @@ function AddProduct() {
 
     if (!category) {
       setCategoryError("Không được bỏ trống!");
-      jumpToReleventDiv("category");
+      jumpToRelevantDiv("category");
       return;
     }
 
     if (images.length === 0) {
       setErrorImage("Thêm ít nhất một hình ảnh!");
-      jumpToReleventDiv("image");
+      jumpToRelevantDiv("image");
       return;
     }
 
     if (variants.length === 0) {
       setVariantError("Thêm ít nhất một kích thước!");
-      jumpToReleventDiv("variant");
+      jumpToRelevantDiv("variant");
       return;
     }
 
     if (!overview) {
       setOverviewError("Không được bỏ trống!");
-      jumpToReleventDiv("overview");
+      jumpToRelevantDiv("overview");
       return;
     }
 
     if (!material) {
       setMaterialError("Không được bỏ trống!");
-      jumpToReleventDiv("material");
+      jumpToRelevantDiv("material");
       return;
     }
 
     if (!specification) {
       setSpecificationError("Không được bỏ trống!");
-      jumpToReleventDiv("specification");
+      jumpToRelevantDiv("specification");
       return;
     }
 
     if (!instruction) {
       setInstructionError("Không được bỏ trống!");
-      jumpToReleventDiv("instruction");
+      jumpToRelevantDiv("instruction");
       return;
     }
 
@@ -398,10 +398,10 @@ function AddProduct() {
 
             <div>
               <Modal>
-                <Modal.Open opens="product-form">
+                <Modal.Open opens="variant-form">
                   <Button>Thêm kích thước tranh</Button>
                 </Modal.Open>
-                <Modal.Window name="product-form">
+                <Modal.Window name="variant-form">
                   <CreateVariantForm
                     variants={variants}
                     setVariants={setVariants}
