@@ -38,21 +38,36 @@ const getUrlExtension = (url) => {
         .trim();
 }
 
+
 const changeImageUrlToFile = async (imgUrl) => {
     var imgExt = getUrlExtension(imgUrl);
 
-    try {
-        const response = await fetch(imgUrl, { mode: 'no-cors' });
-        console.log(response);
-        const blob = await response.blob();
-        const file = new File([blob], "profileImage." + imgExt, {
-            type: blob.type,
-        });
-        return file;
-    } catch (e) {
-        console.log(e);
-    }
-}
+    const response = await fetch(imgUrl);
+    const contentType = response.headers.get("content-type");
+    const blob = await response.blob();
+    const file = new File([blob], "categoryImage." + imgExt, {
+        // type: blob.type,
+        contentType,
+    });
+    console.log(file);
+    return file;
+};
+
+// const changeImageUrlToFile = async (imgUrl) => {
+//     var imgExt = getUrlExtension(imgUrl);
+
+//     try {
+//         const response = await fetch(imgUrl, { mode: 'no-cors' });
+//         console.log(response);
+//         const blob = await response.blob();
+//         const file = new File([blob], "categoryImage." + imgExt, {
+//             type: blob.type,
+//         });
+//         return file;
+//     } catch (e) {
+//         console.log(e);
+//     }
+// }
 
 export async function createCategoryWithUrl({ name, parentId, thumbnailImageUrl, slug }) {
     console.log(name, parentId, thumbnailImageUrl, slug);

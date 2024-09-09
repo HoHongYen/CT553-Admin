@@ -4,7 +4,7 @@ import Menus from "@/components/ui/Menus";
 import { Skeleton } from "antd";
 
 function VariantTable({ variants, setVariants }) {
-  if (!variants?.length) return <Skeleton active />;
+  if (!variants) return <Skeleton active />;
   return (
     <Menus>
       <Table columns="0.5fr 3fr 1fr 1fr 1fr">

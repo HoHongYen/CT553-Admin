@@ -1,12 +1,12 @@
+import { useEffect } from "react";
 import { formatCurrency } from "@/utils/helpers";
 
-import { HiPencil, HiTrash } from "react-icons/hi2";
+import { HiEye, HiTrash } from "react-icons/hi2";
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import UpdateVariantForm from "./UpdateVariantForm";
-import { useEffect } from "react";
 
 function VariantRow({ variant, index, setVariants }) {
   const { size, price, quantity } = variant;
@@ -34,7 +34,7 @@ function VariantRow({ variant, index, setVariants }) {
               <Menus.Toggle id={index} />
               <Menus.List id={index}>
                 <Modal.Open opens="edit">
-                  <Menus.Button icon={<HiPencil />}>Xem chi tiết</Menus.Button>
+                  <Menus.Button icon={<HiEye />}>Xem chi tiết</Menus.Button>
                 </Modal.Open>
 
                 <Modal.Open opens="delete">

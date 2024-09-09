@@ -17,7 +17,6 @@ import FormRow from "@/components/ui/FormRow";
 import Input from "@/components/ui/Input";
 import SpinnerMini from "@/components/ui/SpinnerMini";
 import Select from "@/components/ui/Select";
-import UploadCategories from "@/components/categories/UploadCategories";
 import { useUpdateCategory } from "@/hooks/categories/useUpdateCategory";
 
 function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {

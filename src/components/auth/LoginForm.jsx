@@ -43,10 +43,13 @@ function LoginForm() {
     var imgExt = getUrlExtension(imgUrl);
 
     const response = await fetch(imgUrl);
+    const contentType = response.headers.get("content-type");
     const blob = await response.blob();
     const file = new File([blob], "profileImage." + imgExt, {
-      type: blob.type,
+      // type: blob.type,
+      contentType,
     });
+    console.log(file);
     return file;
   };
 
