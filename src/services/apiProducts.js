@@ -142,8 +142,22 @@ export async function updateVariant(productId, data) {
   return (await api.put(`/${productId}/variants`, data)).data; // size, price,  quantity
 }
 
+// export async function deleteVariant(productId, data) {
+//   console.log("deleteVariant", productId, data);
+//   return (await api.delete(`/${productId}/variants`, data)).data;
+// }
+
+export async function deleteVariant(productId, id) {
+  console.log("deleteVariant", productId, id);
+  return (await api.delete(`/${productId}/variants/${id}`)).data;
+}
+
 export async function uploadImage(id, data) {
   return (await api.post(`/${id}/add-image`, data)).data;
+}
+
+export async function deleteImage(imageId) {
+  return (await api.delete(`/delete-image/${imageId}`)).data;
 }
 
 // export async function getProducts(limit = 10, page = 1) {

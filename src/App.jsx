@@ -17,7 +17,6 @@ import CreateEmployee from "./pages/CreateEmployee";
 import Products from "./pages/products/Products";
 import AddProduct from "./pages/products/AddProduct";
 import UpdateProduct from "./pages/products/UpdateProduct";
-import Product from "./pages/products/Product";
 import Categories from "./pages/Categories";
 import PageNotFound from "./pages/PageNotFound";
 

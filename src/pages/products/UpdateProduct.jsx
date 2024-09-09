@@ -7,8 +7,13 @@ import { useMoveBack } from "@/hooks/common/useMoveBack";
 import { useProduct } from "@/hooks/products/useProduct";
 import { useUpdateProduct } from "@/hooks/products/useUpdateProduct";
 
-import { uploadImages } from "@/services/apiUpload";
-import { createVariant, updateVariant } from "@/services/apiProducts";
+import {
+  createVariant,
+  deleteImage,
+  deleteVariant,
+  updateVariant,
+  uploadImage as uploadProductImage,
+} from "@/services/apiProducts";
 
 import { jumpToRelevantDiv, handleClickElement } from "@/utils/helpers";
 
@@ -31,7 +36,7 @@ import EmptyRoundBoxIcon from "@/components/icons/EmptyRoundBoxIcon";
 
 import VariantTable from "@/components/products/VariantTable";
 import CreateVariantForm from "@/components/products/CreateVariantForm";
-import Menus from "@/components/ui/Menus";
+import { uploadImage } from "@/services/apiUpload";
 
 function UpdateProduct() {
   const { product, isLoading: isLoadingProduct } = useProduct();
@@ -53,7 +58,10 @@ function UpdateProduct() {
   const isWorking = isLoadingProduct || isEditing || isUploadingImage;
 
   const [images, setImages] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
+
   const [variants, setVariants] = useState([]);
+  const [oldVariants, setOldVariants] = useState([]);
 
   const [overview, setOverview] = useState("");
   const [material, setMaterial] = useState("");
@@ -69,24 +77,44 @@ function UpdateProduct() {
   const [instructionError, setInstructionError] = useState(null);
 
   const handleUploadProductImages = async () => {
-    const form = new FormData();
-    images.forEach((image) => {
-      if (!image.id) {
-        console.log("image", image);
-        form.append("images", image.file);
+    const newImageArrayIds = [];
+    for (let i = 0; i < images.length; i++) {
+      const image = images[i];
+      if (image.path.startsWith("blob")) {
+        setIsUploadingImage(true);
+        // upload new image
+        const form = new FormData();
+        console.log("-> new image", image);
+        form.append("image", image.file);
+        const res = await uploadImage(form);
+        console.log("res", res.metadata.id);
+        const uploadedProductImage = await uploadProductImage(product.id, {
+          uploadedImageId: res.metadata.id,
+        });
+        console.log("uploadedProductImageId", uploadedProductImage.metadata.id);
+        newImageArrayIds.push(uploadedProductImage.metadata.id);
+      } else {
+        console.log("image exist", image);
+        newImageArrayIds.push(image.id);
       }
-    });
-    try {
-      setIsUploadingImage(true);
-      const res = await uploadImages(form);
-      const idArray = res.metadata.map((item) => item.id);
-      return idArray;
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsUploadingImage(false);
     }
+
+    // delete old images
+    for (let i = 0; i < oldImages.length; i++) {
+      const oldImage = oldImages[i];
+      if (!images.find((image) => image.path === oldImage.path)) {
+        // delete image
+        await deleteImage(oldImage.id);
+      }
+    }
+
+    setIsUploadingImage(false);
+    return newImageArrayIds;
   };
+
+  useEffect(() => {
+    console.log("images", images);
+  }, [images]);
 
   async function onSubmit({ name }, e) {
     e.preventDefault();
@@ -161,6 +189,15 @@ function UpdateProduct() {
       }
     }
 
+    // delete variants
+    for (let i = 0; i < oldVariants.length; i++) {
+      const oldVariant = oldVariants[i];
+      if (!variants.find((variant) => variant.id === oldVariant.id)) {
+        // delete variant
+        deleteVariant(product.id, oldVariant.id);
+      }
+    }
+
     updateProduct(
       {
         productId: product.id,
@@ -210,12 +247,21 @@ function UpdateProduct() {
     // khong can e.preventDefault() vi day la button type="reset"
     setImages(
       product?.images.map((image) => ({
+        id: image.id,
+        file: { name: image.image.filename },
+        path: image.image.path,
+      })) || []
+    );
+    setOldImages(
+      product?.images.map((image) => ({
+        id: image.id,
         file: { name: image.image.filename },
         path: image.image.path,
       })) || []
     );
 
     setVariants(product?.variants || []);
+    setOldVariants(product?.variants || []);
 
     setValue("name", product?.name);
     setSlug(product?.slug);
@@ -227,10 +273,6 @@ function UpdateProduct() {
     setSpecification(product?.specification);
     setInstruction(product?.instruction);
   }
-
-  useEffect(() => {
-    console.log("variants", variants);
-  }, [variants]);
 
   useEffect(() => {
     if (categories?.length > 0) {

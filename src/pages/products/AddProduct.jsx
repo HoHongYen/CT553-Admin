@@ -6,7 +6,7 @@ import { useCategories } from "@/hooks/categories/useCategories";
 import { useMoveBack } from "@/hooks/common/useMoveBack";
 import { useCreateProduct } from "@/hooks/products/useCreateProduct";
 
-import { uploadImages } from "@/services/apiUpload";
+import { uploadImage, uploadImages } from "@/services/apiUpload";
 import { createVariant } from "@/services/apiProducts";
 
 import { jumpToRelevantDiv, handleClickElement } from "@/utils/helpers";
@@ -47,6 +47,8 @@ function AddProduct() {
 
   const isWorking = isLoading || isUploadingImage;
 
+  const [thumbnailImage, setThumbnailImage] = useState(null);
+  const [viewImage, setViewImage] = useState(null);
   const [images, setImages] = useState([]);
   const [variants, setVariants] = useState([]);
 
@@ -56,6 +58,8 @@ function AddProduct() {
   const [instruction, setInstruction] = useState("");
 
   const [categoryError, setCategoryError] = useState(null);
+  const [errorThumbnailImage, setErrorThumbnailImage] = useState(null);
+  const [errorViewImage, setErrorViewImage] = useState(null);
   const [errorImage, setErrorImage] = useState(null);
   const [variantError, setVariantError] = useState(null);
   const [overviewError, setOverviewError] = useState(null);
@@ -82,12 +86,54 @@ function AddProduct() {
     }
   };
 
+  const handleUploadThumbnailImage = async () => {
+    const form = new FormData();
+    form.append("images", thumbnailImage.file);
+    try {
+      setIsUploadingImage(true);
+      const res = await uploadImage(form);
+      const id = res.metadata.id;
+      return id;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleUploadViewImage = async () => {
+    const form = new FormData();
+    form.append("images", viewImage.file);
+    try {
+      setIsUploadingImage(true);
+      const res = await uploadImage(form);
+      const id = res.metadata.id;
+      return id;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
   async function onSubmit({ name }, e) {
     e.preventDefault();
 
     if (!category) {
       setCategoryError("Không được bỏ trống!");
       jumpToRelevantDiv("category");
+      return;
+    }
+
+    if (!thumbnailImage) {
+      setErrorThumbnailImage("Không được bỏ trống!");
+      jumpToRelevantDiv("thumbnailImage");
+      return;
+    }
+
+    if (!viewImage) {
+      setErrorViewImage("Không được bỏ trống!");
+      jumpToRelevantDiv("viewImage");
       return;
     }
 
@@ -127,29 +173,37 @@ function AddProduct() {
       return;
     }
 
+    const uploadedThumbnailImageId = await handleUploadThumbnailImage();
+    console.log("uploadedThumbnailImageId", uploadedThumbnailImageId);
+
+    const uploadedViewImageId = await handleUploadViewImage();
+    console.log("uploadedViewImageId", uploadedViewImageId);
+
     const uploadedProductImageIds = await handleUploadProductImages();
     console.log("uploadedProductImageIds", uploadedProductImageIds);
 
-    createProduct(
-      {
-        name,
-        slug,
-        visible,
-        categoryId: category,
-        uploadedImageIds: uploadedProductImageIds,
-        overview,
-        material,
-        specification,
-        instruction,
-      },
-      {
-        onSuccess: async (data) => {
-          console.log(data);
-          setCreatedProductId(data.metadata.id);
-          handleCancel();
-        },
-      }
-    );
+    // createProduct(
+    //   {
+    //     name,
+    //     slug,
+    //     visible,
+    //     categoryId: category,
+    //     thumbnailImageId: null,
+    //     viewImageId: null,
+    //     uploadedImageIds: uploadedProductImageIds,
+    //     overview,
+    //     material,
+    //     specification,
+    //     instruction,
+    //   },
+    //   {
+    //     onSuccess: async (data) => {
+    //       console.log(data);
+    //       setCreatedProductId(data.metadata.id);
+    //       handleCancel();
+    //     },
+    //   }
+    // );
   }
 
   useEffect(() => {
@@ -174,6 +228,8 @@ function AddProduct() {
 
   useEffect(() => {
     if (category) setCategoryError(null);
+    if (thumbnailImage) setErrorThumbnailImage(null);
+    if (viewImage) setErrorViewImage(null);
     if (images.length > 0) setErrorImage(null);
     if (variants.length > 0) setVariantError(null);
     if (overview) setOverviewError(null);
@@ -194,6 +250,8 @@ function AddProduct() {
     // khong can e.preventDefault() vi day la button type="reset"
     setSlug("");
     setCategory(null);
+    setThumbnailImage(null);
+    setViewImage(null);
     setImages([]);
     setVariants([]);
     setOverview("");
@@ -248,6 +306,32 @@ function AddProduct() {
   const handleRemoveImage = (e, index) => {
     e.preventDefault();
     setImages((images) => images.filter((_, i) => i !== index));
+  };
+
+  const handleAddThumbnailImage = (e) => {
+    const files = e.target.files;
+    setThumbnailImage({
+      file: files[0],
+      path: URL.createObjectURL(files[0]),
+    });
+  };
+
+  const handleRemoveThumbnailImage = (e) => {
+    e.preventDefault();
+    setThumbnailImage(null);
+  };
+
+  const handleAddViewImage = (e) => {
+    const files = e.target.files;
+    setViewImage({
+      file: files[0],
+      path: URL.createObjectURL(files[0]),
+    });
+  };
+
+  const handleRemoveViewImage = (e) => {
+    e.preventDefault();
+    setViewImage(null);
   };
 
   return (
@@ -317,6 +401,140 @@ function AddProduct() {
               </div>
             </div>
           </FormRow>
+
+          <div className="mt-10 flex justify-around gap-10">
+            {/* thumbnail image begin */}
+            <div
+              id="thumbnailImage"
+              className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
+            >
+              <div className="flex gap-5">
+                <label className="font-[500]">Ảnh nền sản phẩm:</label>
+                <span className="text-[1.4rem] text-[var(--color-red-700)]">
+                  {errorThumbnailImage}
+                </span>
+              </div>
+              <div className="border w-[232px] rounded p-4">
+                {thumbnailImage && (
+                  <div className="relative ol-span-1 flex items-center justify-center border-2 border-dashed border-slate-200">
+                    <div className="overflow-hidden">
+                      <img
+                        src={thumbnailImage?.path}
+                        className="transition-all duration-700 hover:scale-105"
+                      />
+                    </div>
+
+                    <div className="cursor-pointer flex gap-1 absolute top-2 right-2">
+                      <HiPencil
+                        className="h-8 w-8"
+                        onClick={() => handleClickElement("editThumbnailImage")}
+                      />
+                      <HiTrash
+                        className="h-8 w-8"
+                        onClick={handleRemoveThumbnailImage}
+                      />
+                      <div className="absolute top-0 left-0 invisible">
+                        <input
+                          accept="image/*"
+                          type="file"
+                          id={"editThumbnailImage"}
+                          onChange={handleAddThumbnailImage}
+                          disabled={isWorking}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!thumbnailImage && (
+                  <div
+                    onClick={() => handleClickElement("addThumbnailImage")}
+                    className="cursor-pointer relative col-span-1 w-[210px] h-[210px] flex items-center justify-center border-2 border-dashed border-slate-200"
+                  >
+                    <HiCamera className="h-14 w-14" />
+                    <div className="absolute top-0 left-0 invisible">
+                      <input
+                        accept="image/*"
+                        type="file"
+                        id="addThumbnailImage"
+                        multiple
+                        onChange={handleAddThumbnailImage}
+                        disabled={isWorking}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* thumbnail image end */}
+
+            {/* view image begin */}
+            <div
+              id="viewImage"
+              className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
+            >
+              <div className="flex gap-5">
+                <label className="font-[500]">
+                  Ảnh sản phẩm nền trong suốt:
+                </label>
+                <span className="text-[1.4rem] text-[var(--color-red-700)]">
+                  {errorViewImage}
+                </span>
+              </div>
+              <div className="border w-[232px] rounded p-4">
+                {viewImage && (
+                  <div className="relative ol-span-1 flex items-center justify-center border-2 border-dashed border-slate-200">
+                    <div className="overflow-hidden">
+                      <img
+                        src={viewImage?.path}
+                        className="transition-all duration-700 hover:scale-105"
+                      />
+                    </div>
+
+                    <div className="cursor-pointer flex gap-1 absolute top-2 right-2">
+                      <HiPencil
+                        className="h-8 w-8"
+                        onClick={() => handleClickElement("editViewImage")}
+                      />
+                      <HiTrash
+                        className="h-8 w-8"
+                        onClick={handleRemoveViewImage}
+                      />
+                      <div className="absolute top-0 left-0 invisible">
+                        <input
+                          accept="image/*"
+                          type="file"
+                          id={"editViewImage"}
+                          onChange={handleAddViewImage}
+                          disabled={isWorking}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!viewImage && (
+                  <div
+                    onClick={() => handleClickElement("addViewImage")}
+                    className="cursor-pointer relative col-span-1 w-[210px] h-[210px] flex items-center justify-center border-2 border-dashed border-slate-200"
+                  >
+                    <HiCamera className="h-14 w-14" />
+                    <div className="absolute top-0 left-0 invisible">
+                      <input
+                        accept="image/*"
+                        type="file"
+                        id="addViewImage"
+                        multiple
+                        onChange={handleAddViewImage}
+                        disabled={isWorking}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* view image end */}
+          </div>
 
           <div
             id="image"
