@@ -35,40 +35,17 @@ function LoginForm() {
   }
 
   // LOGIN WITH GOOGLE
-  const getUrlExtension = (url) => {
-    return url.split(/[#?]/)[0].split(".").pop().trim();
-  };
-
-  const changeImageUrlToFile = async (imgUrl) => {
-    var imgExt = getUrlExtension(imgUrl);
-
-    const response = await fetch(imgUrl);
-    const contentType = response.headers.get("content-type");
-    const blob = await response.blob();
-    const file = new File([blob], "profileImage." + imgExt, {
-      // type: blob.type,
-      contentType,
-    });
-    console.log(file);
-    return file;
-  };
-
+ 
   function handleLoginWithGoogle(e) {
     e.preventDefault();
     console.log("Login with Google");
 
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider).then(async (result) => {
-      console.log(result.user);
-      const form = new FormData();
-      const file = await changeImageUrlToFile(result.user.photoURL);
-      form.append("image", file);
-      const uploadedImage = await uploadImage(form);
       const user = {
         fullName: result.user.displayName,
         email: result.user.email,
         phone: result.user.phoneNumber,
-        avatarId: uploadedImage.metadata.id,
       };
       loginWithGoogle(user);
     });

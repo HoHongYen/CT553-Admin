@@ -5,11 +5,11 @@ const api = createApiClient(baseUrl);
 const apiAccount = createApiClient("/api/accounts", { needAuth: true });
 
 export async function login(data) {
-    return (await api.post("/login", data)).data;
+    return (await api.post("/adminLogin", data)).data;
 }
 
 export async function loginWithGoogle(data) {
-    return (await api.post("/loginWithGoogle", data)).data;
+    return (await api.post("/adminLoginWithGoogle", data)).data;
 }
 
 async function getLoggedInAccount(token) {
