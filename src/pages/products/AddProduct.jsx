@@ -67,17 +67,17 @@ function AddProduct() {
   const [specificationError, setSpecificationError] = useState(null);
   const [instructionError, setInstructionError] = useState(null);
 
-  const [createdProductId, setCreatedProductId] = useState(null);
-
   const handleUploadProductImages = async () => {
     const form = new FormData();
     images.forEach((image) => {
       form.append("images", image.file);
     });
+    console.log("ProductImages form", form);
     try {
       setIsUploadingImage(true);
       const res = await uploadImages(form);
       const idArray = res.metadata.map((item) => item.id);
+      console.log("Handle upload product images res", res);
       return idArray;
     } catch (error) {
       console.log(error);
@@ -88,7 +88,7 @@ function AddProduct() {
 
   const handleUploadThumbnailImage = async () => {
     const form = new FormData();
-    form.append("images", thumbnailImage.file);
+    form.append("image", thumbnailImage.file);
     try {
       setIsUploadingImage(true);
       const res = await uploadImage(form);
@@ -103,10 +103,11 @@ function AddProduct() {
 
   const handleUploadViewImage = async () => {
     const form = new FormData();
-    form.append("images", viewImage.file);
+    form.append("image", viewImage.file);
     try {
       setIsUploadingImage(true);
       const res = await uploadImage(form);
+      console.log("Handle upload view image res", res);
       const id = res.metadata.id;
       return id;
     } catch (error) {
@@ -182,49 +183,30 @@ function AddProduct() {
     const uploadedProductImageIds = await handleUploadProductImages();
     console.log("uploadedProductImageIds", uploadedProductImageIds);
 
-    // createProduct(
-    //   {
-    //     name,
-    //     slug,
-    //     visible,
-    //     categoryId: category,
-    //     thumbnailImageId: null,
-    //     viewImageId: null,
-    //     uploadedImageIds: uploadedProductImageIds,
-    //     overview,
-    //     material,
-    //     specification,
-    //     instruction,
-    //   },
-    //   {
-    //     onSuccess: async (data) => {
-    //       console.log(data);
-    //       setCreatedProductId(data.metadata.id);
-    //       handleCancel();
-    //     },
-    //   }
-    // );
+    createProduct(
+      {
+        variants,
+        name,
+        slug,
+        visible,
+        categoryId: category,
+        thumbnailImageId: uploadedThumbnailImageId,
+        viewImageId: uploadedViewImageId,
+        uploadedImageIds: uploadedProductImageIds,
+        overview,
+        material,
+        specification,
+        instruction,
+      },
+      {
+        onSuccess: async (data) => {
+          // console.log(data);
+          // setCreatedProductId(data.metadata.id);
+          handleCancel();
+        },
+      }
+    );
   }
-
-  useEffect(() => {
-    console.log("Create variants", "Product ID", createdProductId);
-    async function createVariants() {
-      await Promise.all(
-        variants.map(async (variant) => {
-          const createdVariant = await createVariant(createdProductId, {
-            size: variant.size,
-            price: variant.price,
-            quantity: variant.quantity,
-            productId: createdProductId,
-          });
-          console.log("variant", createdVariant.metadata);
-        })
-      );
-    }
-    if (createdProductId) {
-      createVariants();
-    }
-  }, [createdProductId]);
 
   useEffect(() => {
     if (category) setCategoryError(null);
@@ -238,6 +220,8 @@ function AddProduct() {
     if (instruction) setInstructionError(null);
   }, [
     category,
+    thumbnailImage,
+    viewImage,
     images,
     variants,
     overview,
@@ -348,7 +332,7 @@ function AddProduct() {
               id="name"
               disabled={isWorking}
               {...register("name", {
-                required: "Không được để trống",
+                // required: "Không được để trống",
                 onChange: (e) =>
                   setSlug(
                     slugify(e.target.value, { lower: true, locale: "vi" })
@@ -402,7 +386,7 @@ function AddProduct() {
             </div>
           </FormRow>
 
-          <div className="mt-10 flex justify-around gap-10">
+          <div className="mt-10 grid grid-cols-2">
             {/* thumbnail image begin */}
             <div
               id="thumbnailImage"
@@ -414,7 +398,7 @@ function AddProduct() {
                   {errorThumbnailImage}
                 </span>
               </div>
-              <div className="border w-[232px] rounded p-4">
+              <div className="flex justify-center items-center border w-[232px] h-[232px] rounded p-4">
                 {thumbnailImage && (
                   <div className="relative ol-span-1 flex items-center justify-center border-2 border-dashed border-slate-200">
                     <div className="overflow-hidden">
@@ -481,7 +465,7 @@ function AddProduct() {
                   {errorViewImage}
                 </span>
               </div>
-              <div className="border w-[232px] rounded p-4">
+              <div className="flex justify-center items-center border w-[232px] h-[232px] rounded p-4">
                 {viewImage && (
                   <div className="relative ol-span-1 flex items-center justify-center border-2 border-dashed border-slate-200">
                     <div className="overflow-hidden">
