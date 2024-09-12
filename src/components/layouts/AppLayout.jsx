@@ -1,5 +1,7 @@
 import styled from "styled-components";
+import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
+import GoTop from "../ui/GoTop";
 import Header from "@/components/sidebar/Header";
 import Sidebar from "@/components/sidebar/Sidebar";
 
@@ -24,11 +26,39 @@ const Container = styled.div`
 `;
 
 function AppLayout() {
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [showGoTop, setShowGoTop] = useState(false);
+
+  const handleVisibleButton = () => {
+    const position = window.pageYOffset;
+    setScrollPosition(position);
+
+    if (scrollPosition > 50) {
+      return setShowGoTop(true);
+    } else if (scrollPosition < 50) {
+      return setShowGoTop(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleVisibleButton);
+  });
+
+  const refScrollUp = useRef();
+
+  const handleScrollUp = () => {
+    refScrollUp.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <StyledAppLayout>
       <Header />
       <Sidebar />
       <Main>
+        <div ref={refScrollUp}> </div>
+        <div className="fixed bottom-24 right-10">
+          <GoTop showGoTop={showGoTop} scrollUp={handleScrollUp} />
+        </div>
         <Container>
           <Outlet />
         </Container>

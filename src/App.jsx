@@ -19,6 +19,7 @@ import AddProduct from "./pages/products/AddProduct";
 import UpdateProduct from "./pages/products/UpdateProduct";
 import Categories from "./pages/Categories";
 import PageNotFound from "./pages/PageNotFound";
+import ScrollToTop from "./components/ui/ScrollToTop";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,7 @@ function App() {
           <GlobalStyles />
           <ReactQueryDevtools initialIsOpen={false} />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route
                 element={
