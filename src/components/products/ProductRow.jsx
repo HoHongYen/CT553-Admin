@@ -1,9 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import {
-  HiEye,
-  HiTrash,
-} from "react-icons/hi2";
+import { HiEye, HiTrash } from "react-icons/hi2";
 
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
@@ -12,14 +9,21 @@ import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import RoundImage from "@/components/ui/RoundImage";
 
 function ProductRow({
-  product: { id: productId, name, slug, createdAt, soldNumber, images },
+  product: {
+    id: productId,
+    name,
+    slug,
+    createdAt,
+    soldNumber,
+    thumbnailImage,
+  },
 }) {
   const navigate = useNavigate();
   // const { deleteBooking, isDeleting } = useDeleteBooking();
 
   return (
     <Table.Row>
-      <RoundImage path={images[0].image.path} alt={name} />
+      <RoundImage path={thumbnailImage.path} alt={name} />
       <div>{productId}</div>
       <div>{name}</div>
       <div>{createdAt}</div>

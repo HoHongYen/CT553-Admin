@@ -14,6 +14,7 @@ import {
   updateVariant,
   uploadImage as uploadProductImage,
 } from "@/services/apiProducts";
+import { uploadImage } from "@/services/apiUpload";
 
 import { jumpToRelevantDiv, handleClickElement } from "@/utils/helpers";
 
@@ -36,7 +37,7 @@ import EmptyRoundBoxIcon from "@/components/icons/EmptyRoundBoxIcon";
 
 import VariantTable from "@/components/products/VariantTable";
 import CreateVariantForm from "@/components/products/CreateVariantForm";
-import { uploadImage } from "@/services/apiUpload";
+import toast from "react-hot-toast";
 
 function UpdateProduct() {
   const { product, isLoading: isLoadingProduct } = useProduct();
@@ -44,11 +45,11 @@ function UpdateProduct() {
 
   const moveBack = useMoveBack();
 
-  const { register, handleSubmit, formState, setValue } = useForm();
-  const { errors } = formState;
+  const { handleSubmit } = useForm();
 
   const { categories } = useCategories();
 
+  const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [category, setCategory] = useState(null);
@@ -56,6 +57,9 @@ function UpdateProduct() {
   const [visible, setVisible] = useState(false);
 
   const isWorking = isLoadingProduct || isEditing || isUploadingImage;
+
+  const [thumbnailImage, setThumbnailImage] = useState(null);
+  const [viewImage, setViewImage] = useState(null);
 
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState([]);
@@ -68,7 +72,10 @@ function UpdateProduct() {
   const [specification, setSpecification] = useState("");
   const [instruction, setInstruction] = useState("");
 
+  const [nameError, setNameError] = useState(null);
   const [categoryError, setCategoryError] = useState(null);
+  const [errorThumbnailImage, setErrorThumbnailImage] = useState(null);
+  const [errorViewImage, setErrorViewImage] = useState(null);
   const [errorImage, setErrorImage] = useState(null);
   const [variantError, setVariantError] = useState(null);
   const [overviewError, setOverviewError] = useState(null);
@@ -112,16 +119,97 @@ function UpdateProduct() {
     return newImageArrayIds;
   };
 
-  useEffect(() => {
-    console.log("images", images);
-  }, [images]);
+  const handleUploadThumbnailImage = async () => {
+    const form = new FormData();
+    form.append("image", thumbnailImage.file);
+    try {
+      setIsUploadingImage(true);
+      const res = await uploadImage(form);
+      const id = res.metadata.id;
+      return id;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
 
-  async function onSubmit({ name }, e) {
+  const handleUploadViewImage = async () => {
+    const form = new FormData();
+    form.append("image", viewImage.file);
+    try {
+      setIsUploadingImage(true);
+      const res = await uploadImage(form);
+      console.log("Handle upload view image res", res);
+      const id = res.metadata.id;
+      return id;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  function checkIfHasNoChange() {
+    if (
+      name !== product?.name ||
+      category !== product?.categoryId ||
+      visible !== product?.visible ||
+      thumbnailImage !== product?.thumbnailImage ||
+      viewImage !== product?.viewImage ||
+      overview !== product?.overview ||
+      material !== product?.material ||
+      specification !== product?.specification ||
+      instruction !== product?.instruction
+    ) {
+      return false;
+    }
+    if (images.length !== product?.images.length) return false;
+    if (variants.length !== product?.variants.length) return false;
+    for (let i = 0; i < images.length; i++) {
+      if (images[i].path !== product?.images[i].image.path) return false;
+    }
+    for (let i = 0; i < variants.length; i++) {
+      if (
+        variants[i].size !== product?.variants[i].size ||
+        variants[i].price !== product?.variants[i].price ||
+        variants[i].quantity !== product?.variants[i].quantity
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  async function onSubmit(data, e) {
     e.preventDefault();
+
+    if (checkIfHasNoChange()) {
+      toast.error("Không có thay đổi nào được thực hiện!");
+      return;
+    }
+
+    if (!name) {
+      setNameError("Không được bỏ trống!");
+      jumpToRelevantDiv("name");
+      return;
+    }
 
     if (!category) {
       setCategoryError("Không được bỏ trống!");
       jumpToRelevantDiv("category");
+      return;
+    }
+
+    if (!thumbnailImage) {
+      setErrorThumbnailImage("Không được bỏ trống!");
+      jumpToRelevantDiv("thumbnailImage");
+      return;
+    }
+
+    if (!viewImage) {
+      setErrorViewImage("Không được bỏ trống!");
+      jumpToRelevantDiv("viewImage");
       return;
     }
 
@@ -163,6 +251,12 @@ function UpdateProduct() {
 
     const uploadedProductImageIds = await handleUploadProductImages();
     console.log("uploadedProductImageIds", uploadedProductImageIds);
+
+    const uploadedThumbnailImageId = await handleUploadThumbnailImage();
+    console.log("uploadedThumbnailImageId", uploadedThumbnailImageId);
+
+    const uploadedViewImageId = await handleUploadViewImage();
+    console.log("uploadedViewImageId", uploadedViewImageId);
 
     // update variants
     for (let i = 0; i < variants.length; i++) {
@@ -206,7 +300,8 @@ function UpdateProduct() {
           slug,
           categoryId: category,
           visible,
-          // uploadedImageIds: uploadedProductImageIds,
+          thumbnailImageId: uploadedThumbnailImageId,
+          viewImageId: uploadedViewImageId,
           overview,
           material,
           specification,
@@ -222,11 +317,10 @@ function UpdateProduct() {
   }
 
   useEffect(() => {
-    handleCancel();
-  }, [product]);
-
-  useEffect(() => {
+    if (name) setNameError(null);
     if (category) setCategoryError(null);
+    if (thumbnailImage) setErrorThumbnailImage(null);
+    if (viewImage) setErrorViewImage(null);
     if (images.length > 0) setErrorImage(null);
     if (variants.length > 0) setVariantError(null);
     if (overview) setOverviewError(null);
@@ -234,7 +328,10 @@ function UpdateProduct() {
     if (specification) setSpecificationError(null);
     if (instruction) setInstructionError(null);
   }, [
+    name,
     category,
+    thumbnailImage,
+    viewImage,
     images,
     variants,
     overview,
@@ -245,6 +342,20 @@ function UpdateProduct() {
 
   function handleCancel() {
     // khong can e.preventDefault() vi day la button type="reset"
+
+    setName(product?.name);
+    setSlug(product?.slug);
+    setCategory(product?.categoryId);
+    setVisible(product?.visible);
+
+    setOverview(product?.overview);
+    setMaterial(product?.material);
+    setSpecification(product?.specification);
+    setInstruction(product?.instruction);
+
+    setThumbnailImage(product?.thumbnailImage);
+    setViewImage(product?.viewImage);
+
     setImages(
       product?.images.map((image) => ({
         id: image.id,
@@ -262,17 +373,11 @@ function UpdateProduct() {
 
     setVariants(product?.variants || []);
     setOldVariants(product?.variants || []);
-
-    setValue("name", product?.name);
-    setSlug(product?.slug);
-    setCategory(product?.categoryId);
-    setVisible(product?.visible);
-
-    setOverview(product?.overview);
-    setMaterial(product?.material);
-    setSpecification(product?.specification);
-    setInstruction(product?.instruction);
   }
+
+  useEffect(() => {
+    handleCancel();
+  }, [product]);
 
   useEffect(() => {
     if (categories?.length > 0) {
@@ -322,6 +427,32 @@ function UpdateProduct() {
     setImages((images) => images.filter((_, i) => i !== index));
   };
 
+  const handleAddThumbnailImage = (e) => {
+    const files = e.target.files;
+    setThumbnailImage({
+      file: files[0],
+      path: URL.createObjectURL(files[0]),
+    });
+  };
+
+  const handleRemoveThumbnailImage = (e) => {
+    e.preventDefault();
+    setThumbnailImage(null);
+  };
+
+  const handleAddViewImage = (e) => {
+    const files = e.target.files;
+    setViewImage({
+      file: files[0],
+      path: URL.createObjectURL(files[0]),
+    });
+  };
+
+  const handleRemoveViewImage = (e) => {
+    e.preventDefault();
+    setViewImage(null);
+  };
+
   if (isLoadingProduct) return <Spinner />;
 
   return (
@@ -332,19 +463,21 @@ function UpdateProduct() {
       </Row>
       <Row>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormRow label="Tên sản phẩm:" error={errors?.name?.message}>
-            <Input
-              type="text"
-              id="name"
-              disabled={isWorking}
-              {...register("name", {
-                required: "Không được để trống",
-                onChange: (e) =>
+          <FormRow label="Tên sản phẩm:" error={nameError}>
+            <div id="name">
+              <Input
+                className="w-full"
+                type="text"
+                disabled={isWorking}
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
                   setSlug(
                     slugify(e.target.value, { lower: true, locale: "vi" })
-                  ),
-              })}
-            />
+                  );
+                }}
+              />
+            </div>
           </FormRow>
 
           <FormRow label="Slug:">
@@ -391,6 +524,140 @@ function UpdateProduct() {
               </div>
             </div>
           </FormRow>
+
+          <div className="mt-10 grid grid-cols-2">
+            {/* thumbnail image begin */}
+            <div
+              id="thumbnailImage"
+              className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
+            >
+              <div className="flex gap-5">
+                <label className="font-[500]">Ảnh nền sản phẩm:</label>
+                <span className="text-[1.4rem] text-[var(--color-red-700)]">
+                  {errorThumbnailImage}
+                </span>
+              </div>
+              <div className="flex justify-center items-center border w-[232px] h-[232px] rounded p-4">
+                {thumbnailImage && (
+                  <div className="relative ol-span-1 flex items-center justify-center border-2 border-dashed border-slate-200">
+                    <div className="overflow-hidden">
+                      <img
+                        src={thumbnailImage?.path}
+                        className="transition-all duration-700 hover:scale-105"
+                      />
+                    </div>
+
+                    <div className="cursor-pointer flex gap-1 absolute top-2 right-2">
+                      <HiPencil
+                        className="h-8 w-8"
+                        onClick={() => handleClickElement("editThumbnailImage")}
+                      />
+                      <HiTrash
+                        className="h-8 w-8"
+                        onClick={handleRemoveThumbnailImage}
+                      />
+                      <div className="absolute top-0 left-0 invisible">
+                        <input
+                          accept="image/*"
+                          type="file"
+                          id={"editThumbnailImage"}
+                          onChange={handleAddThumbnailImage}
+                          disabled={isWorking}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!thumbnailImage && (
+                  <div
+                    onClick={() => handleClickElement("addThumbnailImage")}
+                    className="cursor-pointer relative col-span-1 w-[210px] h-[210px] flex items-center justify-center border-2 border-dashed border-slate-200"
+                  >
+                    <HiCamera className="h-14 w-14" />
+                    <div className="absolute top-0 left-0 invisible">
+                      <input
+                        accept="image/*"
+                        type="file"
+                        id="addThumbnailImage"
+                        multiple
+                        onChange={handleAddThumbnailImage}
+                        disabled={isWorking}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* thumbnail image end */}
+
+            {/* view image begin */}
+            <div
+              id="viewImage"
+              className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
+            >
+              <div className="flex gap-5">
+                <label className="font-[500]">
+                  Ảnh sản phẩm nền trong suốt:
+                </label>
+                <span className="text-[1.4rem] text-[var(--color-red-700)]">
+                  {errorViewImage}
+                </span>
+              </div>
+              <div className="flex justify-center items-center border w-[232px] h-[232px] rounded p-4">
+                {viewImage && (
+                  <div className="relative ol-span-1 flex items-center justify-center border-2 border-dashed border-slate-200">
+                    <div className="overflow-hidden">
+                      <img
+                        src={viewImage?.path}
+                        className="transition-all duration-700 hover:scale-105"
+                      />
+                    </div>
+
+                    <div className="cursor-pointer flex gap-1 absolute top-2 right-2">
+                      <HiPencil
+                        className="h-8 w-8"
+                        onClick={() => handleClickElement("editViewImage")}
+                      />
+                      <HiTrash
+                        className="h-8 w-8"
+                        onClick={handleRemoveViewImage}
+                      />
+                      <div className="absolute top-0 left-0 invisible">
+                        <input
+                          accept="image/*"
+                          type="file"
+                          id={"editViewImage"}
+                          onChange={handleAddViewImage}
+                          disabled={isWorking}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!viewImage && (
+                  <div
+                    onClick={() => handleClickElement("addViewImage")}
+                    className="cursor-pointer relative col-span-1 w-[210px] h-[210px] flex items-center justify-center border-2 border-dashed border-slate-200"
+                  >
+                    <HiCamera className="h-14 w-14" />
+                    <div className="absolute top-0 left-0 invisible">
+                      <input
+                        accept="image/*"
+                        type="file"
+                        id="addViewImage"
+                        multiple
+                        onChange={handleAddViewImage}
+                        disabled={isWorking}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* view image end */}
+          </div>
 
           <div
             id="image"
@@ -492,7 +759,7 @@ function UpdateProduct() {
               id="overview"
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
-              <div className="flex gap-5">
+              <div className="flex gap-5 pb-5">
                 <label className="font-[500]">Tổng quan sản phẩm:</label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {overviewError}
@@ -513,7 +780,7 @@ function UpdateProduct() {
               id="material"
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
-              <div className="flex gap-5">
+              <div className="flex gap-5 pb-5">
                 <label className="font-[500]">Chất liệu tranh</label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {materialError}
@@ -534,7 +801,7 @@ function UpdateProduct() {
               id="specification"
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
-              <div className="flex gap-5">
+              <div className="flex gap-5 pb-5">
                 <label className="font-[500]">Thông tin chi tiết:</label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {specificationError}
@@ -555,7 +822,7 @@ function UpdateProduct() {
               id="instruction"
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
-              <div className="flex gap-5">
+              <div className="flex gap-5 pb-5">
                 <label className="font-[500]">Hướng dẫn vệ sinh tranh:</label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {instructionError}

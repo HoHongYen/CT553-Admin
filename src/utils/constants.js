@@ -1,4 +1,4 @@
-export const PAGE_SIZE = 10;
+export const PAGE_SIZE = 30;
 
 export const PRODUCT_NEWEST = "Newest";
 export const PRODUCT_TRENDING = "Trending";

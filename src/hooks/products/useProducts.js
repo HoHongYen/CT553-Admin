@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "@/utils/constants";
-import { getAll } from "@/services/apiProducts";
+import { getProducts } from "@/services/apiProducts";
 
 export function useProducts() {
     const queryClient = useQueryClient();
@@ -31,7 +31,7 @@ export function useProducts() {
         // queryKey: ["products", filter, sortBy, page],
         // queryFn: () => getBookings({ filter, sortBy, page }),
         queryKey: ["products"],
-        queryFn: getAll,
+        queryFn: getProducts,
     });
 
     // // PRE_FETCHING

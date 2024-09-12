@@ -39,6 +39,7 @@ function AddProduct() {
 
   const { categories } = useCategories();
 
+  const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [categoryOptions, setCategoryOptions] = useState();
   const [category, setCategory] = useState();
@@ -57,6 +58,7 @@ function AddProduct() {
   const [specification, setSpecification] = useState("");
   const [instruction, setInstruction] = useState("");
 
+  const [nameError, setNameError] = useState(null);
   const [categoryError, setCategoryError] = useState(null);
   const [errorThumbnailImage, setErrorThumbnailImage] = useState(null);
   const [errorViewImage, setErrorViewImage] = useState(null);
@@ -72,12 +74,10 @@ function AddProduct() {
     images.forEach((image) => {
       form.append("images", image.file);
     });
-    console.log("ProductImages form", form);
     try {
       setIsUploadingImage(true);
       const res = await uploadImages(form);
       const idArray = res.metadata.map((item) => item.id);
-      console.log("Handle upload product images res", res);
       return idArray;
     } catch (error) {
       console.log(error);
@@ -117,8 +117,14 @@ function AddProduct() {
     }
   };
 
-  async function onSubmit({ name }, e) {
+  async function onSubmit({}, e) {
     e.preventDefault();
+
+    if (!name) {
+      setNameError("Không được bỏ trống!");
+      jumpToRelevantDiv("name");
+      return;
+    }
 
     if (!category) {
       setCategoryError("Không được bỏ trống!");
@@ -199,9 +205,7 @@ function AddProduct() {
         instruction,
       },
       {
-        onSuccess: async (data) => {
-          // console.log(data);
-          // setCreatedProductId(data.metadata.id);
+        onSuccess: () => {
           handleCancel();
         },
       }
@@ -209,6 +213,7 @@ function AddProduct() {
   }
 
   useEffect(() => {
+    if (name) setNameError(null);
     if (category) setCategoryError(null);
     if (thumbnailImage) setErrorThumbnailImage(null);
     if (viewImage) setErrorViewImage(null);
@@ -219,6 +224,7 @@ function AddProduct() {
     if (specification) setSpecificationError(null);
     if (instruction) setInstructionError(null);
   }, [
+    name,
     category,
     thumbnailImage,
     viewImage,
@@ -232,6 +238,7 @@ function AddProduct() {
 
   async function handleCancel() {
     // khong can e.preventDefault() vi day la button type="reset"
+    setName("");
     setSlug("");
     setCategory(null);
     setThumbnailImage(null);
@@ -326,19 +333,21 @@ function AddProduct() {
       </Row>
       <Row>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormRow label="Tên sản phẩm:" error={errors?.name?.message}>
-            <Input
-              type="text"
-              id="name"
-              disabled={isWorking}
-              {...register("name", {
-                // required: "Không được để trống",
-                onChange: (e) =>
+          <FormRow label="Tên sản phẩm:" error={nameError}>
+            <div id="name">
+              <Input
+                className="w-full"
+                type="text"
+                disabled={isWorking}
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
                   setSlug(
                     slugify(e.target.value, { lower: true, locale: "vi" })
-                  ),
-              })}
-            />
+                  );
+                }}
+              />
+            </div>
           </FormRow>
 
           <FormRow label="Slug:">
@@ -620,7 +629,7 @@ function AddProduct() {
               id="overview"
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
-              <div className="flex gap-5">
+              <div className="flex gap-5 pb-5">
                 <label className="font-[500]">Tổng quan sản phẩm:</label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {overviewError}
@@ -641,7 +650,7 @@ function AddProduct() {
               id="material"
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
-              <div className="flex gap-5">
+              <div className="flex gap-5 pb-5">
                 <label className="font-[500]">Chất liệu tranh</label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {materialError}
@@ -662,7 +671,7 @@ function AddProduct() {
               id="specification"
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
-              <div className="flex gap-5">
+              <div className="flex gap-5 pb-5">
                 <label className="font-[500]">Thông tin chi tiết:</label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {specificationError}
@@ -683,7 +692,7 @@ function AddProduct() {
               id="instruction"
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
-              <div className="flex gap-5">
+              <div className="flex gap-5 pb-5">
                 <label className="font-[500]">Hướng dẫn vệ sinh tranh:</label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {instructionError}

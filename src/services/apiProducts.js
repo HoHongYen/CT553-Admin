@@ -166,20 +166,12 @@ export async function deleteImage(imageId) {
 //   return products;
 // }
 
-export async function getAll() {
-  return await getByType("All");
-}
-
-// async function getByType(type, limit = 10, page = 1) {
-async function getByType(type, limit = 10) {
-  console.log("getByType");
-  const products = (await api.get("/", { params: { type, limit } })).data;
-  console.log("products", products);
+export async function getProducts({ type = PRODUCT_ALL, categoryIds, filter, filterMinPrice = 0, filterMaxPrice = 0, sortBy, page = 1, limit = PAGE_SIZE }) {
+  const products = (await api.get("/", { params: { type, categoryIds, filter, filterMinPrice, filterMaxPrice, sortBy, limit, page } })).data;
   return products;
-  // return (await api.get("/", { params: { type, limit, page } })).data;
 }
 
-export async function getByCategories({ categoryIds = [], type, limit = 10, page = 1 }) {
+export async function getByCategories({ categoryIds = [], type, limit = PAGE_SIZE, page = 1 }) {
   console.log(categoryIds);
   return (
     await api.get("/", { params: { type, limit, categoryIds, page } })
