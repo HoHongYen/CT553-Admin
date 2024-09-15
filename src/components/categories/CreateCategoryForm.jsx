@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import slugify from "slugify";
+
 
 import { useCreateCategory } from "@/hooks/categories/useCreateCategory";
 import { useCategories } from "@/hooks/categories/useCategories";
 import { useDarkMode } from "@/context/DarkModeContext";
 import { useUploadImage } from "@/hooks/upload/useUploadImage";
 import { useDeleteImage } from "@/hooks/upload/useDeleteImage";
+import { useUpdateCategory } from "@/hooks/categories/useUpdateCategory";
 
-import slugify from "slugify";
 import { HiOutlineCamera } from "react-icons/hi2";
 
 import Button from "@/components/ui/Button";
@@ -17,7 +19,6 @@ import FormRow from "@/components/ui/FormRow";
 import Input from "@/components/ui/Input";
 import SpinnerMini from "@/components/ui/SpinnerMini";
 import Select from "@/components/ui/Select";
-import { useUpdateCategory } from "@/hooks/categories/useUpdateCategory";
 
 function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {
   const { createCategory, isLoading: isCreating } = useCreateCategory();
@@ -144,7 +145,7 @@ function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {
               <img
                 className="w-[80px] h-[80px] lg:w-[150px] lg:h-[150px] object-cover"
                 src={
-                  thumbnailImage ? thumbnailImage.path : "/default-image.jpg"
+                  thumbnailImage ? thumbnailImage.path : "/default-image.png"
                 }
               />
             </div>

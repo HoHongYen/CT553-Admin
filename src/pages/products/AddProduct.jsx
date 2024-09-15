@@ -7,7 +7,6 @@ import { useMoveBack } from "@/hooks/common/useMoveBack";
 import { useCreateProduct } from "@/hooks/products/useCreateProduct";
 
 import { uploadImage, uploadImages } from "@/services/apiUpload";
-import { createVariant } from "@/services/apiProducts";
 
 import { jumpToRelevantDiv, handleClickElement } from "@/utils/helpers";
 
@@ -34,8 +33,7 @@ function AddProduct() {
   const { createProduct, isLoading } = useCreateProduct();
   const moveBack = useMoveBack();
 
-  const { register, handleSubmit, formState } = useForm();
-  const { errors } = formState;
+  const { handleSubmit } = useForm();
 
   const { categories } = useCategories();
 
