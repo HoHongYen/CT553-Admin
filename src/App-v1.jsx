@@ -5,10 +5,21 @@ import { Toaster } from "react-hot-toast";
 
 import { DarkModeProvider } from "./context/DarkModeContext";
 import GlobalStyles from "@/styles/GlobalStyles";
+
 import ProtectedRoute from "@/components/ui/ProtectedRoute";
 import AppLayout from "@/components/layouts/AppLayout";
+
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Account from "./pages/Account";
+import Users from "./pages/Users";
+import CreateEmployee from "./pages/CreateEmployee";
+import Products from "./pages/products/Products";
+import AddProduct from "./pages/products/AddProduct";
+import UpdateProduct from "./pages/products/UpdateProduct";
+import Categories from "./pages/Categories";
+import PageNotFound from "./pages/PageNotFound";
 import ScrollToTop from "./components/ui/ScrollToTop";
-import SuspenseWrapper from "./components/ui/SuspenseWrapper";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,53 +48,20 @@ function App() {
                 }
               >
                 <Route index element={<Navigate replace to="/dashboard" />} />
-                <Route
-                  path="dashboard"
-                  element={<SuspenseWrapper path="Dashboard" />}
-                />
-                <Route
-                  path="tai-khoan"
-                  element={<SuspenseWrapper path="account" />}
-                />
-                <Route
-                  path="/nguoi-dung"
-                  element={<SuspenseWrapper path="Users" />}
-                />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="tai-khoan" element={<Account />} />
+                <Route path="/nguoi-dung" element={<Users />} />
                 <Route
                   path="/nguoi-dung/tao-moi"
-                  element={<SuspenseWrapper path="CreateEmployee" />}
+                  element={<CreateEmployee />}
                 />
-                <Route
-                  path="san-pham"
-                  element={
-                    <SuspenseWrapper level1="products" path="Products" />
-                  }
-                />
-                <Route
-                  path="san-pham/tao-moi"
-                  element={
-                    <SuspenseWrapper level1="products" path="AddProduct" />
-                  }
-                />
-                <Route
-                  path="san-pham/:slug"
-                  element={
-                    <SuspenseWrapper level1="products" path="UpdateProduct" />
-                  }
-                />
-                <Route
-                  path="danh-muc"
-                  element={<SuspenseWrapper path="Categories" />}
-                />
+                <Route path="san-pham" element={<Products />} />
+                <Route path="san-pham/tao-moi" element={<AddProduct />} />
+                <Route path="san-pham/:slug" element={<UpdateProduct />} />
+                <Route path="danh-muc" element={<Categories />} />
               </Route>
-              <Route
-                path="dang-nhap"
-                element={<SuspenseWrapper path="Login" />}
-              />
-              <Route
-                path="*"
-                element={<SuspenseWrapper path="PageNotFound" />}
-              />
+              <Route path="dang-nhap" element={<Login />} />
+              <Route path="*" element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>
           <Toaster
