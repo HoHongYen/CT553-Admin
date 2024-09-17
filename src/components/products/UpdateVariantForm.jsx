@@ -25,7 +25,7 @@ function UpdateVariantForm({
     setVariants((prevVariants) => {
       console.log("prevVariants", prevVariants);
       return prevVariants.map((variant, idx) =>
-        idx === index ? { size, price, quantity } : variant
+        idx === index ? { id: variant.id, size, price, quantity } : variant
       );
     });
     toast.success("Cập nhật kích thước thành công!");

@@ -26,8 +26,10 @@ import Editor from "@/components/ui/Editor";
 import TickRoundIcon from "@/components/icons/TickRoundIcon";
 import EmptyRoundBoxIcon from "@/components/icons/EmptyRoundBoxIcon";
 
-import CreateVariantForm from "@/components/products/CreateVariantForm";
 import VariantTable from "@/components/products/VariantTable";
+import CreateVariantForm from "@/components/products/CreateVariantForm";
+import DiscountTable from "@/components/products/DiscountTable";
+import CreateDiscountForm from "@/components/products/CreateDiscountForm";
 
 function AddProduct() {
   const { createProduct, isLoading } = useCreateProduct();
@@ -35,12 +37,12 @@ function AddProduct() {
 
   const { handleSubmit } = useForm();
 
-  const { categories } = useCategories();
+  const { categories: allCategories } = useCategories();
 
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [categoryOptions, setCategoryOptions] = useState();
-  const [category, setCategory] = useState();
+  const [categories, setCategories] = useState([]);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [visible, setVisible] = useState(true);
 
@@ -50,6 +52,7 @@ function AddProduct() {
   const [viewImage, setViewImage] = useState(null);
   const [images, setImages] = useState([]);
   const [variants, setVariants] = useState([]);
+  const [discounts, setDiscounts] = useState([]);
 
   const [overview, setOverview] = useState("");
   const [material, setMaterial] = useState("");
@@ -57,7 +60,7 @@ function AddProduct() {
   const [instruction, setInstruction] = useState("");
 
   const [nameError, setNameError] = useState(null);
-  const [categoryError, setCategoryError] = useState(null);
+  const [categoriesError, setCategoriesError] = useState(null);
   const [errorThumbnailImage, setErrorThumbnailImage] = useState(null);
   const [errorViewImage, setErrorViewImage] = useState(null);
   const [errorImage, setErrorImage] = useState(null);
@@ -124,9 +127,9 @@ function AddProduct() {
       return;
     }
 
-    if (!category) {
-      setCategoryError("Không được bỏ trống!");
-      jumpToRelevantDiv("category");
+    if (!categories || categories.length === 0) {
+      setCategoriesError("Không được bỏ trống!");
+      jumpToRelevantDiv("categories");
       return;
     }
 
@@ -190,10 +193,11 @@ function AddProduct() {
     createProduct(
       {
         variants,
+        discounts,
         name,
         slug,
         visible,
-        categoryId: category,
+        categoryIds: categories,
         thumbnailImageId: uploadedThumbnailImageId,
         viewImageId: uploadedViewImageId,
         uploadedImageIds: uploadedProductImageIds,
@@ -212,7 +216,7 @@ function AddProduct() {
 
   useEffect(() => {
     if (name) setNameError(null);
-    if (category) setCategoryError(null);
+    if (categories && categories.length > 0) setCategoriesError(null);
     if (thumbnailImage) setErrorThumbnailImage(null);
     if (viewImage) setErrorViewImage(null);
     if (images.length > 0) setErrorImage(null);
@@ -223,7 +227,7 @@ function AddProduct() {
     if (instruction) setInstructionError(null);
   }, [
     name,
-    category,
+    categories,
     thumbnailImage,
     viewImage,
     images,
@@ -238,11 +242,12 @@ function AddProduct() {
     // khong can e.preventDefault() vi day la button type="reset"
     setName("");
     setSlug("");
-    setCategory(null);
+    setCategories([]);
     setThumbnailImage(null);
     setViewImage(null);
     setImages([]);
     setVariants([]);
+    setDiscounts([]);
     setOverview("");
     setMaterial("");
     setSpecification("");
@@ -250,9 +255,9 @@ function AddProduct() {
   }
 
   useEffect(() => {
-    if (categories?.length > 0) {
+    if (allCategories?.length > 0) {
       setCategoryOptions(
-        categories.map((category) => {
+        allCategories.map((category) => {
           return {
             title: category.name,
             value: category.id,
@@ -267,7 +272,7 @@ function AddProduct() {
         })
       );
     }
-  }, [categories]);
+  }, [allCategories]);
 
   const handleAddProductImage = (e) => {
     const files = e.target.files;
@@ -331,7 +336,7 @@ function AddProduct() {
       </Row>
       <Row>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormRow label="Tên sản phẩm:" error={nameError}>
+          <FormRow size="medium" label="Tên sản phẩm:" error={nameError}>
             <div id="name">
               <Input
                 className="w-full"
@@ -348,26 +353,27 @@ function AddProduct() {
             </div>
           </FormRow>
 
-          <FormRow label="Slug:">
+          <FormRow size="medium" label="Slug:">
             <Input type="text" id="slug" disabled value={slug} />
           </FormRow>
 
-          <FormRow label="Danh mục:" error={categoryError}>
-            <div id="category">
+          <FormRow size="medium" label="Danh mục:" error={categoriesError}>
+            <div id="categories">
               <TreeSelect
                 style={{ width: "100%" }}
-                value={category}
+                value={categories}
                 dropdownStyle={{ maxHeight: 500, overflow: "auto" }}
                 treeData={categoryOptions}
                 placeholder="Chọn danh mục"
                 disabled={isWorking}
                 treeDefaultExpandAll
-                onChange={(newValue) => setCategory(newValue)}
+                multiple
+                onChange={(newValue) => setCategories(newValue)}
               />
             </div>
           </FormRow>
 
-          <FormRow label="Trạng thái">
+          <FormRow size="medium" label="Trạng thái">
             <div
               id="visible"
               className="flex items-center justify-between px-4"
@@ -400,7 +406,9 @@ function AddProduct() {
               className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5">
-                <label className="font-[500]">Ảnh nền sản phẩm:</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Ảnh nền sản phẩm:
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {errorThumbnailImage}
                 </span>
@@ -465,7 +473,7 @@ function AddProduct() {
               className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5">
-                <label className="font-[500]">
+                <label className="font-[700] text-[1.5rem]">
                   Ảnh sản phẩm nền trong suốt:
                 </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
@@ -532,7 +540,7 @@ function AddProduct() {
             className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
           >
             <div className="flex gap-5">
-              <label className="font-[500]">Hình ảnh:</label>
+              <label className="font-[700] text-[1.5rem]">Hình ảnh:</label>
               <span className="text-[1.4rem] text-[var(--color-red-700)]">
                 {errorImage}
               </span>
@@ -598,7 +606,9 @@ function AddProduct() {
             className="flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
           >
             <div className="flex gap-5">
-              <label className="font-[500]">Kích thước tranh:</label>
+              <label className="font-[700] text-[1.5rem]">
+                Kích thước tranh:
+              </label>
               <span className="text-[1.4rem] text-[var(--color-red-700)]">
                 {variantError}
               </span>
@@ -608,7 +618,9 @@ function AddProduct() {
             <div>
               <Modal>
                 <Modal.Open opens="variant-form">
-                  <Button>Thêm kích thước tranh</Button>
+                  <Button>
+                    <span className="mr-2">+</span>Thêm kích thước tranh
+                  </Button>
                 </Modal.Open>
                 <Modal.Window name="variant-form">
                   <CreateVariantForm
@@ -619,8 +631,38 @@ function AddProduct() {
               </Modal>
             </div>
           </div>
-
           {/* add variant end */}
+
+          {/* add discount begin */}
+          <div
+            id="discount"
+            className="flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
+          >
+            <div className="flex gap-5">
+              <label className="font-[700] text-[1.5rem]">
+                Chương trình giảm giá:
+              </label>
+            </div>
+            <DiscountTable discounts={discounts} setDiscounts={setDiscounts} />
+
+            <div>
+              <Modal>
+                <Modal.Open opens="discount-form">
+                  <Button>
+                    <span className="mr-2">+</span>Thêm chương trình giảm giá
+                  </Button>
+                </Modal.Open>
+                <Modal.Window name="discount-form">
+                  <CreateDiscountForm
+                    discounts={discounts}
+                    setDiscounts={setDiscounts}
+                  />
+                </Modal.Window>
+              </Modal>
+            </div>
+          </div>
+          {/* add discount end */}
+
           <div className="flex flex-col gap-8">
             {/* overview begin */}
             <div
@@ -628,7 +670,9 @@ function AddProduct() {
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5 pb-5">
-                <label className="font-[500]">Tổng quan sản phẩm:</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Tổng quan sản phẩm:
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {overviewError}
                 </span>
@@ -649,7 +693,9 @@ function AddProduct() {
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5 pb-5">
-                <label className="font-[500]">Chất liệu tranh</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Chất liệu tranh
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {materialError}
                 </span>
@@ -670,7 +716,9 @@ function AddProduct() {
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5 pb-5">
-                <label className="font-[500]">Thông tin chi tiết:</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Thông tin chi tiết:
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {specificationError}
                 </span>
@@ -691,7 +739,9 @@ function AddProduct() {
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5 pb-5">
-                <label className="font-[500]">Hướng dẫn vệ sinh tranh:</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Hướng dẫn vệ sinh tranh:
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {instructionError}
                 </span>

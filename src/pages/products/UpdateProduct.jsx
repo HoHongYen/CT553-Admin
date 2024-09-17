@@ -1,6 +1,7 @@
 import slugify from "slugify";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 import { useCategories } from "@/hooks/categories/useCategories";
 import { useMoveBack } from "@/hooks/common/useMoveBack";
@@ -8,9 +9,13 @@ import { useProduct } from "@/hooks/products/useProduct";
 import { useUpdateProduct } from "@/hooks/products/useUpdateProduct";
 
 import {
+  addCategory,
+  createDiscount,
   createVariant,
+  deleteCategory,
   deleteImage,
   deleteVariant,
+  updateDiscount,
   updateVariant,
   uploadImage as uploadProductImage,
 } from "@/services/apiProducts";
@@ -37,7 +42,8 @@ import EmptyRoundBoxIcon from "@/components/icons/EmptyRoundBoxIcon";
 
 import VariantTable from "@/components/products/VariantTable";
 import CreateVariantForm from "@/components/products/CreateVariantForm";
-import toast from "react-hot-toast";
+import DiscountTable from "@/components/products/DiscountTable";
+import CreateDiscountForm from "@/components/products/CreateDiscountForm";
 
 function UpdateProduct() {
   const { product, isLoading: isLoadingProduct } = useProduct();
@@ -47,12 +53,15 @@ function UpdateProduct() {
 
   const { handleSubmit } = useForm();
 
-  const { categories } = useCategories();
+  const { categories: allCategories } = useCategories();
 
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
+
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [category, setCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [oldCategories, setOldCategories] = useState([]);
+
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [visible, setVisible] = useState(false);
 
@@ -67,13 +76,16 @@ function UpdateProduct() {
   const [variants, setVariants] = useState([]);
   const [oldVariants, setOldVariants] = useState([]);
 
+  const [discounts, setDiscounts] = useState([]);
+  const [oldDiscounts, setOldDiscounts] = useState([]);
+
   const [overview, setOverview] = useState("");
   const [material, setMaterial] = useState("");
   const [specification, setSpecification] = useState("");
   const [instruction, setInstruction] = useState("");
 
   const [nameError, setNameError] = useState(null);
-  const [categoryError, setCategoryError] = useState(null);
+  const [categoriesError, setCategoriesError] = useState(null);
   const [errorThumbnailImage, setErrorThumbnailImage] = useState(null);
   const [errorViewImage, setErrorViewImage] = useState(null);
   const [errorImage, setErrorImage] = useState(null);
@@ -84,6 +96,9 @@ function UpdateProduct() {
   const [instructionError, setInstructionError] = useState(null);
 
   const handleUploadProductImages = async () => {
+    console.log("images", images);
+    console.log("oldImages", oldImages);
+
     const newImageArrayIds = [];
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
@@ -120,6 +135,10 @@ function UpdateProduct() {
   };
 
   const handleUploadThumbnailImage = async () => {
+    if (thumbnailImage.id) {
+      return thumbnailImage.id;
+    }
+
     const form = new FormData();
     form.append("image", thumbnailImage.file);
     try {
@@ -135,6 +154,10 @@ function UpdateProduct() {
   };
 
   const handleUploadViewImage = async () => {
+    if (viewImage.id) {
+      return viewImage.id;
+    }
+
     const form = new FormData();
     form.append("image", viewImage.file);
     try {
@@ -153,7 +176,6 @@ function UpdateProduct() {
   function checkIfHasNoChange() {
     if (
       name !== product?.name ||
-      category !== product?.categoryId ||
       visible !== product?.visible ||
       thumbnailImage !== product?.thumbnailImage ||
       viewImage !== product?.viewImage ||
@@ -164,8 +186,14 @@ function UpdateProduct() {
     ) {
       return false;
     }
+    if (categories.length !== product?.categories.length) return false;
     if (images.length !== product?.images.length) return false;
     if (variants.length !== product?.variants.length) return false;
+    if (discounts.length !== product?.productDiscount.length) return false;
+
+    for (let i = 0; i < categories.length; i++) {
+      if (categories[i] !== product?.categories[i].id) return false;
+    }
     for (let i = 0; i < images.length; i++) {
       if (images[i].path !== product?.images[i].image.path) return false;
     }
@@ -174,6 +202,16 @@ function UpdateProduct() {
         variants[i].size !== product?.variants[i].size ||
         variants[i].price !== product?.variants[i].price ||
         variants[i].quantity !== product?.variants[i].quantity
+      ) {
+        return false;
+      }
+    }
+    for (let i = 0; i < discounts.length; i++) {
+      if (
+        discounts[i].discountType !== product?.discounts[i].discountType ||
+        discounts[i].discountValue !== product?.discounts[i].discountValue ||
+        discounts[i].startDate !== product?.discounts[i].startDate ||
+        discounts[i].endDate !== product?.discounts[i].endDate
       ) {
         return false;
       }
@@ -195,9 +233,9 @@ function UpdateProduct() {
       return;
     }
 
-    if (!category) {
-      setCategoryError("Không được bỏ trống!");
-      jumpToRelevantDiv("category");
+    if (!categories || categories.length === 0) {
+      setCategoriesError("Không được bỏ trống!");
+      jumpToRelevantDiv("categories");
       return;
     }
 
@@ -258,6 +296,23 @@ function UpdateProduct() {
     const uploadedViewImageId = await handleUploadViewImage();
     console.log("uploadedViewImageId", uploadedViewImageId);
 
+    // update categories
+    for (let i = 0; i < categories.length; i++) {
+      const categoryId = categories[i];
+      if (!oldCategories.includes(categoryId)) {
+        // add category
+        addCategory(product.id, { categoryId });
+      }
+    }
+
+    for (let i = 0; i < oldCategories.length; i++) {
+      const categoryId = oldCategories[i];
+      if (!categories.includes(categoryId)) {
+        // delete category
+        deleteCategory(product.id, categoryId);
+      }
+    }
+
     // update variants
     for (let i = 0; i < variants.length; i++) {
       const variant = variants[i];
@@ -292,13 +347,40 @@ function UpdateProduct() {
       }
     }
 
+    // update discounts
+    for (let i = 0; i < discounts.length; i++) {
+      const discount = discounts[i];
+      console.log("discount", discounts[i]);
+      if (discount.id) {
+        // update discount
+        console.log("updateDiscount", discount);
+        const updatedDiscount = await updateDiscount(product.id, {
+          id: discount.id,
+          discountType: discount.discountType,
+          discountValue: discount.discountValue,
+          startDate: discount.startDate,
+          endDate: discount.endDate,
+        });
+        console.log("updatedDiscount", updatedDiscount);
+      } else {
+        // create discount
+        console.log("createDiscount", discount);
+        const createdDiscount = await createDiscount(product.id, {
+          discountType: discount.discountType,
+          discountValue: discount.discountValue,
+          startDate: discount.startDate,
+          endDate: discount.endDate,
+        });
+        console.log("createdDiscount", createdDiscount);
+      }
+    }
+
     updateProduct(
       {
         productId: product.id,
         data: {
           name,
           slug,
-          categoryId: category,
           visible,
           thumbnailImageId: uploadedThumbnailImageId,
           viewImageId: uploadedViewImageId,
@@ -318,7 +400,7 @@ function UpdateProduct() {
 
   useEffect(() => {
     if (name) setNameError(null);
-    if (category) setCategoryError(null);
+    if (categories && categories.length > 0) setCategoriesError(null);
     if (thumbnailImage) setErrorThumbnailImage(null);
     if (viewImage) setErrorViewImage(null);
     if (images.length > 0) setErrorImage(null);
@@ -329,11 +411,12 @@ function UpdateProduct() {
     if (instruction) setInstructionError(null);
   }, [
     name,
-    category,
+    categories,
     thumbnailImage,
     viewImage,
     images,
     variants,
+    discounts,
     overview,
     material,
     specification,
@@ -345,7 +428,14 @@ function UpdateProduct() {
 
     setName(product?.name);
     setSlug(product?.slug);
-    setCategory(product?.categoryId);
+
+    setCategories(
+      product?.categories.map((category) => category.category.id) || []
+    );
+    setOldCategories(
+      product?.categories.map((category) => category.category.id) || []
+    );
+
     setVisible(product?.visible);
 
     setOverview(product?.overview);
@@ -373,6 +463,20 @@ function UpdateProduct() {
 
     setVariants(product?.variants || []);
     setOldVariants(product?.variants || []);
+
+    let productDiscount = product?.productDiscount || [];
+    productDiscount = productDiscount.map((discount) => {
+      return {
+        id: discount.id,
+        discountType: discount.discountType,
+        discountValue: discount.discountValue,
+        startDate: discount.startDate.slice(0, 10),
+        endDate: discount.endDate.slice(0, 10),
+      };
+    });
+
+    setDiscounts(productDiscount);
+    setOldDiscounts(productDiscount);
   }
 
   useEffect(() => {
@@ -380,9 +484,9 @@ function UpdateProduct() {
   }, [product]);
 
   useEffect(() => {
-    if (categories?.length > 0) {
+    if (allCategories?.length > 0) {
       setCategoryOptions(
-        categories.map((category) => {
+        allCategories.map((category) => {
           return {
             title: category.name,
             value: category.id,
@@ -463,7 +567,7 @@ function UpdateProduct() {
       </Row>
       <Row>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <FormRow label="Tên sản phẩm:" error={nameError}>
+          <FormRow size="medium" label="Tên sản phẩm:" error={nameError}>
             <div id="name">
               <Input
                 className="w-full"
@@ -480,26 +584,27 @@ function UpdateProduct() {
             </div>
           </FormRow>
 
-          <FormRow label="Slug:">
+          <FormRow size="medium" label="Slug:">
             <Input type="text" id="slug" disabled value={slug} />
           </FormRow>
 
-          <FormRow label="Danh mục:" error={categoryError}>
-            <div id="category">
+          <FormRow size="medium" label="Danh mục:" error={categoriesError}>
+            <div id="categories">
               <TreeSelect
                 style={{ width: "100%" }}
-                value={category}
+                value={categories}
                 dropdownStyle={{ maxHeight: 500, overflow: "auto" }}
                 treeData={categoryOptions}
                 placeholder="Chọn danh mục"
                 disabled={isWorking}
                 treeDefaultExpandAll
-                onChange={(newValue) => setCategory(newValue)}
+                multiple
+                onChange={(newValue) => setCategories(newValue)}
               />
             </div>
           </FormRow>
 
-          <FormRow label="Trạng thái">
+          <FormRow size="medium" label="Trạng thái">
             <div
               id="visible"
               className="flex items-center justify-between px-4"
@@ -532,7 +637,9 @@ function UpdateProduct() {
               className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5">
-                <label className="font-[500]">Ảnh nền sản phẩm:</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Ảnh nền sản phẩm:
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {errorThumbnailImage}
                 </span>
@@ -597,7 +704,7 @@ function UpdateProduct() {
               className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5">
-                <label className="font-[500]">
+                <label className="font-[700] text-[1.5rem]">
                   Ảnh sản phẩm nền trong suốt:
                 </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
@@ -664,7 +771,7 @@ function UpdateProduct() {
             className="mt-8 flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
           >
             <div className="flex gap-5">
-              <label className="font-[500]">Hình ảnh:</label>
+              <label className="font-[700] text-[1.5rem]">Hình ảnh:</label>
               <span className="text-[1.4rem] text-[var(--color-red-700)]">
                 {errorImage}
               </span>
@@ -730,7 +837,9 @@ function UpdateProduct() {
             className="flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
           >
             <div className="flex gap-5">
-              <label className="font-[500]">Kích thước tranh:</label>
+              <label className="font-[700] text-[1.5rem]">
+                Kích thước tranh:
+              </label>
               <span className="text-[1.4rem] text-[var(--color-red-700)]">
                 {variantError}
               </span>
@@ -751,8 +860,38 @@ function UpdateProduct() {
               </Modal>
             </div>
           </div>
-
           {/* add variant end */}
+
+          {/* add discount begin */}
+          <div
+            id="discount"
+            className="flex flex-col gap-8 py-[1.2rem] border-b border-[var(--color-grey-100)]"
+          >
+            <div className="flex gap-5">
+              <label className="font-[700] text-[1.5rem]">
+                Chương trình giảm giá:
+              </label>
+            </div>
+            <DiscountTable discounts={discounts} setDiscounts={setDiscounts} />
+
+            <div>
+              <Modal>
+                <Modal.Open opens="discount-form">
+                  <Button>
+                    <span className="mr-2">+</span>Thêm chương trình giảm giá
+                  </Button>
+                </Modal.Open>
+                <Modal.Window name="discount-form">
+                  <CreateDiscountForm
+                    discounts={discounts}
+                    setDiscounts={setDiscounts}
+                  />
+                </Modal.Window>
+              </Modal>
+            </div>
+          </div>
+          {/* add discount end */}
+
           <div className="flex flex-col gap-8">
             {/* overview begin */}
             <div
@@ -760,7 +899,9 @@ function UpdateProduct() {
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5 pb-5">
-                <label className="font-[500]">Tổng quan sản phẩm:</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Tổng quan sản phẩm:
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {overviewError}
                 </span>
@@ -781,7 +922,9 @@ function UpdateProduct() {
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5 pb-5">
-                <label className="font-[500]">Chất liệu tranh</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Chất liệu tranh
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {materialError}
                 </span>
@@ -802,7 +945,9 @@ function UpdateProduct() {
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5 pb-5">
-                <label className="font-[500]">Thông tin chi tiết:</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Thông tin chi tiết:
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {specificationError}
                 </span>
@@ -823,7 +968,9 @@ function UpdateProduct() {
               className="py-[1.2rem] border-b border-[var(--color-grey-100)]"
             >
               <div className="flex gap-5 pb-5">
-                <label className="font-[500]">Hướng dẫn vệ sinh tranh:</label>
+                <label className="font-[700] text-[1.5rem]">
+                  Hướng dẫn vệ sinh tranh:
+                </label>
                 <span className="text-[1.4rem] text-[var(--color-red-700)]">
                   {instructionError}
                 </span>

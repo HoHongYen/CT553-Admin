@@ -7,19 +7,15 @@ import Menus from "@/components/ui/Menus";
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import RoundImage from "@/components/ui/RoundImage";
+import { deleteProduct } from "@/services/apiProducts";
+import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
 
 function ProductRow({
-  product: {
-    id: productId,
-    name,
-    slug,
-    createdAt,
-    soldNumber,
-    thumbnailImage,
-  },
+  product: { id: productId, name, slug, createdAt, soldNumber, thumbnailImage },
 }) {
+  const { isDeleting, deleteProduct } = useDeleteProduct();
+  
   const navigate = useNavigate();
-  // const { deleteBooking, isDeleting } = useDeleteBooking();
 
   return (
     <Table.Row>
@@ -47,9 +43,9 @@ function ProductRow({
 
             <Modal.Window name="delete">
               <ConfirmCertain
-                resourceName="booking"
-                // disabled={isDeleting}
-                // onConfirm={() => deleteBooking(bookingId)}
+                resourceName="Bạn có chắc chắn muốn xóa sản phẩm này?"
+                disabled={isDeleting}
+                onConfirm={() => deleteProduct(productId)}
               />
             </Modal.Window>
           </Menus.Menu>

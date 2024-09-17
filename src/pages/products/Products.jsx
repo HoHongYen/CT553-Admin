@@ -17,6 +17,7 @@ function Products() {
         <ProductTable data="products" />
         <div className="w-[200px]">
           <Button type="primary" onClick={() => navigate("/san-pham/tao-moi")}>
+            <span className="mr-2">+</span>
             Thêm sản phẩm
           </Button>
         </div>

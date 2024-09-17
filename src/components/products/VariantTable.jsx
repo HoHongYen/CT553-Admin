@@ -22,7 +22,6 @@ function VariantTable({ variants, setVariants }) {
               key={variant.size}
               variant={variant}
               index={index}
-              variants={variants}
               setVariants={setVariants}
             />
           )}

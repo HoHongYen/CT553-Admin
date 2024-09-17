@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Button from "@/components/ui/Button";
@@ -9,42 +8,19 @@ import Heading from "../ui/Heading";
 import Textarea from "../ui/Textarea";
 import toast from "react-hot-toast";
 
-function CreateVariantForm({
-  index = null,
-  variantToEdit = {},
-  onCloseModal,
-  setVariants,
-  variants,
-}) {
-  const isEditSession = index !== null;
-
-  const { register, handleSubmit, formState, reset } = useForm({
-    defaultValues: isEditSession ? variantToEdit : {},
-  });
+function CreateVariantForm({ setVariants, variants }) {
+  const { register, handleSubmit, formState, reset } = useForm();
   const { errors } = formState;
 
   async function onSubmit({ size, price, quantity }) {
     // e.preventDefault();
-    if (isEditSession) {
-      setVariants((prevVariants) =>
-        prevVariants.map((variant, idx) =>
-          idx === index ? { size, price, quantity } : variant
-        )
-      );
-      toast.success("Cập nhật kích thước thành công!");
-      onCloseModal?.();
-    } else {
-      if (variants.some((variant) => variant.size === size)) {
-        toast.error("Kích thước đã tồn tại!");
-        return;
-      }
-      setVariants((prevVariants) => [
-        ...prevVariants,
-        { size, price, quantity },
-      ]);
-      toast.success("Thêm kích thước thành công!");
-      reset();
+    if (variants.some((variant) => variant.size === size)) {
+      toast.error("Kích thước đã tồn tại!");
+      return;
     }
+    setVariants((prevVariants) => [...prevVariants, { size, price, quantity }]);
+    toast.success("Thêm kích thước thành công!");
+    reset();
   }
 
   async function handleCancel() {
@@ -98,11 +74,13 @@ function CreateVariantForm({
         <Button type="reset" variation="secondary" onClick={handleCancel}>
           Hủy
         </Button>
-        <Button onClick={(e) => {
-          e.preventDefault();
-          handleSubmit(onSubmit)();
-        }}>
-          {isEditSession ? "Lưu chỉnh sửa" : "Lưu kích thước"}
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            handleSubmit(onSubmit)();
+          }}
+        >
+          Lưu kích thước
         </Button>
       </FormRow>
     </Form>
