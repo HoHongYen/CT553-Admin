@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import slugify from "slugify";
 
 import { useCategories } from "@/hooks/categories/useCategories";
 import { useMoveBack } from "@/hooks/common/useMoveBack";
@@ -8,7 +7,7 @@ import { useCreateProduct } from "@/hooks/products/useCreateProduct";
 
 import { uploadImage, uploadImages } from "@/services/apiUpload";
 
-import { jumpToRelevantDiv, handleClickElement } from "@/utils/helpers";
+import { jumpToRelevantDiv, handleClickElement, formatSlugify } from "@/utils/helpers";
 
 import { TreeSelect } from "antd";
 import { HiCamera, HiPencil, HiTrash } from "react-icons/hi2";
@@ -346,7 +345,7 @@ function AddProduct() {
                 onChange={(e) => {
                   setName(e.target.value);
                   setSlug(
-                    slugify(e.target.value, { lower: true, locale: "vi" })
+                    formatSlugify(e.target.value)
                   );
                 }}
               />

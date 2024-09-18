@@ -1,4 +1,3 @@
-import slugify from "slugify";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -21,7 +20,11 @@ import {
 } from "@/services/apiProducts";
 import { uploadImage } from "@/services/apiUpload";
 
-import { jumpToRelevantDiv, handleClickElement } from "@/utils/helpers";
+import {
+  jumpToRelevantDiv,
+  handleClickElement,
+  formatSlugify,
+} from "@/utils/helpers";
 
 import { TreeSelect } from "antd";
 import { HiCamera, HiPencil, HiTrash } from "react-icons/hi2";
@@ -576,9 +579,7 @@ function UpdateProduct() {
                 value={name}
                 onChange={(e) => {
                   setName(e.target.value);
-                  setSlug(
-                    slugify(e.target.value, { lower: true, locale: "vi" })
-                  );
+                  setSlug(formatSlugify(e.target.value));
                 }}
               />
             </div>

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import slugify from "slugify";
-
 
 import { useCreateCategory } from "@/hooks/categories/useCreateCategory";
 import { useCategories } from "@/hooks/categories/useCategories";
@@ -19,6 +17,7 @@ import FormRow from "@/components/ui/FormRow";
 import Input from "@/components/ui/Input";
 import SpinnerMini from "@/components/ui/SpinnerMini";
 import Select from "@/components/ui/Select";
+import { formatSlugify } from "@/utils/helpers";
 
 function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {
   const { createCategory, isLoading: isCreating } = useCreateCategory();
@@ -179,10 +178,7 @@ function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {
               disabled={isWorking}
               {...register("name", {
                 required: "Không được để trống",
-                onChange: (e) =>
-                  setSlug(
-                    slugify(e.target.value, { lower: true, locale: "vi" })
-                  ),
+                onChange: (e) => setSlug(formatSlugify(e.target.value)),
               })}
             />
           </FormRow>

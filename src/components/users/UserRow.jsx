@@ -7,6 +7,7 @@ import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
+import { formatDate } from "@/utils/helpers";
 
 const Avatar = styled.img`
   display: block;
@@ -45,7 +46,7 @@ function UserRow({ user }) {
         <div>
           {roleId === 1 ? "Admin" : roleId === 3 ? "Khách hàng" : "Nhân viên"}
         </div>
-        <div>{createdAt}</div>
+        <div>{formatDate(createdAt)}</div>
         <div>
           <Modal>
             <Menus.Menu>

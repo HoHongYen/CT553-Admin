@@ -9,12 +9,13 @@ import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import RoundImage from "@/components/ui/RoundImage";
 import { deleteProduct } from "@/services/apiProducts";
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
+import { formatDate } from "@/utils/helpers";
 
 function ProductRow({
   product: { id: productId, name, slug, createdAt, soldNumber, thumbnailImage },
 }) {
   const { isDeleting, deleteProduct } = useDeleteProduct();
-  
+
   const navigate = useNavigate();
 
   return (
@@ -22,7 +23,7 @@ function ProductRow({
       <RoundImage path={thumbnailImage.path} alt={name} />
       <div>{productId}</div>
       <div>{name}</div>
-      <div>{createdAt}</div>
+      <div>{formatDate(createdAt)}</div>
       <div>{soldNumber}</div>
       <div>
         <Modal>
