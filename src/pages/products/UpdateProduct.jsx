@@ -43,10 +43,10 @@ import Editor from "@/components/ui/Editor";
 import TickRoundIcon from "@/components/icons/TickRoundIcon";
 import EmptyRoundBoxIcon from "@/components/icons/EmptyRoundBoxIcon";
 
-import VariantTable from "@/components/products/VariantTable";
-import CreateVariantForm from "@/components/products/CreateVariantForm";
-import DiscountTable from "@/components/products/DiscountTable";
-import CreateDiscountForm from "@/components/products/CreateDiscountForm";
+import VariantTable from "@/components/products/variants/VariantTable";
+import CreateVariantForm from "@/components/products/variants/CreateVariantForm";
+import DiscountTable from "@/components/products/discounts/DiscountTable";
+import CreateDiscountForm from "@/components/products/discounts/CreateDiscountForm";
 
 function UpdateProduct() {
   const { product, isLoading: isLoadingProduct } = useProduct();
@@ -80,7 +80,6 @@ function UpdateProduct() {
   const [oldVariants, setOldVariants] = useState([]);
 
   const [discounts, setDiscounts] = useState([]);
-  const [oldDiscounts, setOldDiscounts] = useState([]);
 
   const [overview, setOverview] = useState("");
   const [material, setMaterial] = useState("");
@@ -479,7 +478,6 @@ function UpdateProduct() {
     });
 
     setDiscounts(productDiscount);
-    setOldDiscounts(productDiscount);
   }
 
   useEffect(() => {

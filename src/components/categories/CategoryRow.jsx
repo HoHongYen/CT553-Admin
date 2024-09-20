@@ -1,12 +1,12 @@
-import { HiPencil, HiTrash } from "react-icons/hi2";
+import { useDeleteCategory } from "@/hooks/categories/useDeleteCategory";
 
+import { HiPencil, HiTrash } from "react-icons/hi2";
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import RoundImage from "@/components/ui/RoundImage";
 import CreateCategoryForm from "./CreateCategoryForm";
-import { useDeleteCategory } from "@/hooks/categories/useDeleteCategory";
 
 function CategoryRow({ category }) {
   const { isDeleting, deleteCategory } = useDeleteCategory();

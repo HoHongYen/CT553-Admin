@@ -1,7 +1,7 @@
-import VariantRow from "@/components/products/VariantRow";
+import { Skeleton } from "antd";
+import VariantRow from "@/components/products/variants/VariantRow";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
-import { Skeleton } from "antd";
 
 function VariantTable({ variants, setVariants }) {
   if (!variants) return <Skeleton active />;

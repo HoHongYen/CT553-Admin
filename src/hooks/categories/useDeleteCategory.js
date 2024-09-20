@@ -1,6 +1,6 @@
+import toast from "react-hot-toast";
 import { deleteCategory as deleteCategoryApi } from "@/services/apiCategories";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 export function useDeleteCategory() {
     const queryClient = useQueryClient();

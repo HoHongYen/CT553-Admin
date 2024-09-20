@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
 import { useCategories } from "@/hooks/categories/useCategories";
 
 import Spinner from "@/components/ui/Spinner";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import CategoryRow from "./CategoryRow";
-import { useEffect, useState } from "react";
 
 function CategoryTable() {
   const { isLoading, categories } = useCategories();

@@ -4,12 +4,12 @@ import { useForm } from "react-hook-form";
 import { DISCOUNT_TYPES } from "@/utils/constants";
 
 import toast from "react-hot-toast";
-import Select from "../ui/Select";
+import Select from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
 import Form from "@/components/ui/Form";
 import FormRow from "@/components/ui/FormRow";
 import Input from "@/components/ui/Input";
-import Heading from "../ui/Heading";
+import Heading from "@/components/ui/Heading";
 
 function CreateDiscountForm({ setDiscounts }) {
   const { register, handleSubmit, formState, reset, setValue } = useForm();

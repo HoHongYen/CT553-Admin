@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-
 import toast from "react-hot-toast";
+import { DISCOUNT_TYPES } from "@/utils/constants";
 
 import Button from "@/components/ui/Button";
 import Form from "@/components/ui/Form";
 import FormRow from "@/components/ui/FormRow";
 import Input from "@/components/ui/Input";
-import Heading from "../ui/Heading";
-import Select from "../ui/Select";
-import { DISCOUNT_TYPES } from "@/utils/constants";
+import Heading from "@/components/ui/Heading";
+import Select from "@/components/ui/Select";
 
 function UpdateDiscountForm({
   index = null,

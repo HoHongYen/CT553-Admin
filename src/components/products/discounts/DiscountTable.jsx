@@ -1,7 +1,7 @@
-import DiscountRow from "@/components/products/DiscountRow";
+import { Skeleton } from "antd";
+import DiscountRow from "@/components/products/discounts/DiscountRow";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
-import { Skeleton } from "antd";
 
 function DiscountTable({ discounts, setDiscounts }) {
   if (!discounts) return <Skeleton active />;

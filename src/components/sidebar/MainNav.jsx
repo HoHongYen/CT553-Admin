@@ -9,6 +9,7 @@ import {
   HiOutlineShoppingBag,
   HiOutlineChartPie,
   HiOutlineChartBar,
+  HiOutlinePhoto,
 } from "react-icons/hi2";
 
 const NavList = styled.ul`
@@ -81,8 +82,14 @@ function MainNav() {
         </li>
         <li>
           <StyledNavLink to="/san-pham">
-            <HiOutlineGift />
+            <HiOutlinePhoto />
             <span>Sản phẩm</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/coupons">
+            <HiOutlineGift />
+            <span>Coupons</span>
           </StyledNavLink>
         </li>
         <li>

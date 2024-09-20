@@ -1,36 +1,26 @@
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 import Button from "@/components/ui/Button";
 import Form from "@/components/ui/Form";
 import FormRow from "@/components/ui/FormRow";
 import Input from "@/components/ui/Input";
-import Heading from "../ui/Heading";
-import Textarea from "../ui/Textarea";
-import toast from "react-hot-toast";
+import Heading from "@/components/ui/Heading";
+import Textarea from "@/components/ui/Textarea";
 
-function UpdateVariantForm({
-  index = null,
-  variantToEdit = {},
-  onCloseModal,
-  setVariants,
-}) {
-  const { register, handleSubmit, formState, reset } = useForm({
-    defaultValues: variantToEdit,
-  });
+function CreateVariantForm({ setVariants, variants }) {
+  const { register, handleSubmit, formState, reset } = useForm();
   const { errors } = formState;
 
   async function onSubmit({ size, price, quantity }) {
     // e.preventDefault();
-    setVariants((prevVariants) => {
-      console.log("prevVariants", prevVariants);
-      return prevVariants.map((variant, idx) =>
-        idx === index ? { id: variant.id, size, price, quantity } : variant
-      );
-    });
-    toast.success("Cập nhật kích thước thành công!");
+    if (variants.some((variant) => variant.size === size)) {
+      toast.error("Kích thước đã tồn tại!");
+      return;
+    }
+    setVariants((prevVariants) => [...prevVariants, { size, price, quantity }]);
+    toast.success("Thêm kích thước thành công!");
     reset();
-    onCloseModal?.();
   }
 
   async function handleCancel() {
@@ -42,7 +32,7 @@ function UpdateVariantForm({
     <Form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-5 mb-10">
         <div className="flex justify-center">
-          <Heading as="h2">Cập nhật thông tin kích thước tranh</Heading>
+          <Heading as="h2">Thêm thông tin kích thước tranh</Heading>
         </div>
         <FormRow label="Kích thước:" error={errors?.size?.message}>
           <Textarea
@@ -90,11 +80,11 @@ function UpdateVariantForm({
             handleSubmit(onSubmit)();
           }}
         >
-          Lưu chỉnh sửa
+          Lưu kích thước
         </Button>
       </FormRow>
     </Form>
   );
 }
 
-export default UpdateVariantForm;
+export default CreateVariantForm;

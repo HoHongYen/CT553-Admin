@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
-import GoTop from "../ui/GoTop";
+import GoTop from "@/components/ui/GoTop";
 import Header from "@/components/sidebar/Header";
 import Sidebar from "@/components/sidebar/Sidebar";
 

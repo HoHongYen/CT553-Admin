@@ -59,8 +59,6 @@ function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {
   async function onSubmit({ name }, e) {
     e.preventDefault();
 
-    console.log(name, parentId, thumbnailImage?.id, slug);
-
     if (isEditSession)
       updateCategory(
         {
@@ -215,7 +213,6 @@ function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {
             <SpinnerMini />
           )}
         </Button>
-        {/* <UploadCategories /> */}
       </FormRow>
     </Form>
   );

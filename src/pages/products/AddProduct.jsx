@@ -7,7 +7,11 @@ import { useCreateProduct } from "@/hooks/products/useCreateProduct";
 
 import { uploadImage, uploadImages } from "@/services/apiUpload";
 
-import { jumpToRelevantDiv, handleClickElement, formatSlugify } from "@/utils/helpers";
+import {
+  jumpToRelevantDiv,
+  handleClickElement,
+  formatSlugify,
+} from "@/utils/helpers";
 
 import { TreeSelect } from "antd";
 import { HiCamera, HiPencil, HiTrash } from "react-icons/hi2";
@@ -25,10 +29,10 @@ import Editor from "@/components/ui/Editor";
 import TickRoundIcon from "@/components/icons/TickRoundIcon";
 import EmptyRoundBoxIcon from "@/components/icons/EmptyRoundBoxIcon";
 
-import VariantTable from "@/components/products/VariantTable";
-import CreateVariantForm from "@/components/products/CreateVariantForm";
-import DiscountTable from "@/components/products/DiscountTable";
-import CreateDiscountForm from "@/components/products/CreateDiscountForm";
+import VariantTable from "@/components/products/variants/VariantTable";
+import CreateVariantForm from "@/components/products/variants/CreateVariantForm";
+import DiscountTable from "@/components/products/discounts/DiscountTable";
+import AddDiscount from "@/components/products/discounts/AddDiscount";
 
 function AddProduct() {
   const { createProduct, isLoading } = useCreateProduct();
@@ -344,9 +348,7 @@ function AddProduct() {
                 value={name}
                 onChange={(e) => {
                   setName(e.target.value);
-                  setSlug(
-                    formatSlugify(e.target.value)
-                  );
+                  setSlug(formatSlugify(e.target.value));
                 }}
               />
             </div>
@@ -643,22 +645,7 @@ function AddProduct() {
               </label>
             </div>
             <DiscountTable discounts={discounts} setDiscounts={setDiscounts} />
-
-            <div>
-              <Modal>
-                <Modal.Open opens="discount-form">
-                  <Button>
-                    <span className="mr-2">+</span>Thêm chương trình giảm giá
-                  </Button>
-                </Modal.Open>
-                <Modal.Window name="discount-form">
-                  <CreateDiscountForm
-                    discounts={discounts}
-                    setDiscounts={setDiscounts}
-                  />
-                </Modal.Window>
-              </Modal>
-            </div>
+            <AddDiscount discounts={discounts} setDiscounts={setDiscounts} />
           </div>
           {/* add discount end */}
 

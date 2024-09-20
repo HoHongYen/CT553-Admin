@@ -1,7 +1,6 @@
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import CreateCategoryForm from "./CreateCategoryForm";
-import { HiPlus } from "react-icons/hi2";
 
 function AddCategory() {
   return (

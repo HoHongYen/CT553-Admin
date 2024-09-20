@@ -83,6 +83,10 @@ function App() {
                     path="danh-muc"
                     element={<SuspenseWrapper path="Categories" />}
                   />
+                  <Route
+                    path="coupons"
+                    element={<SuspenseWrapper path="Coupons" />}
+                  />
                 </Route>
                 <Route
                   path="dang-nhap"
