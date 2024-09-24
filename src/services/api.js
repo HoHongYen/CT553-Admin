@@ -12,7 +12,7 @@ const createApiClient = (resourceUrl, options) => {
   if (options?.needAuth) {
     axiosInstance.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${localStorage.getItem(
-        "accesstoken"
+        "adminAccesstoken"
       )}`;
       return config;
     });

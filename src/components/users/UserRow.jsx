@@ -38,7 +38,7 @@ function UserRow({ user }) {
     <>
       <Table.Row>
         <Avatar src={avatar?.path || "/default-user.jpg"} alt="" />
-        <div>{userId}</div>
+        <div>#{userId}</div>
         <div>{fullName}</div>
         <div>{email}</div>
         <div>{phone}</div>

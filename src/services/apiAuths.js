@@ -25,7 +25,7 @@ async function getLoggedInAccount(token) {
 }
 
 export async function getCurrentUser() {
-    const accessToken = localStorage["accesstoken"];
+    const accessToken = localStorage["adminAccesstoken"];
     if (!accessToken) throw new Error("User not login");
     const loggedInAccount = await getLoggedInAccount(accessToken);
     return loggedInAccount.metadata;

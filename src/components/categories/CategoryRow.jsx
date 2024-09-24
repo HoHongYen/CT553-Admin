@@ -17,7 +17,7 @@ function CategoryRow({ category }) {
     <>
       <Table.Row>
         <RoundImage path={thumbnailImage?.path} alt={name} />
-        <div>{categoryId}</div>
+        <div>#{categoryId}</div>
         <div>{name}</div>
         <div>
           <Modal>

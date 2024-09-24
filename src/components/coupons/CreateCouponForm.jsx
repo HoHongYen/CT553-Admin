@@ -37,10 +37,10 @@ function CreateCouponForm({ couponToEdit = {}, onCloseModal }) {
     label: type === "percentage" ? "Giảm theo phần trăm" : "Giảm theo số tiền",
   }));
 
-  const [discountType, setDiscountType] = useState(DISCOUNT_TYPES[0]);
+  const [discountType, setDiscountType] = useState(!isEditSession ? DISCOUNT_TYPES[0] : editValues.discountType);
   const [discountTypeError, setDiscountTypeError] = useState("");
 
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(!isEditSession ? true : editValues.visible);
 
   async function onSubmit({
     code,

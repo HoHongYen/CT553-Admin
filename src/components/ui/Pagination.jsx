@@ -1,7 +1,9 @@
-import styled from "styled-components";
-import { useSearchParams } from "react-router-dom";
-import { PAGE_SIZE } from "@/utils/constants";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
+import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
+import { PAGE_SIZE } from "@/utils/constants";
+import Select from "./Select";
+import { useState } from "react";
 
 const StyledPagination = styled.div`
   width: 100%;
@@ -59,49 +61,120 @@ const PaginationButton = styled.button`
   }
 `;
 
-function Pagination({ count }) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentPage = !searchParams.get("page")
-    ? 1
-    : Number(searchParams.get("page"));
+const PageButton = styled.button`
+  border: 1px solid
+    ${(props) =>
+      props.active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
+  color: ${(props) =>
+    props.active ? " var(--color-brand-600)" : "var(--color-black-50)"};
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: 1.4rem;
 
-  const pageCount = Math.ceil(count / PAGE_SIZE);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.3s;
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-brand-600);
+    color: var(--color-brand-50);
+  }
+`;
+
+function Pagination({ count, totalPages, label = "sản phẩm" }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = !searchParams.get("trang")
+    ? 1
+    : Number(searchParams.get("trang"));
+
+  let limits = [5, 10, 15, 20];
+  let limitOptions = limits.map((limit) => ({
+    label: `Hiển thị ${limit} ${label}`,
+    value: limit,
+  }));
+
+  const [limitId, setLimitId] = useState(
+    searchParams.get("gioi-han") || PAGE_SIZE
+  );
+
+  function handleLimitChange(e) {
+    setLimitId(e.target.value);
+    searchParams.set("gioi-han", e.target.value);
+    // remove trang query when limit changes
+    searchParams.delete("trang");
+    setSearchParams(searchParams);
+    // scroll smoothly to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   function prevPage() {
     const prev = currentPage === 1 ? currentPage : currentPage - 1;
-    searchParams.set("page", prev);
+    searchParams.set("trang", prev);
     setSearchParams(searchParams);
+    // scroll smoothly to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function nextPage() {
-    const next = currentPage === pageCount ? currentPage : currentPage + 1;
-    searchParams.set("page", next);
+    const next = currentPage === totalPages ? currentPage : currentPage + 1;
+    searchParams.set("trang", next);
     setSearchParams(searchParams);
+    // scroll smoothly to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  if (pageCount <= 1) return null;
+  if (totalPages <= 1) return null;
 
   return (
     <StyledPagination>
       <P>
-        Showing <span>{(currentPage - 1) * PAGE_SIZE + 1}</span> to{" "}
+        Hiển thị từ <span>{(currentPage - 1) * limitId + 1}</span> đến{" "}
         <span>
-          {currentPage === pageCount ? count : currentPage * PAGE_SIZE}
+          {currentPage === totalPages ? count : currentPage * limitId}
         </span>{" "}
-        of <span>{count}</span> results
+        trong tổng số <span>{count}</span> {label}
       </P>
       <Buttons>
         <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
           <HiChevronLeft />
-          <span>Previous</span>
+          <span>Trước</span>
         </PaginationButton>
+
+        <div className="flex justify-center gap-5">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <PageButton
+              className="px-10 py-2"
+              key={page}
+              active={page === currentPage}
+              onClick={() => {
+                searchParams.set("trang", page);
+                setSearchParams(searchParams);
+                // scroll smoothly to top
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              <span>{page}</span>
+            </PageButton>
+          ))}
+        </div>
+
         <PaginationButton
           onClick={nextPage}
-          disabled={currentPage === pageCount}
+          disabled={currentPage === totalPages}
         >
-          <span>Next</span>
+          <span>Sau</span>
           <HiChevronRight />
         </PaginationButton>
+
+        <Select
+          className="ml-10"
+          options={limitOptions}
+          value={limitId}
+          onChange={handleLimitChange}
+        />
       </Buttons>
     </StyledPagination>
   );

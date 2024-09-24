@@ -21,7 +21,7 @@ function ProductRow({
   return (
     <Table.Row>
       <RoundImage path={thumbnailImage.path} alt={name} />
-      <div>{productId}</div>
+      <div>#{productId}</div>
       <div>{name}</div>
       <div>{formatDate(createdAt)}</div>
       <div>{soldNumber}</div>

@@ -12,7 +12,7 @@ function VariantTable({ variants, setVariants }) {
           <div>STT</div>
           <div>Kích thước</div>
           <div>Giá</div>
-          <div>Số lượng</div>
+          <div>Số lượng còn lại</div>
           <div></div>
         </Table.Header>
         <Table.Body

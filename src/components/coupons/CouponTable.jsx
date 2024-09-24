@@ -12,25 +12,20 @@ function CouponTable() {
 
   return (
     <Menus>
-      <Table columns="0.5fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr">
+      <Table columns="0.5fr 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr">
         <Table.Header>
           <div>Mã coupon</div>
           <div>Loại giảm giá</div>
           <div>Giá trị giảm</div>
           <div>Số lượng</div>
-          <div>Số lượng đã sử dụng</div>
+          <div>Đã thu thập</div>
           <div>Ngày bắt đầu</div>
           <div>Ngày kết thúc</div>
           <div></div>
         </Table.Header>
         <Table.Body
           data={coupons}
-          render={(coupon) => (
-            <CouponRow
-              key={coupon.id}
-              coupon={coupon}
-            />
-          )}
+          render={(coupon) => <CouponRow key={coupon.id} coupon={coupon} />}
         />
       </Table>
     </Menus>

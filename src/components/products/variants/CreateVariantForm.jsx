@@ -56,7 +56,7 @@ function CreateVariantForm({ setVariants, variants }) {
             })}
           />
         </FormRow>
-        <FormRow label="Số lượng:" error={errors?.quantity?.message}>
+        <FormRow label="Số lượng còn lại:" error={errors?.quantity?.message}>
           <Input
             type="number"
             id="quantity"

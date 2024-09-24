@@ -40,11 +40,24 @@ export const formatDate = (date) => {
   return moment(date).format("DD/MM/YYYY");
 };
 
+export const formatDateTime = (date) => {
+  return moment(date).format("HH:mm, DD/MM/YYYY");
+}
+
 export const handleClickElement = (id) => {
   document.getElementById(id).click();
 };
 
 export const jumpToRelevantDiv = (id) => {
-  const releventDiv = document.getElementById(id);
-  releventDiv.scrollIntoView({ behavior: "smooth" });
+  const relevantDiv = document.getElementById(id);
+  relevantDiv.scrollIntoView({ behavior: "smooth" });
 };
+
+export const toCamelCase = (str) => {
+  return str
+    .split(" ")
+    .map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(" ");
+}

@@ -41,7 +41,7 @@ function Filter({ filterField, options }) {
 
   function handleClick(value) {
     searchParams.set(filterField, value);
-    if (searchParams.get("page")) searchParams.set("page", 1);
+    if (searchParams.get("trang")) searchParams.set("trang", 1);
     setSearchParams(searchParams);
   }
 
@@ -57,13 +57,6 @@ function Filter({ filterField, options }) {
           {option.label}
         </FilterButton>
       ))}
-      {/* <FilterButton onClick={() => handleClick("all")}>All</FilterButton>
-      <FilterButton onClick={() => handleClick("no-discount")}>
-        No discount
-      </FilterButton>
-      <FilterButton onClick={() => handleClick("with-discount")}>
-        With discount
-      </FilterButton> */}
     </StyledFilter>
   );
 }

@@ -33,7 +33,7 @@ function UserTable() {
       <Table columns="0.5fr 1fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr">
         <Table.Header>
           <div></div>
-          <div>Mã</div>
+          <div>Mã người dùng</div>
           <div>Họ tên</div>
           <div>Email</div>
           <div>Số điện thoại</div>

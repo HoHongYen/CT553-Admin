@@ -20,7 +20,13 @@ const StyledConfirmCertain = styled.div`
   }
 `;
 
-function ConfirmCertain({ resourceName, onConfirm, disabled, onCloseModal }) {
+function ConfirmCertain({
+  resourceName,
+  onConfirm,
+  disabled,
+  onCloseModal,
+  variation = "danger",
+}) {
   const handleConfirm = () => {
     onConfirm();
     onCloseModal();
@@ -39,7 +45,11 @@ function ConfirmCertain({ resourceName, onConfirm, disabled, onCloseModal }) {
         >
           Thoát
         </Button>
-        <Button variation="danger" disabled={disabled} onClick={handleConfirm}>
+        <Button
+          variation={variation}
+          disabled={disabled}
+          onClick={handleConfirm}
+        >
           Chắc chắn
         </Button>
       </div>

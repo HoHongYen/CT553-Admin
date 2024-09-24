@@ -12,7 +12,7 @@ export function useLoginWithGoogle() {
             toast.success("Đăng nhập thành công!");
             const user = res.metadata.account;
             queryClient.setQueryData(["user"], user);
-            localStorage.setItem("accesstoken", res.metadata.tokens.accessToken);
+            localStorage.setItem("adminAccesstoken", res.metadata.tokens.accessToken);
 
             navigate("/", { replace: true });
         },

@@ -47,7 +47,7 @@ function CategoryTable() {
       <Table columns="1fr 1fr 1fr 1fr">
         <Table.Header>
           <div></div>
-          <div>Mã</div>
+          <div>Mã danh mục</div>
           <div>Tên danh mục</div>
           <div></div>
         </Table.Header>

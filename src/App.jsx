@@ -25,6 +25,7 @@ function App() {
     <>
       <DarkModeProvider>
         <QueryClientProvider client={queryClient}>
+          <GlobalStyles />
           <ConfigProvider
             theme={{
               token: {
@@ -32,7 +33,6 @@ function App() {
               },
             }}
           >
-            <GlobalStyles />
             <ReactQueryDevtools initialIsOpen={false} />
             <BrowserRouter>
               <ScrollToTop />
@@ -86,6 +86,16 @@ function App() {
                   <Route
                     path="coupons"
                     element={<SuspenseWrapper path="Coupons" />}
+                  />
+                  <Route
+                    path="don-hang"
+                    element={<SuspenseWrapper path="Orders" />}
+                  />
+                  <Route
+                    path="don-hang/:orderId"
+                    element={
+                      <SuspenseWrapper path="OrderDetail" />
+                    }
                   />
                 </Route>
                 <Route

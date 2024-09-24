@@ -7,7 +7,7 @@ export function useLogout() {
 
     const { mutate: logout, isLoading } = useMutation({
         onSettled: () => {
-            localStorage.removeItem("accesstoken");
+            localStorage.removeItem("adminAccesstoken");
             queryClient.removeQueries();
             queryClient.setQueryData(["user"], null);
             navigate("/");

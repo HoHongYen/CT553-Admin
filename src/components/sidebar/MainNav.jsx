@@ -24,11 +24,11 @@ const StyledNavLink = styled(NavLink)`
     display: flex;
     align-items: center;
     gap: 1.2rem;
+    margin-left: 0.8rem;
 
-    color: var(--color-blue-600);
-    font-size: 1.6rem;
-    font-weight: 500;
-    padding: 1.2rem 2.4rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding: 1.5rem 2.4rem;
     transition: all 0.3s;
   }
 
@@ -37,15 +37,15 @@ const StyledNavLink = styled(NavLink)`
   &:active,
   &.active:link,
   &.active:visited {
-    color: var(--color-blue-800);
-    background-color: var(--color-blue-50);
+    color: var(--color-brand-600);
+    background-color: var(--color-brand-50);
     border-radius: var(--border-radius-sm);
   }
 
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    color: var(--color-blue-400);
+    color: var(--color-brand-400);
     transition: all 0.3s;
   }
 
