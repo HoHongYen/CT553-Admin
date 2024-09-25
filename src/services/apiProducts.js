@@ -159,11 +159,6 @@ export async function updateDiscount(productId, data) {
   return (await api.put(`/${productId}/discount`, data)).data; // discountType, discountValue, startDate, endDate
 }
 
-// export async function deleteDiscount(productId, id) {
-//   console.log("deleteVariant", productId, id);
-//   return (await api.delete(`/${productId}/discount/${id}`)).data;
-// }
-
 export async function uploadImage(id, data) {
   return (await api.post(`/${id}/add-image`, data)).data;
 }
@@ -181,11 +176,6 @@ export async function deleteCategory(id, categoryId) {
   console.log("deleteCategory", id, categoryId);
   return (await api.delete(`/${id}/delete-category/${categoryId}`)).data;
 }
-
-// export async function deleteCategory(productCategoryId) {
-//   console.log("productCategoryId", productCategoryId);
-//   return (await api.delete(`/delete-category/${productCategoryId}`)).data;
-// }
 
 export async function getProducts({ type = PRODUCT_ALL, categoryIds, filter, filterMinPrice = 0, filterMaxPrice = 0, sortBy, page = 1, limit = PAGE_SIZE }) {
   const products = (await api.get("/", { params: { type, categoryIds, filter, filterMinPrice, filterMaxPrice, sortBy, limit, page } })).data;

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { HiEye, HiTrash } from "react-icons/hi2";
+import { HiEye, HiStar, HiTrash } from "react-icons/hi2";
 
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
@@ -10,9 +10,20 @@ import RoundImage from "@/components/ui/RoundImage";
 import { deleteProduct } from "@/services/apiProducts";
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
 import { formatDate } from "@/utils/helpers";
+import { Rate } from "antd";
+import Tag from "../ui/Tag";
 
 function ProductRow({
-  product: { id: productId, name, slug, createdAt, soldNumber, thumbnailImage },
+  product: {
+    id: productId,
+    name,
+    slug,
+    productDiscount,
+    createdAt,
+    soldNumber,
+    thumbnailImage,
+    totalQuantity,
+  },
 }) {
   const { isDeleting, deleteProduct } = useDeleteProduct();
 
@@ -24,7 +35,19 @@ function ProductRow({
       <div>#{productId}</div>
       <div>{name}</div>
       <div>{formatDate(createdAt)}</div>
+      <div>
+        <Tag type={productDiscount.length > 0 ? "green" : "blue"}>
+          {productDiscount.length > 0 ? "Đang giảm giá" : "Không có"}
+        </Tag>
+      </div>
       <div>{soldNumber}</div>
+      <div>{totalQuantity}</div>
+      <div className="flex gap-2 items-center">
+        1
+        <div className="text-yellow-600">
+          <HiStar />
+        </div>
+      </div>
       <div>
         <Modal>
           <Menus.Menu>

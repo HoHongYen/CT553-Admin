@@ -1,18 +1,21 @@
-import { formatDate } from "@/utils/helpers";
+import { formatDateTime } from "@/utils/helpers";
+import { ORDER_STATUS_COLOR, ORDER_STATUS_TEXT } from "@/utils/constants";
 import Heading from "@/components/ui/Heading";
 import Tag from "@/components/ui/Tag";
-import { ORDER_STATUS_COLOR, ORDER_STATUS_TEXT } from "@/utils/constants";
 
 function OrderHeader({ order }) {
   return (
     <div className="flex justify-between items-center">
       <div className="flex flex-col gap-2">
-        <Heading as="h2" className="text-[var(--color-brand-700)] font-bold mb-2">
+        <Heading
+          as="h2"
+          className="text-[var(--color-brand-700)] font-bold mb-2"
+        >
           Mã đơn hàng: #{order.id}
         </Heading>
         <div className="italic">
           <span className="font-semibold mr-2">Ngày đặt hàng:</span>{" "}
-          {formatDate(order.createdAt)}
+          {formatDateTime(order.createdAt)}
         </div>
         <div className="italic">
           <span className="font-semibold mr-2">Giao tới:</span>{" "}

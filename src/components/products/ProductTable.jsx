@@ -7,19 +7,22 @@ import Spinner from "@/components/ui/Spinner";
 import Pagination from "@/components/ui/Pagination";
 
 function ProductTable() {
-  const { isLoading, products, totalProducts } = useProducts();
+  const { isLoading, products, totalProducts, totalPages } = useProducts();
   if (isLoading) return <Spinner />;
   if (!products.length) return <p>Không có sản phẩm nào!</p>;
 
   return (
     <Menus>
-      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
+      <Table columns="1fr 1fr 4fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr">
         <Table.Header>
           <div></div>
           <div>Mã sản phẩm</div>
           <div>Tên sản phẩm</div>
           <div>Ngày thêm</div>
+          <div>Giảm giá</div>
           <div>Đã bán</div>
+          <div>Còn lại</div>
+          <div>Đánh giá</div>
           <div></div>
         </Table.Header>
 
@@ -31,7 +34,11 @@ function ProductTable() {
         />
 
         <Table.Footer>
-          <Pagination count={totalProducts} />
+          <Pagination
+            count={totalProducts}
+            totalPages={totalPages}
+            label="sản phẩm"
+          />
         </Table.Footer>
       </Table>
     </Menus>

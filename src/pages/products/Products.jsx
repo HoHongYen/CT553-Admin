@@ -1,9 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import Heading from "@/components/ui/Heading";
 import Row from "@/components/ui/Row";
 import ProductTable from "@/components/products/ProductTable";
-import ProductTableOperations from "@/components/products/ProductTableOperations";
-import { useNavigate } from "react-router-dom";
 import Button from "@/components/ui/Button";
+import ProductFilterOperations from "@/components/products/ProductFilterOperations";
 
 function Products() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ function Products() {
     <>
       <Row type="horizontal">
         <Heading as="h1">Sản phẩm</Heading>
-        <ProductTableOperations />
+        <ProductFilterOperations />
       </Row>
       <Row>
         <ProductTable data="products" />

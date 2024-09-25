@@ -3,9 +3,10 @@ import { Skeleton } from "antd";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import OrderRow from "./OrderRow";
+import Pagination from "../ui/Pagination";
 
 function OrderTable() {
-  const { isLoading, orders } = useOrders();
+  const { isLoading, orders, totalOrders, totalPages } = useOrders();
 
   if (isLoading) return <Skeleton />;
   if (!orders.length) return <p>Không có đơn hàng nào!</p>;
@@ -29,6 +30,13 @@ function OrderTable() {
           data={orders}
           render={(order) => <OrderRow key={order.id} order={order} />}
         />
+        <Table.Footer>
+          <Pagination
+            count={totalOrders}
+            totalPages={totalPages}
+            label="đơn hàng"
+          />
+        </Table.Footer>
       </Table>
     </Menus>
   );

@@ -18,13 +18,6 @@ function Orders() {
       </Row>
       <Row>
         <OrderTable />
-        <div className="mt-10">
-          <Pagination
-            count={totalOrders}
-            totalPages={totalPages}
-            label="đơn hàng"
-          />
-        </div>
       </Row>
     </>
   );

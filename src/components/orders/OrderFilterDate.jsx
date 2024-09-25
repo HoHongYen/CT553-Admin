@@ -36,18 +36,18 @@ function OrderFilterDate() {
       <span className="text[1.4rem] text-[var(--color-red-700)]">
         {dateError}
       </span>
-      <label htmlFor="birthday">Ngày đặt hàng:</label>
+      <label htmlFor="beginDate">Ngày đặt hàng:</label>
       <span>Từ</span>
       <Input
         type="date"
-        id="birthday"
+        id="beginDate"
         value={beginDate}
         onChange={(e) => setBeginDate(e.target.value)}
       />
       <span>đến</span>
       <Input
         type="date"
-        id="birthday"
+        id="endDate"
         value={endDate}
         onChange={(e) => setEndDate(e.target.value)}
       />
