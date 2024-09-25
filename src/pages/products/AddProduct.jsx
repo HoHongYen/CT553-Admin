@@ -663,6 +663,7 @@ function AddProduct() {
                   {overviewError}
                 </span>
               </div>
+
               <Editor
                 data={overview}
                 onChange={(event, editor) => {
@@ -670,6 +671,7 @@ function AddProduct() {
                 }}
                 placeholder="Nhập thông tin tổng quan sản phẩm"
               />
+
             </div>
             {/* overview end */}
 
