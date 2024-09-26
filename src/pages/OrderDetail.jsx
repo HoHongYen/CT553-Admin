@@ -8,14 +8,11 @@ import OrderHeader from "@/components/orders/OrderHeader";
 import OrderDetailItem from "@/components/orders/OrderDetailItem";
 import OrderFooter from "@/components/orders/OrderFooter";
 import OrderTracking from "@/components/orders/OrderTracking";
+import { useMoveBack } from "@/hooks/common/useMoveBack";
 
 function OrderDetail() {
-  const navigate = useNavigate();
+  const moveBack = useMoveBack();
   const { isLoading, order } = useOrder();
-
-  const handleBackToOrderTable = () => {
-    navigate("/don-hang");
-  };
 
   if (isLoading) return <Skeleton active />;
 
@@ -24,7 +21,7 @@ function OrderDetail() {
       <Row>
         <Heading as="h1">Chi tiết đơn hàng #{order.id}</Heading>
         <div className="flex justify-end">
-          <ButtonText onClick={handleBackToOrderTable}>
+          <ButtonText onClick={moveBack}>
             &larr; Quay lại
           </ButtonText>
         </div>

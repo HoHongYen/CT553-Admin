@@ -126,7 +126,7 @@ function Pagination({ count, totalPages, label = "sản phẩm" }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  if (totalPages <= 1) return null;
+  // if (totalPages <= 1) return null;
 
   return (
     <StyledPagination>

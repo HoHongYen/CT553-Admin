@@ -98,6 +98,12 @@ function MainNav() {
             <span>Đơn hàng</span>
           </StyledNavLink>
         </li>
+        <li>
+          <StyledNavLink to="/danh-gia">
+            <HiOutlineShoppingBag />
+            <span>Đánh giá</span>
+          </StyledNavLink>
+        </li>
       </NavList>
     </nav>
   );

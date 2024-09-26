@@ -93,9 +93,11 @@ function App() {
                   />
                   <Route
                     path="don-hang/:orderId"
-                    element={
-                      <SuspenseWrapper path="OrderDetail" />
-                    }
+                    element={<SuspenseWrapper path="OrderDetail" />}
+                  />
+                  <Route
+                    path="danh-gia"
+                    element={<SuspenseWrapper path="Reviews" />}
                   />
                 </Route>
                 <Route

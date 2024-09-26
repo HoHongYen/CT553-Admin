@@ -1,8 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams, useSearchParams } from "react-router-dom";
-import { formatSlugify } from "@/utils/helpers";
+import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "@/utils/constants";
-import { useCategories } from "../categories/useCategories";
 import { getProducts } from "@/services/apiProducts";
 
 export function useProducts() {

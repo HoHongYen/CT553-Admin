@@ -1,23 +1,24 @@
+import { useReviews } from "@/hooks/reviews/useReviews";
 import Heading from "@/components/ui/Heading";
 import Row from "@/components/ui/Row";
-import OrderTable from "@/components/orders/OrderTable";
 import OrderFilterOperations from "@/components/orders/OrderFilterOperations";
+import ReviewTable from "@/components/reviews/ReviewTable";
 
-function Orders() {
+function Reviews() {
 
   return (
     <>
       <Row>
-        <Heading as="h1">Đơn hàng</Heading>
+        <Heading as="h1">Đánh giá</Heading>
         <div className="flex justify-end">
-          <OrderFilterOperations />
+          {/* <OrderFilterOperations /> */}
         </div>
       </Row>
       <Row>
-        <OrderTable />
-      </Row>a
+        <ReviewTable />
+      </Row>
     </>
   );
 }
 
-export default Orders;
+export default Reviews;
