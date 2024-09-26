@@ -6,7 +6,6 @@ function AddDiscount({ discounts, setDiscounts }) {
   return (
     <div>
       <Modal>
-
         <Modal.Open opens="discount-form">
           <Button>
             <span className="mr-2">+</span>Thêm chương trình giảm giá

@@ -33,6 +33,7 @@ import VariantTable from "@/components/products/variants/VariantTable";
 import CreateVariantForm from "@/components/products/variants/CreateVariantForm";
 import DiscountTable from "@/components/products/discounts/DiscountTable";
 import AddDiscount from "@/components/products/discounts/AddDiscount";
+import AddVariant from "@/components/products/variants/AddVariant";
 
 function AddProduct() {
   const { createProduct, isLoading } = useCreateProduct();
@@ -615,22 +616,7 @@ function AddProduct() {
               </span>
             </div>
             <VariantTable variants={variants} setVariants={setVariants} />
-
-            <div>
-              <Modal>
-                <Modal.Open opens="variant-form">
-                  <Button>
-                    <span className="mr-2">+</span>Thêm kích thước tranh
-                  </Button>
-                </Modal.Open>
-                <Modal.Window name="variant-form">
-                  <CreateVariantForm
-                    variants={variants}
-                    setVariants={setVariants}
-                  />
-                </Modal.Window>
-              </Modal>
-            </div>
+            <AddVariant variants={variants} setVariants={setVariants} />
           </div>
           {/* add variant end */}
 
@@ -671,7 +657,6 @@ function AddProduct() {
                 }}
                 placeholder="Nhập thông tin tổng quan sản phẩm"
               />
-
             </div>
             {/* overview end */}
 

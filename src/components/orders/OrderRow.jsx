@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatCurrency, formatDate } from "@/utils/helpers";
 
 import { HiEye } from "react-icons/hi2";
@@ -67,7 +67,9 @@ function OrderRow({ order }) {
   return (
     <>
       <Table.Row>
-        <div>#{orderId}</div>
+        <Link to={`/don-hang/${orderId}`} className="font-bold underline">
+          #{orderId}
+        </Link>
         <div>#{buyerId}</div>
         <div>{buyerFullName}</div>
         <div>{formatDate(createdAt)}</div>

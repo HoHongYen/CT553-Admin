@@ -47,6 +47,8 @@ import VariantTable from "@/components/products/variants/VariantTable";
 import CreateVariantForm from "@/components/products/variants/CreateVariantForm";
 import DiscountTable from "@/components/products/discounts/DiscountTable";
 import CreateDiscountForm from "@/components/products/discounts/CreateDiscountForm";
+import AddVariant from "@/components/products/variants/AddVariant";
+import AddDiscount from "@/components/products/discounts/AddDiscount";
 
 function UpdateProduct() {
   const { product, isLoading: isLoadingProduct } = useProduct();
@@ -844,20 +846,7 @@ function UpdateProduct() {
               </span>
             </div>
             <VariantTable variants={variants} setVariants={setVariants} />
-
-            <div>
-              <Modal>
-                <Modal.Open opens="variant-form">
-                  <Button>Thêm kích thước tranh</Button>
-                </Modal.Open>
-                <Modal.Window name="variant-form">
-                  <CreateVariantForm
-                    variants={variants}
-                    setVariants={setVariants}
-                  />
-                </Modal.Window>
-              </Modal>
-            </div>
+            <AddVariant variants={variants} setVariants={setVariants} />
           </div>
           {/* add variant end */}
 
@@ -872,22 +861,7 @@ function UpdateProduct() {
               </label>
             </div>
             <DiscountTable discounts={discounts} setDiscounts={setDiscounts} />
-
-            <div>
-              <Modal>
-                <Modal.Open opens="discount-form">
-                  <Button>
-                    <span className="mr-2">+</span>Thêm chương trình giảm giá
-                  </Button>
-                </Modal.Open>
-                <Modal.Window name="discount-form">
-                  <CreateDiscountForm
-                    discounts={discounts}
-                    setDiscounts={setDiscounts}
-                  />
-                </Modal.Window>
-              </Modal>
-            </div>
+            <AddDiscount discounts={discounts} setDiscounts={setDiscounts} />
           </div>
           {/* add discount end */}
 

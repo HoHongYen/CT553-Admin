@@ -25,7 +25,7 @@ function CategoryRow({ category }) {
               <Menus.Toggle id={categoryId} />
               <Menus.List id={categoryId}>
                 <Modal.Open opens="edit">
-                  <Menus.Button icon={<HiPencil />}>Xem chi tiết</Menus.Button>
+                  <Menus.Button icon={<HiPencil />}>Chỉnh sửa</Menus.Button>
                 </Modal.Open>
 
                 <Modal.Open opens="delete">

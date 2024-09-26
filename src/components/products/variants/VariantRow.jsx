@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { formatCurrency } from "@/utils/helpers";
 
-import { HiEye, HiTrash } from "react-icons/hi2";
+import { HiPencil, HiTrash } from "react-icons/hi2";
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
@@ -34,7 +34,7 @@ function VariantRow({ variant, index, setVariants }) {
               <Menus.Toggle id={index} />
               <Menus.List id={index}>
                 <Modal.Open opens="edit">
-                  <Menus.Button icon={<HiEye />}>Xem chi tiết</Menus.Button>
+                  <Menus.Button icon={<HiPencil />}>Chỉnh sửa</Menus.Button>
                 </Modal.Open>
 
                 <Modal.Open opens="delete">

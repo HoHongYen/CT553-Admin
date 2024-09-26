@@ -11,7 +11,7 @@ import FormRow from "@/components/ui/FormRow";
 import Input from "@/components/ui/Input";
 import Heading from "@/components/ui/Heading";
 
-function CreateDiscountForm({ setDiscounts }) {
+function CreateDiscountForm({ setDiscounts, onCloseModal }) {
   const { register, handleSubmit, formState, reset, setValue } = useForm();
   const { errors } = formState;
 
@@ -39,6 +39,7 @@ function CreateDiscountForm({ setDiscounts }) {
       },
     ]);
     toast.success("Thêm chương trình giảm giá thành công!");
+    onCloseModal?.();
     reset();
   }
 

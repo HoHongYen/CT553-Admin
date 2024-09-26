@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { HiEye, HiStar, HiTrash } from "react-icons/hi2";
 
@@ -9,7 +9,7 @@ import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import RoundImage from "@/components/ui/RoundImage";
 import { deleteProduct } from "@/services/apiProducts";
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
-import { formatDate } from "@/utils/helpers";
+import { calculateRating, formatDate } from "@/utils/helpers";
 import { Rate } from "antd";
 import Tag from "../ui/Tag";
 
@@ -23,6 +23,7 @@ function ProductRow({
     soldNumber,
     thumbnailImage,
     totalQuantity,
+    reviews
   },
 }) {
   const { isDeleting, deleteProduct } = useDeleteProduct();
@@ -32,7 +33,7 @@ function ProductRow({
   return (
     <Table.Row>
       <RoundImage path={thumbnailImage.path} alt={name} />
-      <div>#{productId}</div>
+      <Link to={`/san-pham/${slug}`} className="font-bold underline">#{productId}</Link>
       <div>{name}</div>
       <div>{formatDate(createdAt)}</div>
       <div>
@@ -43,8 +44,8 @@ function ProductRow({
       <div>{soldNumber}</div>
       <div>{totalQuantity}</div>
       <div className="flex gap-2 items-center">
-        1
-        <div className="text-yellow-600">
+        {calculateRating(reviews)}
+        <div className="text-[var(--color-yellow-700)] text-3xl">
           <HiStar />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { useDeleteCoupon } from "@/hooks/coupons/useDeleteCoupon";
 import { formatCurrency, formatDate } from "@/utils/helpers";
 
-import { HiEye, HiTrash } from "react-icons/hi2";
+import { HiPencil, HiTrash } from "react-icons/hi2";
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
@@ -45,7 +45,7 @@ function CouponRow({ coupon }) {
               <Menus.Toggle id={couponId} />
               <Menus.List id={couponId}>
                 <Modal.Open opens="edit">
-                  <Menus.Button icon={<HiEye />}>Xem chi tiết</Menus.Button>
+                  <Menus.Button icon={<HiPencil />}>Chỉnh sửa</Menus.Button>
                 </Modal.Open>
 
                 <Modal.Open opens="delete">

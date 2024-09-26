@@ -18,6 +18,7 @@ import Input from "@/components/ui/Input";
 import SpinnerMini from "@/components/ui/SpinnerMini";
 import Select from "@/components/ui/Select";
 import { formatSlugify } from "@/utils/helpers";
+import Heading from "../ui/Heading";
 
 function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {
   const { createCategory, isLoading: isCreating } = useCreateCategory();
@@ -135,6 +136,12 @@ function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex justify-center mb-10">
+        <Heading as="h2">
+          {isEditSession ? "Chỉnh sửa danh mục" : "Thêm danh mục"}
+        </Heading>
+      </div>
+
       <div className="flex gap-10">
         <div className="relative w-[80px] h-[80px] lg:w-[150px] lg:h-[150px]">
           <div className="flex justify-center">

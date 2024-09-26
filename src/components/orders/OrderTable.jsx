@@ -13,7 +13,7 @@ function OrderTable() {
 
   return (
     <Menus>
-      <Table columns="0.5fr 0.5fr 1fr 1fr 1fr 1fr 1.5fr 1.5fr 2fr 1.5fr">
+      <Table columns="0.5fr 0.5fr 1fr 1fr 1fr 1fr 2fr 1.5fr 2fr 1.5fr">
         <Table.Header>
           <div>Mã đơn</div>
           <div>Mã khách hàng</div>
