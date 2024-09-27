@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Input from "@/components/ui/Input";
 import { HiXMark } from "react-icons/hi2";
+import Input from "@/components/ui/Input";
 
-function SearchBarCustomer({ placeholder, style }) {
+function SearchBar({ placeholder, style, label = null }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState();
 
@@ -43,11 +43,11 @@ function SearchBarCustomer({ placeholder, style }) {
       )}
       {value && (
         <label className="text-[1.1rem] z-2 text-[var(--color-grey-400)] pointer-events-none absolute left-3 inset-y-0 h-fit flex items-center select-none transition-all peer-focus:text-sm peer-placeholder-shown:text-lg px-1 peer-focus:px-1 peer-placeholder-shown:px-0 bg-[var(--color-grey-0)] peer-focus:bg-[var(--color-grey-0)] peer-placeholder-shown:bg-transparent m-0 peer-focus:m-0 peer-placeholder-shown:m-auto -translate-y-1/2 peer-focus:-translate-y-1/2 peer-placeholder-shown:translate-y-0">
-          Tìm kiếm theo mã hoặc tên khách hàng
+          {label}
         </label>
       )}
     </div>
   );
 }
 
-export default SearchBarCustomer;
+export default SearchBar;

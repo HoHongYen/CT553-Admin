@@ -7,6 +7,17 @@ export function useReviews() {
     const queryClient = useQueryClient();
     const [searchParams] = useSearchParams();
 
+    // CUSTOMER SEARCH
+    const customerSearchValue = searchParams.get("khach-hang") || "";
+    const customerSearch = customerSearchValue === "" ? "" : customerSearchValue;
+
+    // FILTER
+    const visibleValue = searchParams.get("trang-thai") || "tat-ca";
+    const visible = visibleValue === "tat-ca" ? "all" : visibleValue === "hien-thi" ? true : false;
+
+    const replyValue = searchParams.get("phan-hoi") || "tat-ca";
+    const hasReply = replyValue === "tat-ca" ? "all" : replyValue === "da-phan-hoi" ? true : false;
+
     // // SORT
     const sortByRaw = searchParams.get("thu-tu") || "moi-nhat";
     let sortBy = { field: "createdAt", direction: "desc" };
@@ -28,8 +39,8 @@ export function useReviews() {
     const { isLoading,
         data: { metadata: { reviews, pagination: { totalReviews, totalPages } } } = { metadata: { reviews: [], pagination: { totalReviews: 0, totalPages: 0 } } },
     } = useQuery({
-        queryKey: ["reviews", sortBy, page, limit],
-        queryFn: () => getAllReviews({ sortBy, page, limit }),
+        queryKey: ["reviews", customerSearch, visible, hasReply, sortBy, page, limit],
+        queryFn: () => getAllReviews({ customerSearch, visible, hasReply, sortBy, page, limit }),
     })
 
     // PRE_FETCHING

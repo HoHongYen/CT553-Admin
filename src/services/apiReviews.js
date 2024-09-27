@@ -8,14 +8,18 @@ export async function createReview(data) {
     return (await api.post("", data)).data;
 }
 
-export async function getAllReviews({ sortBy, page, limit }) {
-    return (await api.get("", { params: { sortBy, page, limit } })).data;
+export async function getAllReviews({ customerSearch, visible, hasReply, sortBy, page, limit }) {
+    return (await api.get("", { params: { customerSearch, visible, hasReply, sortBy, page, limit } })).data;
 }
 
 export async function getAllReviewsOfProduct(productId, { sortBy, page, limit }) {
     const reviews = (await api.get("/" + productId, { params: { sortBy, page, limit } })).data;
     console.log("reviews", reviews);
     return reviews;
+}
+
+export async function toggleHideReview(reviewId) {
+    return (await api.put("/toggleHide/" + reviewId)).data;
 }
 
 export async function uploadImage(id, data) {

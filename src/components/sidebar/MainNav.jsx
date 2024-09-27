@@ -8,9 +8,13 @@ import {
   HiOutlineUser,
   HiOutlineShoppingBag,
   HiOutlineChartPie,
-  HiOutlineChartBar,
   HiOutlinePhoto,
+  HiOutlineStar,
+  HiMiniChevronRight,
+  HiMiniChevronDown,
 } from "react-icons/hi2";
+import { Collapse } from "antd";
+import { useState } from "react";
 
 const NavList = styled.ul`
   display: flex;
@@ -58,6 +62,8 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function MainNav() {
+  const [showChildMenu, setShowChildMenu] = useState(true);
+
   return (
     <nav>
       <NavList>
@@ -75,22 +81,32 @@ function MainNav() {
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink to="/danh-muc">
-            <HiOutlineNewspaper />
-            <span>Danh mục</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/san-pham">
+          <StyledNavLink>
             <HiOutlinePhoto />
-            <span>Sản phẩm</span>
+            <div
+              onClick={() => setShowChildMenu((show) => !show)}
+              className="flex"
+            >
+              <span>Sản phẩm</span>
+              {showChildMenu ? <HiMiniChevronDown /> : <HiMiniChevronRight />}
+            </div>
           </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/coupons">
-            <HiOutlineGift />
-            <span>Coupons</span>
-          </StyledNavLink>
+          {showChildMenu && (
+            <div className="ml-10">
+              <StyledNavLink to="/san-pham">
+                <HiOutlinePhoto />
+                <span>Sản phẩm</span>
+              </StyledNavLink>
+              <StyledNavLink to="/danh-muc">
+                <HiOutlineNewspaper />
+                <span>Danh mục</span>
+              </StyledNavLink>
+              <StyledNavLink to="/coupons">
+                <HiOutlineGift />
+                <span>Coupons</span>
+              </StyledNavLink>
+            </div>
+          )}
         </li>
         <li>
           <StyledNavLink to="/don-hang">
@@ -100,7 +116,7 @@ function MainNav() {
         </li>
         <li>
           <StyledNavLink to="/danh-gia">
-            <HiOutlineShoppingBag />
+            <HiOutlineStar />
             <span>Đánh giá</span>
           </StyledNavLink>
         </li>

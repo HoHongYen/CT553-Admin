@@ -15,7 +15,7 @@ function Orders() {
       </Row>
       <Row>
         <OrderTable />
-      </Row>a
+      </Row>
     </>
   );
 }

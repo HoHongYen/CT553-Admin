@@ -8,8 +8,9 @@ export function useUpdateOrderStatus() {
         mutationFn: ({ orderId, updatedOrder: { fromStatus, toStatus } }) => updateOrderStatusApi(orderId, { fromStatus, toStatus }),
         onSuccess: (order) => {
             console.log(order);
-            toast.success("Cập nhật trạng thái đơn hàng thành công!");
-            // queryClient.invalidateQueries({ queryKey: ["order"] });
+            toast.success("Cập nhật trạng thái đơn hàng thành công!", {
+                id: 'clipboard',
+              });
 
             queryClient.invalidateQueries({ predicate: (query) => { return ['orders', 'order'].includes(query.queryKey[0]); } })
         },

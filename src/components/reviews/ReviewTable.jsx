@@ -13,7 +13,7 @@ function ReviewTable() {
 
   return (
     <Menus>
-      <Table columns="0.5fr 0.5fr 1fr 2fr 1fr 1fr 3fr 1fr 1.5fr 1fr">
+      <Table columns="0.5fr 0.5fr 1fr 2fr 1fr 1fr 3fr 1fr 2fr 0.5fr">
         <Table.Header>
           <div>Mã đánh giá</div>
           <div>Mã đơn</div>

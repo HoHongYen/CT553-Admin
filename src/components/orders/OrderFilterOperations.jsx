@@ -13,9 +13,9 @@ import TableOperations from "@/components/ui/TableOperations";
 import SortBy from "@/components/ui/SortBy";
 import ButtonIcon from "@/components/ui/ButtonIcon";
 import SearchBar from "./SearchBar";
-import OrderFilterSelect from "./OrderFilterSelect";
-import SearchBarCustomer from "./SearchBarCustomer";
+import SearchBarCustomer from "../ui/SearchBar";
 import OrderFilterDate from "./OrderFilterDate";
+import FilterSelect from "../ui/FilterSelect";
 
 function OrderFilterOperations() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -110,19 +110,20 @@ function OrderFilterOperations() {
                 width: 300,
                 height: 40,
               }}
+              label="Tìm kiếm theo mã hoặc tên khách hàng"
             />
 
-            <OrderFilterSelect
+            <FilterSelect
               options={paymentMethodOptions}
               filterField="phuong-thuc-thanh-toan"
               label="Phương thức thanh toán"
             />
-            <OrderFilterSelect
+            <FilterSelect
               options={paymentStatusOptions}
               filterField="trang-thai-thanh-toan"
               label="Trạng thái thanh toán"
             />
-            <OrderFilterSelect
+            <FilterSelect
               options={orderStatusOptions}
               filterField="trang-thai-don-hang"
               label="Trạng thái đơn hàng"

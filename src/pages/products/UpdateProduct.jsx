@@ -626,7 +626,7 @@ function UpdateProduct() {
                 <div className="max-w-6">
                   {!visible ? <TickRoundIcon /> : <EmptyRoundBoxIcon />}
                 </div>
-                <span>Ẩn</span>
+                <span>Đã ẩn</span>
               </div>
             </div>
           </FormRow>

@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
-import Select from "../ui/Select";
+import Select from "./Select";
 
-function OrderFilterSelect({ options, filterField, label = null }) {
+function FilterSelect({ options, filterField, label = null }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentFilter = searchParams.get(filterField) || options[0].value;
 
@@ -23,4 +23,4 @@ function OrderFilterSelect({ options, filterField, label = null }) {
   );
 }
 
-export default OrderFilterSelect;
+export default FilterSelect;

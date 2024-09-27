@@ -7,6 +7,8 @@ import Table from "@/components/ui/Table";
 import Tag from "@/components/ui/Tag";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Menus from "@/components/ui/Menus";
+import { useHideReview } from "@/hooks/reviews/useHideReview";
+import CommentItem from "./CommentItem";
 
 function ReviewRow({ review }) {
   const {
@@ -27,11 +29,15 @@ function ReviewRow({ review }) {
     createdAt,
   } = review;
 
+  const { isLoading, toggleHideReview } = useHideReview();
+
   return (
     <>
       <Table.Row>
         <div>#{reviewId}</div>
-        <Link to={`/don-hang/${orderId}`} className="font-bold underline">#{orderId}</Link>
+        <Link to={`/don-hang/${orderId}`} className="font-bold underline">
+          #{orderId}
+        </Link>
         <div>{fullName}</div>
         <div>{productName}</div>
         <div>{formatDateTimeFromNow(createdAt)}</div>
@@ -45,7 +51,7 @@ function ReviewRow({ review }) {
           {comment.length > 50 ? comment.slice(0, 50) + "..." : comment}
         </div>
         <Tag type={visible ? "green" : "red"}>
-          {visible ? "Hiển thị" : "Ẩn"}
+          {visible ? "Hiển thị" : "Đã ẩn"}
         </Tag>
 
         <Tag type={replyByReview.length > 0 ? "green" : "red"}>
@@ -66,12 +72,16 @@ function ReviewRow({ review }) {
                 </Modal.Open>
 
                 <Modal.Open opens="edit">
-                  <Menus.Button icon={<HiPencil />}>Ẩn phản hồi</Menus.Button>
+                  <Menus.Button icon={<HiPencil />}>
+                    {visible ? "Ẩn" : "Hiển thị"} đánh giá
+                  </Menus.Button>
                 </Modal.Open>
               </Menus.List>
             </Menus.Menu>
 
-            <Modal.Window name="seeDetail"></Modal.Window>
+            <Modal.Window name="seeDetail">
+              <CommentItem review={review} />
+            </Modal.Window>
 
             <Modal.Window name="reply">
               {/* <CreateCategoryForm categoryToEdit={category} /> */}
@@ -79,9 +89,11 @@ function ReviewRow({ review }) {
 
             <Modal.Window name="edit">
               <ConfirmCertain
-                resourceName="Bạn có chắc chắn muốn ẩn đánh giá này?"
-                // disabled={isDeleting}
-                // onConfirm={() => deleteCategory(categoryId)}
+                resourceName={`Bạn có chắc chắn muốn ${
+                  visible ? "ẩn" : "hiển thị"
+                } đánh giá này?`}
+                disabled={isLoading}
+                onConfirm={() => toggleHideReview(reviewId)}
               />
             </Modal.Window>
           </Modal>
