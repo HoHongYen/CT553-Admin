@@ -11,26 +11,9 @@ function UserTable() {
   if (isLoading) return <Spinner />;
   if (!users.length) return <p>Không có người dùng nào!</p>;
 
-  // 1. Filter
-  // const filterValue = searchParams.get("discount") || "all";
-  // let filteredCabins;
-  // if (filterValue === "all") filteredCabins = cabins;
-  // if (filterValue === "no-discount")
-  //   filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
-  // if (filterValue === "with-discount")
-  //   filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
-
-  // 2. Sort
-  // const sortBy = searchParams.get("sortBy") || "create_at-asc";
-  // const [field, direction] = sortBy.split("-");
-  // const modifier = direction === "asc" ? 1 : -1;
-  // const sortedCabins = filteredCabins.sort(
-  //   (a, b) => (a[field] - b[field]) * modifier
-  // );
-
   return (
     <Menus>
-      <Table columns="0.5fr 1fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr">
+      <Table columns="0.7fr 0.7fr 1.5fr 3fr 1fr 1fr 1fr 1fr 1fr 0.5fr">
         <Table.Header>
           <div></div>
           <div>Mã người dùng</div>
@@ -39,11 +22,11 @@ function UserTable() {
           <div>Số điện thoại</div>
           <div>Giới tính</div>
           <div>Chức vụ</div>
+          <div>Trạng thái</div>
           <div>Ngày tạo</div>
           <div></div>
         </Table.Header>
         <Table.Body
-          // data={sortedCabins}
           data={users}
           render={(user) => <UserRow key={user.id} user={user} />}
         />

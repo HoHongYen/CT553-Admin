@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useDeleteCabin } from "@/hooks/users/useDeleteUser";
 
 import { HiLockClosed, HiPencil } from "react-icons/hi2";
 
@@ -8,6 +7,7 @@ import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import { formatDate } from "@/utils/helpers";
+import Tag from "../ui/Tag";
 
 const Avatar = styled.img`
   display: block;
@@ -20,7 +20,6 @@ const Avatar = styled.img`
 `;
 
 function UserRow({ user }) {
-  const { isDeleting, deleteCabin } = useDeleteCabin();
 
   const {
     id: userId,
@@ -32,6 +31,7 @@ function UserRow({ user }) {
     avatar,
     roleId,
     createdAt,
+    active,
   } = user;
 
   return (
@@ -42,10 +42,13 @@ function UserRow({ user }) {
         <div>{fullName}</div>
         <div>{email}</div>
         <div>{phone}</div>
-        <div>{gender ? "Nam" : "Nữ"}</div>
-        <div>
+        <Tag type={gender ? "blue" : "red"}>{gender ? "Nam" : "Nữ"}</Tag>
+        <Tag type={roleId === 1 ? "red" : roleId === 3 ? "blue" : "yellow"}>
           {roleId === 1 ? "Admin" : roleId === 3 ? "Khách hàng" : "Nhân viên"}
-        </div>
+        </Tag>
+        <Tag type={active ? "green" : "red"}>
+          {active ? "Hiển thị" : "Đã ẩn"}
+        </Tag>
         <div>{formatDate(createdAt)}</div>
         <div>
           <Modal>
@@ -71,7 +74,7 @@ function UserRow({ user }) {
             <Modal.Window name="delete">
               <ConfirmCertain
                 resourceName="users"
-                disabled={isDeleting}
+                // disabled={isDeleting}
                 // onConfirm={() => deleteCabin(userId)}
               />
             </Modal.Window>

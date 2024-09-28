@@ -36,6 +36,10 @@ export const formatDate = (date) => {
   return moment(date).format("DD/MM/YYYY");
 };
 
+export const formatDateMonthYear = (date) => {
+  return moment(date).format("LL");
+}
+
 export const formatDateTime = (date) => {
   return moment(date).format("HH:mm, DD/MM/YYYY");
 }
@@ -68,4 +72,8 @@ export const calculateRating = (reviews) => {
     return acc + review.rating;
   }, 0);
   return (totalRating / reviews.length).toFixed(1);
+}
+
+export const randomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min);
 }
