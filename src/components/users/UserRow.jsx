@@ -1,13 +1,15 @@
 import styled from "styled-components";
 
-import { HiLockClosed, HiPencil } from "react-icons/hi2";
+import { HiEye, HiLockClosed } from "react-icons/hi2";
+import { formatDate } from "@/utils/helpers";
+import { useActiveUser } from "@/hooks/users/useActiveUser";
 
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
-import { formatDate } from "@/utils/helpers";
 import Tag from "../ui/Tag";
+import UserItem from "./UserItem";
 
 const Avatar = styled.img`
   display: block;
@@ -20,6 +22,7 @@ const Avatar = styled.img`
 `;
 
 function UserRow({ user }) {
+  const { isLoading, toggleActiveUser } = useActiveUser();
 
   const {
     id: userId,
@@ -47,7 +50,7 @@ function UserRow({ user }) {
           {roleId === 1 ? "Admin" : roleId === 3 ? "Khách hàng" : "Nhân viên"}
         </Tag>
         <Tag type={active ? "green" : "red"}>
-          {active ? "Hiển thị" : "Đã ẩn"}
+          {active ? "Đang kích hoạt" : "Đã khóa"}
         </Tag>
         <div>{formatDate(createdAt)}</div>
         <div>
@@ -55,27 +58,29 @@ function UserRow({ user }) {
             <Menus.Menu>
               <Menus.Toggle id={userId} />
               <Menus.List id={userId}>
-                <Modal.Open opens="edit">
-                  <Menus.Button icon={<HiPencil />}>Xem chi tiết</Menus.Button>
+                <Modal.Open opens="seeDetail">
+                  <Menus.Button icon={<HiEye />}>Xem chi tiết</Menus.Button>
                 </Modal.Open>
 
-                <Modal.Open opens="delete">
+                <Modal.Open opens="edit">
                   <Menus.Button icon={<HiLockClosed />}>
-                    Khóa tài khoản
+                    {active ? "Khóa tài khoản" : "Kích hoạt lại"}
                   </Menus.Button>
                 </Modal.Open>
               </Menus.List>
             </Menus.Menu>
 
-            <Modal.Window name="edit">
-              {/* <CreateCabinForm cabinToEdit={user} /> */}
+            <Modal.Window name="seeDetail">
+              <UserItem user={user} />
             </Modal.Window>
 
-            <Modal.Window name="delete">
+            <Modal.Window name="edit">
               <ConfirmCertain
-                resourceName="users"
-                // disabled={isDeleting}
-                // onConfirm={() => deleteCabin(userId)}
+                resourceName={`Bạn có chắc chắn muốn ${
+                  active ? "khóa" : "kích hoạt"
+                } tài khoản này?`}
+                disabled={isLoading}
+                onConfirm={() => toggleActiveUser(user.id)}
               />
             </Modal.Window>
           </Modal>

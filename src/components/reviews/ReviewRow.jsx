@@ -1,5 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { formatDateTimeFromNow } from "@/utils/helpers";
+import { useHideReview } from "@/hooks/reviews/useHideReview";
 
 import { HiEye, HiPencil, HiPlus, HiStar } from "react-icons/hi2";
 import Modal from "@/components/ui/Modal";
@@ -7,7 +8,6 @@ import Table from "@/components/ui/Table";
 import Tag from "@/components/ui/Tag";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Menus from "@/components/ui/Menus";
-import { useHideReview } from "@/hooks/reviews/useHideReview";
 import CommentItem from "./CommentItem";
 
 function ReviewRow({ review }) {

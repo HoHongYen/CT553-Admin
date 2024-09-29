@@ -6,7 +6,7 @@ import Heading from "../ui/Heading";
 import FormRow from "../ui/FormRow";
 import Button from "../ui/Button";
 
-function CommentItem({ review, onCloseModal, toggleHideReview }) {
+function CommentItem({ review, onCloseModal }) {
   return (
     <Form>
       <div className="w-[50vw] flex flex-col gap-5 pt-5 justify-center ">
@@ -63,10 +63,7 @@ function CommentItem({ review, onCloseModal, toggleHideReview }) {
         </div>
       </div>
       <FormRow>
-        <Button
-          type="reset"
-          onClick={() => onCloseModal?.()}
-        >
+        <Button type="reset" onClick={() => onCloseModal?.()}>
           Đóng
         </Button>
       </FormRow>

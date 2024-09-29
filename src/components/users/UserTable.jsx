@@ -13,7 +13,7 @@ function UserTable() {
 
   return (
     <Menus>
-      <Table columns="0.7fr 0.7fr 1.5fr 3fr 1fr 1fr 1fr 1fr 1fr 0.5fr">
+      <Table columns="0.7fr 0.7fr 1.5fr 3fr 1fr 1fr 1.5fr 2fr 1fr 0.5fr">
         <Table.Header>
           <div></div>
           <div>Mã người dùng</div>

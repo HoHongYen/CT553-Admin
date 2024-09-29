@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
@@ -13,8 +14,6 @@ import {
   HiMiniChevronRight,
   HiMiniChevronDown,
 } from "react-icons/hi2";
-import { Collapse } from "antd";
-import { useState } from "react";
 
 const NavList = styled.ul`
   display: flex;
@@ -30,9 +29,9 @@ const StyledNavLink = styled(NavLink)`
     gap: 1.2rem;
     margin-left: 0.8rem;
 
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     font-weight: 600;
-    padding: 1.5rem 2.4rem;
+    padding: 1.4rem 2.4rem;
     transition: all 0.3s;
   }
 
@@ -61,6 +60,34 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
+const ProductNavLink = styled(NavLink)`
+  &:link,
+  &:visited {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-left: 0.8rem;
+
+    font-size: 1.7rem;
+    font-weight: 600;
+    padding: 1.4rem 2.4rem;
+    transition: all 0.3s;
+  }
+
+  /* This works because react-router places the active class on the active NavLink */
+  &:hover {
+    color: var(--color-brand-600);
+    background-color: var(--color-brand-50);
+    border-radius: var(--border-radius-sm);
+  }
+
+  & svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    transition: all 0.3s;
+  }
+`;
+
 function MainNav() {
   const [showChildMenu, setShowChildMenu] = useState(true);
 
@@ -68,10 +95,9 @@ function MainNav() {
     <nav>
       <NavList>
         <li>
-          <StyledNavLink to="/">
+          <StyledNavLink to="/dashboard">
             <HiOutlineChartPie />
-            {/* <HiOutlineChartBar /> */}
-            <span>Dashboard</span>
+            <span>Thống kê</span>
           </StyledNavLink>
         </li>
         <li>
@@ -81,16 +107,13 @@ function MainNav() {
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink>
+          <ProductNavLink onClick={() => setShowChildMenu((show) => !show)}>
             <HiOutlinePhoto />
-            <div
-              onClick={() => setShowChildMenu((show) => !show)}
-              className="flex"
-            >
+            <div className="flex">
               <span>Sản phẩm</span>
               {showChildMenu ? <HiMiniChevronDown /> : <HiMiniChevronRight />}
             </div>
-          </StyledNavLink>
+          </ProductNavLink>
           {showChildMenu && (
             <div className="ml-10">
               <StyledNavLink to="/san-pham">
