@@ -4,9 +4,10 @@ import Spinner from "@/components/ui/Spinner";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import UserRow from "./UserRow";
+import Pagination from "../ui/Pagination";
 
 function UserTable() {
-  const { isLoading, users } = useUsers();
+  const { isLoading, users, totalUsers, totalPages } = useUsers();
 
   if (isLoading) return <Spinner />;
   if (!users.length) return <p>Không có người dùng nào!</p>;
@@ -30,6 +31,13 @@ function UserTable() {
           data={users}
           render={(user) => <UserRow key={user.id} user={user} />}
         />
+        <Table.Footer>
+          <Pagination
+            count={totalUsers}
+            totalPages={totalPages}
+            label="người dùng"
+          />
+        </Table.Footer>
       </Table>
     </Menus>
   );

@@ -14,8 +14,8 @@ import SortBy from "@/components/ui/SortBy";
 import ButtonIcon from "@/components/ui/ButtonIcon";
 import SearchBar from "./SearchBar";
 import SearchBarCustomer from "../ui/SearchBar";
-import OrderFilterDate from "./OrderFilterDate";
 import FilterSelect from "../ui/FilterSelect";
+import FilterDate from "../ui/FilterDate";
 
 function OrderFilterOperations() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -147,7 +147,7 @@ function OrderFilterOperations() {
             </ButtonIcon>
           </div>
           <div className="flex justify-end">
-            <OrderFilterDate />
+            <FilterDate label="Ngày đặt hàng:" />
           </div>
         </div>
       )}

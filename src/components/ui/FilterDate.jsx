@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import Input from "../ui/Input";
 import { useSearchParams } from "react-router-dom";
+import { DatePicker } from "antd";
+const { RangePicker } = DatePicker;
 
-function OrderFilterDate() {
+import locale from "antd/es/date-picker/locale/vi_VN";
+import moment from "moment";
+import { set } from "date-fns";
+moment.locale("vi");
+
+function FilterDate({ label = null }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // default begin date is empty
-  const [beginDate, setBeginDate] = useState("");
-  // defautl end date is today
+  const [beginDate, setBeginDate] = useState();
+  // default end date is today
   const [endDate, setEndDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -31,28 +37,34 @@ function OrderFilterDate() {
     }
   }, [beginDate, endDate]);
 
+  const dateFormat = "DD/MM/YYYY";
+
   return (
     <div className="flex gap-5 items-center">
       <span className="text[1.4rem] text-[var(--color-red-700)]">
         {dateError}
       </span>
-      <label htmlFor="beginDate">Ngày đặt hàng:</label>
-      <span>Từ</span>
-      <Input
-        type="date"
-        id="beginDate"
-        value={beginDate}
-        onChange={(e) => setBeginDate(e.target.value)}
-      />
-      <span>đến</span>
-      <Input
-        type="date"
-        id="endDate"
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
+      <label htmlFor="beginDate">{label}</label>
+      <RangePicker
+        size="large"
+        locale={locale}
+        allowEmpty={[true, true]}
+        onChange={(dates, dateStrings) => {
+
+          let beginDate = new Date(dates[0].toISOString());
+          let endDate = new Date(dates[1].toISOString());
+
+          // begin date and end date plus 1
+          beginDate.setDate(beginDate.getDate() + 1);
+          endDate.setDate(endDate.getDate() + 1);
+
+          setBeginDate(beginDate.toISOString().split("T")[0]);
+          setEndDate(endDate.toISOString().split("T")[0]);
+        }}
+        format={dateFormat}
       />
     </div>
   );
 }
 
-export default OrderFilterDate;
+export default FilterDate;

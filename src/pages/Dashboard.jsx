@@ -1,16 +1,20 @@
 import Heading from "@/components/ui/Heading";
 import Row from "@/components/ui/Row";
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import DashboardFilter from "@/components/dashboard/DashboardFilter";
+import DashboardFilterOperations from "@/components/dashboard/DashboardFilterOperations";
 
 function Dashboard() {
   return (
     <>
-      <Row type="horizontal">
-        <Heading as="h1">Dashboard</Heading>
-        <DashboardFilter />
+      <Row>
+        <Heading as="h1">Thống kê</Heading>
+        <div className="flex justify-end">
+          <DashboardFilterOperations />
+        </div>
       </Row>
-      <DashboardLayout />
+      <Row>
+        <DashboardLayout />
+      </Row>
     </>
   );
 }

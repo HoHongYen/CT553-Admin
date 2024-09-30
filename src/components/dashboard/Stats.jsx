@@ -2,50 +2,55 @@ import { formatCurrency } from "@/utils/helpers";
 
 import {
   HiOutlineBanknotes,
-  HiOutlineBriefcase,
-  HiOutlineCalendarDays,
-  HiOutlineChartBar,
+  HiOutlinePhoto,
+  HiOutlineShoppingBag,
+  HiOutlineUser,
 } from "react-icons/hi2";
 
 import Stat from "./Stat";
 
-function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
-  // 1. Get the total number of bookings
-  const numBookings = bookings.length;
-  // 2. Get the total sales
-  const sales = bookings.reduce((acc, booking) => acc + booking.totalPrice, 0);
-  // 3. Get the total number of check-ins
-  const checkins = confirmedStays.length;
-  // 4. Get the occupancy rate
-  const occupation =
-    confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0) /
-    (numDays * cabinCount);
+function Stats({ products, orders, users, sales }) {
+  const totalSales = sales.reduce((acc, sale) => acc + sale.totalSales, 0);
+  const totalOrders = orders.reduce(
+    (acc, order) => acc + order.totalAlreadyPaid + order.totalUnpaid,
+    0
+  );
+  const totalProducts = products.reduce(
+    (acc, product) => acc + product.totalProducts,
+    0
+  );
+
+  // get totalUser of last item in users array
+  const totalUsers = users[users.length - 1].totalUsers;
 
   return (
     <>
       <Stat
-        title="Bookings"
-        color="blue"
-        icon={<HiOutlineBriefcase />}
-        value={numBookings}
-      />
-      <Stat
-        title="Sales"
+        title="Tổng doanh thu"
         color="green"
         icon={<HiOutlineBanknotes />}
-        value={formatCurrency(sales)}
+        value={formatCurrency(totalSales)}
       />
+
       <Stat
-        title="Check-ins"
+        title="Số đơn hàng"
         color="indigo"
-        icon={<HiOutlineCalendarDays />}
-        value={checkins}
+        icon={<HiOutlineShoppingBag />}
+        value={totalOrders}
       />
+
       <Stat
-        title="Occupancy rate"
+        title="Số sản phẩm đã bán"
         color="yellow"
-        icon={<HiOutlineChartBar />}
-        value={Math.round(occupation * 100) + "%"}
+        icon={<HiOutlinePhoto />}
+        value={totalProducts}
+      />
+
+      <Stat
+        title="Số khách hàng"
+        color="red"
+        icon={<HiOutlineUser />}
+        value={totalUsers}
       />
     </>
   );
