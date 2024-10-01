@@ -47,13 +47,10 @@ function PaymentMethodsChart({ paymentMethods, allDates }) {
     innerRadius,
     outerRadius,
     percent,
-    value,
   }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    const name = value === VNPAY[0]?.quantity ? "VNPAY" : "COD";
 
     return (
       <text
@@ -64,7 +61,7 @@ function PaymentMethodsChart({ paymentMethods, allDates }) {
         dominantBaseline="central"
         style={{ fontSize: "1.3rem" }}
       >
-        {`${name} (${(percent * 100).toFixed(0)}%)`}
+        {`${(percent * 100).toFixed(0)}%`}
       </text>
     );
   };
@@ -75,29 +72,48 @@ function PaymentMethodsChart({ paymentMethods, allDates }) {
         Phương thức thanh toán từ {formatDate(allDates.at(0))} &mdash;{" "}
         {formatDate(allDates.at(-1))}
       </Heading>
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart width={300} height={300}>
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={renderCustomizedLabel}
-            fill="#8884d8"
-            outerRadius={100}
-            dataKey="value"
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={index}
-                text={text}
-                fill={colors[index % colors.length].fill}
-              />
+      <div className="flex w-full h-[300px]">
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart width={300} height={300}>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={renderCustomizedLabel}
+              fill="#8884d8"
+              outerRadius={100}
+              dataKey="value"
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={index}
+                  text={text}
+                  fill={colors[index % colors.length].fill}
+                />
+              ))}
+            </Pie>
+            <Tooltip contentStyle={{ backgroundColor: background }} />
+          </PieChart>
+        </ResponsiveContainer>
+        <div className="flex flex-col justify-center gap-5">
+          <ul className="mt-3">
+            {data.map((item, index) => (
+              <li key={index} className="flex items-center">
+                <span
+                  className="w-6 h-6 mr-2"
+                  style={{
+                    backgroundColor: colors[index % colors.length].fill,
+                  }}
+                ></span>
+                <span>
+                  {item.name === "Thanh toán khi nhận hàng" ? "COD" : "VNPAY"}
+                </span>
+              </li>
             ))}
-          </Pie>
-          <Tooltip contentStyle={{ backgroundColor: background }} />
-        </PieChart>
-      </ResponsiveContainer>
+          </ul>
+        </div>
+      </div>
     </StyledPaymentMethodsChart>
   );
 }
