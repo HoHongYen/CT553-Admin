@@ -31,7 +31,6 @@ const StyledGraphLayout = styled.div`
 `;
 
 export function DashboardLayout() {
-
   const {
     isLoading,
     ordersByDate,
@@ -67,9 +66,12 @@ export function DashboardLayout() {
           paymentMethods={paymentMethodQuantity}
           allDates={allDates}
         />
-        <OrdersChart orders={ordersByDate}  allDates={allDates}/>
+        <OrdersChart orders={ordersByDate} allDates={allDates} />
         <ProductsChart products={productsSoldByDate} allDates={allDates} />
-        <CategoriesChart categories={parentCategoryQuantity} allDates={allDates} />
+        <CategoriesChart
+          categories={parentCategoryQuantity}
+          allDates={allDates}
+        />
         <UsersChart users={usersByDate} allDates={allDates} />
       </StyledGraphLayout>
     </StyledDashboardLayout>

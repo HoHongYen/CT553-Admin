@@ -1,7 +1,4 @@
-import { useNavigate } from "react-router-dom";
 import {
-  ORDER_STATUS,
-  PAYMENT_STATUS,
   PAYMENT_STATUS_COLOR,
   PAYMENT_STATUS_TEXT,
 } from "@/utils/constants";
