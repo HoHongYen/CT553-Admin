@@ -1,15 +1,17 @@
 import Heading from "@/components/ui/Heading";
 import Row from "@/components/ui/Row";
 import AddCategory from "@/components/categories/AddCategory";
-import CabinTableOperations from "@/components/users/CabinTableOperations";
 import CategoryTable from "@/components/categories/CategoryTable";
+import CategoryFilterOperations from "@/components/categories/CategoryFilterOperations";
 
 function Categories() {
   return (
     <>
-      <Row type="horizontal">
+      <Row>
         <Heading as="h1">Danh mục sản phẩm</Heading>
-        <CabinTableOperations />
+        <div className="flex justify-end">
+          <CategoryFilterOperations />
+        </div>
       </Row>
       <Row>
         <CategoryTable />

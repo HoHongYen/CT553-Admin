@@ -10,8 +10,12 @@ export async function createCategory(data) {
 }
 
 export async function getCategories() {
-    const categories = (await api.get("")).data;
-    console.log("categories", categories);
+    const categories = (await api.get("/")).data;
+    return categories;
+}
+
+export async function getCategoriesForTable({ categorySearch, isRootCategory, sortBy, page, limit }) {
+    const categories = (await api.get("/admin", { params: { categorySearch, isRootCategory, sortBy, page, limit } })).data;
     return categories;
 }
 

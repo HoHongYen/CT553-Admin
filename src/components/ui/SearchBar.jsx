@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { HiXMark } from "react-icons/hi2";
 import Input from "@/components/ui/Input";
 
-function SearchBar({ placeholder, style, label = null }) {
+function SearchBar({ placeholder, style, label = null, field = "khach-hang" }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState();
 
@@ -11,14 +11,14 @@ function SearchBar({ placeholder, style, label = null }) {
     if (value) {
       console.log("search customer value", value);
       searchParams.delete("trang");
-      searchParams.set("khach-hang", value);
+      searchParams.set(field, value);
       setSearchParams(searchParams);
     }
   };
 
   useEffect(() => {
     if (!value) {
-      searchParams.delete("khach-hang");
+      searchParams.delete(field);
       setSearchParams(searchParams);
     }
   }, [value]);
