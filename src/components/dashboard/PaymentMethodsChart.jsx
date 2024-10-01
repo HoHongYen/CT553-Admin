@@ -27,8 +27,8 @@ function PaymentMethodsChart({ paymentMethods, allDates }) {
   );
 
   const data = [
-    { name: "Thanh toán qua VNPAY", value: VNPAY[0].quantity },
-    { name: "Thanh toán khi nhận hàng", value: COD[0].quantity },
+    { name: "Thanh toán qua VNPAY", value: VNPAY[0]?.quantity },
+    { name: "Thanh toán khi nhận hàng", value: COD[0]?.quantity },
   ];
 
   const colors = isDarkMode
@@ -53,7 +53,7 @@ function PaymentMethodsChart({ paymentMethods, allDates }) {
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-    const name = value === VNPAY[0].quantity ? "VNPAY" : "COD";
+    const name = value === VNPAY[0]?.quantity ? "VNPAY" : "COD";
 
     return (
       <text

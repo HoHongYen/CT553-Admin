@@ -40,6 +40,9 @@ function Filter({ filterField, options }) {
   const currentFilter = searchParams.get(filterField) || options[0].value;
 
   function handleClick(value) {
+    searchParams.delete("trang");
+    searchParams.delete("ngay-bat-dau");
+    searchParams.delete("ngay-ket-thuc");
     searchParams.set(filterField, value);
     if (searchParams.get("trang")) searchParams.set("trang", 1);
     setSearchParams(searchParams);

@@ -1,22 +1,21 @@
 import Filter from "@/components/ui/Filter";
 import TableOperations from "../ui/TableOperations";
 import FilterWeek from "../ui/FilterWeek";
-import FilterDate from "../ui/FilterDate";
+import FilterDateDashboard from "../ui/FilterDateDashboard";
 
 function DashboardFilterOperations() {
   return (
     <TableOperations>
       <Filter
-        filterField="last"
+        filterField="so-ngay-gan-nhat"
         options={[
-          { value: "7", label: "Last 7 days" },
-          { value: "14", label: "Last 14 days" },
-          { value: "30", label: "Last 30 days" },
+          { value: "7", label: "Một tuần gần nhất" },
+          { value: "14", label: "Hai tuần gần nhất" },
+          { value: "30", label: "Một tháng gần nhất" },
         ]}
       />
       <div className="flex justify-end">
-        <FilterDate label="Thời gian lọc:" />
-        {/* <FilterWeek /> */}
+        <FilterDateDashboard />
       </div>
     </TableOperations>
   );
