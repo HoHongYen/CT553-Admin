@@ -65,33 +65,20 @@ function OrdersChart({ orders, allDates }) {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="label" />
           <YAxis />
-          {/* <Tooltip /> */}
           <Legend />
+          <Tooltip contentStyle={{ backgroundColor: colors.background }} />
           <Bar
             stackId="a"
             dataKey="totalAlreadyPaid"
             name="Đã thanh toán"
             fill="#82ca9d"
-            activeBar={
-              <Rectangle
-                fill={colors.totalAlreadyPaid.fill}
-                stroke={colors.totalAlreadyPaid.stroke}
-              />
-            }
           />
           <Bar
             stackId="a"
             dataKey="totalUnpaid"
             name="Chưa thanh toán"
             fill={"#8884d8"}
-            activeBar={
-              <Rectangle
-                fill={colors.totalUnpaid.fill}
-                stroke={colors.totalUnpaid.stroke}
-              />
-            }
           />
-          <Tooltip contentStyle={{ backgroundColor: colors.background }} />
         </BarChart>
       </ResponsiveContainer>
     </StyledOrdersChart>
