@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, formatMonth } from "@/utils/helpers";
 
 import DashboardBox from "./DashboardBox";
 import Heading from "@/components/ui/Heading";
@@ -25,14 +25,14 @@ const StyledUsersChart = styled(DashboardBox)`
   }
 `;
 
-function UsersChart({ users, allDates }) {
+function UsersChart({ users, firstDate, lastDate, isYearPicker }) {
   const { isDarkMode } = useDarkMode();
 
   const data = users.map((user) => {
     const tempDate = new Date(user.date);
     const date = subDays(tempDate, 1);
     return {
-      label: formatDate(date),
+      label: isYearPicker ? formatMonth(date) : formatDate(date),
       totalUsers: user.totalUsers,
       newUsers: user.newUsers,
     };
@@ -46,8 +46,7 @@ function UsersChart({ users, allDates }) {
   return (
     <StyledUsersChart>
       <Heading as="h2">
-        Số người dùng từ {formatDate(allDates.at(0))} &mdash;{" "}
-        {formatDate(allDates.at(-1))}
+        Số người dùng từ {firstDate} &mdash; {lastDate}
       </Heading>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data} width={400} height={400}>

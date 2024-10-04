@@ -10,7 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, formatMonth } from "@/utils/helpers";
 
 import DashboardBox from "./DashboardBox";
 import Heading from "@/components/ui/Heading";
@@ -25,14 +25,14 @@ const StyledSalesChart = styled(DashboardBox)`
   }
 `;
 
-function SalesChart({ sales, allDates }) {
+function SalesChart({ sales, firstDate, lastDate, isYearPicker }) {
   const { isDarkMode } = useDarkMode();
 
   const data = sales.map((sale) => {
     const tempDate = new Date(sale.date);
     const date = subDays(tempDate, 1);
     return {
-      label: formatDate(date),
+      label: isYearPicker ? formatMonth(date) : formatDate(date),
       totalSales: sale.totalSales / 1000000,
       paidSales: sale.paidSales / 1000000,
     };
@@ -55,8 +55,7 @@ function SalesChart({ sales, allDates }) {
   return (
     <StyledSalesChart>
       <Heading as="h2">
-        Doanh thu từ {formatDate(allDates.at(0))} &mdash;{" "}
-        {formatDate(allDates.at(-1))}
+        Doanh thu từ {firstDate} &mdash; {lastDate}
       </Heading>
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={data} height={300} width={700}>

@@ -13,7 +13,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { formatDate, randomNumber } from "@/utils/helpers";
+import { formatDate, formatMonth, randomNumber } from "@/utils/helpers";
 
 import DashboardBox from "./DashboardBox";
 import Heading from "@/components/ui/Heading";
@@ -28,14 +28,14 @@ const StyledProductsChart = styled(DashboardBox)`
   }
 `;
 
-function ProductsChart({ products, allDates }) {
+function ProductsChart({ products, firstDate, lastDate, isYearPicker }) {
   const { isDarkMode } = useDarkMode();
 
   const data = products.map((sale) => {
     const tempDate = new Date(sale.date);
     const date = subDays(tempDate, 1);
     return {
-      label: formatDate(date),
+      label: isYearPicker ? formatMonth(date) : formatDate(date),
       totalProducts: sale.totalProducts,
     };
   });
@@ -57,8 +57,7 @@ function ProductsChart({ products, allDates }) {
   return (
     <StyledProductsChart>
       <Heading as="h2">
-        Số sản phẩm đã bán từ {formatDate(allDates.at(0))} &mdash;{" "}
-        {formatDate(allDates.at(-1))}
+        Số sản phẩm đã bán từ {firstDate} &mdash; {lastDate}
       </Heading>
       <ResponsiveContainer width="100%" height={300}>
         <ComposedChart data={data} height={300} width={700}>

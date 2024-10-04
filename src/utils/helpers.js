@@ -18,6 +18,10 @@ export const formatDate = (date) => {
   return moment(date).format("DD/MM/YYYY");
 };
 
+export const formatMonth = (date) => {
+  return moment(date).format("MM/YYYY");
+}
+
 export const formatDateMonthYear = (date) => {
   return moment(date).format("LL");
 }

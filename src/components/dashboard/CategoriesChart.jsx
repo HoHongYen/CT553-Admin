@@ -27,7 +27,7 @@ const StyledCategoriesChart = styled(DashboardBox)`
   }
 `;
 
-function CategoriesChart({ categories, allDates }) {
+function CategoriesChart({ categories, firstDate, lastDate }) {
   const { isDarkMode } = useDarkMode();
 
   const data = categories.map((category) => {
@@ -91,8 +91,7 @@ function CategoriesChart({ categories, allDates }) {
   return (
     <StyledCategoriesChart>
       <Heading as="h2">
-        Danh mục sản phẩm đã bán từ {formatDate(allDates.at(0))} &mdash;{" "}
-        {formatDate(allDates.at(-1))}
+        Danh mục sản phẩm đã bán từ {firstDate} &mdash; {lastDate}
       </Heading>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data} height={300} width={700}>

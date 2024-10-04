@@ -21,11 +21,11 @@ const CommonRow = styled.div`
 const StyledHeader = styled(CommonRow)`
   padding: 1.6rem 2.4rem;
 
-  background-color: var(--color-grey-50);
+  background-color: var(--color-grey-100);
   border-bottom: 1px solid var(--color-grey-200);
   text-transform: uppercase;
   letter-spacing: 0.4px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-grey-600);
 `;
 
@@ -35,6 +35,11 @@ const StyledRow = styled(CommonRow)`
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-200);
   }
+
+  &:nth-child(even) {
+    background-color: var(--color-grey-50);
+  }
+
 `;
 
 const StyledBody = styled.section`
@@ -42,7 +47,7 @@ const StyledBody = styled.section`
 `;
 
 const Footer = styled.footer`
-  background-color: var(--color-grey-50);
+  background-color: var(--color-grey-80);
   display: flex;
   justify-content: center;
   padding: 1.2rem;

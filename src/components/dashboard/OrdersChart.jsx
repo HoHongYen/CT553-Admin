@@ -6,13 +6,12 @@ import {
   BarChart,
   CartesianGrid,
   Legend,
-  Rectangle,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
-import { formatDate } from "@/utils/helpers";
+import { formatDate, formatMonth } from "@/utils/helpers";
 
 import DashboardBox from "./DashboardBox";
 import Heading from "@/components/ui/Heading";
@@ -27,14 +26,14 @@ const StyledOrdersChart = styled(DashboardBox)`
   }
 `;
 
-function OrdersChart({ orders, allDates }) {
+function OrdersChart({ orders, firstDate, lastDate, isYearPicker }) {
   const { isDarkMode } = useDarkMode();
 
   const data = orders.map((order) => {
     const tempDate = new Date(order.date);
     const date = subDays(tempDate, 1);
     return {
-      label: formatDate(date),
+      label: isYearPicker ? formatMonth(date) : formatDate(date),
       totalAlreadyPaid: order.totalAlreadyPaid,
       totalUnpaid: order.totalUnpaid,
     };
@@ -57,8 +56,7 @@ function OrdersChart({ orders, allDates }) {
   return (
     <StyledOrdersChart>
       <Heading as="h2">
-        Số đơn hàng từ {formatDate(allDates.at(0))} &mdash;{" "}
-        {formatDate(allDates.at(-1))}
+        Số đơn hàng từ {firstDate} &mdash; {lastDate}
       </Heading>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data} height={300} width={700}>

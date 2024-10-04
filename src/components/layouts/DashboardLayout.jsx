@@ -11,6 +11,7 @@ import PaymentMethodsChart from "../dashboard/PaymentMethodsChart";
 import ProductsChart from "../dashboard/ProductsChart";
 import CategoriesChart from "../dashboard/CategoriesChart";
 import UsersChart from "../dashboard/UsersChart";
+import { formatDate, formatMonth } from "@/utils/helpers";
 
 const StyledDashboardLayout = styled.div`
   display: flex;
@@ -43,10 +44,22 @@ export function DashboardLayout() {
 
   const tempAllDates = salesByDate.map((sale) => new Date(sale.date));
   // allDates is tempAllDates minus 1 day
-  const allDates = eachDayOfInterval({
+  let allDates = eachDayOfInterval({
     start: subDays(tempAllDates[0], 1),
     end: subDays(tempAllDates.at(-1), 1),
   });
+
+  let isYearPicker = false;
+  if (allDates.length > 300) {
+    isYearPicker = true;
+  }
+
+  const firstDate = isYearPicker
+    ? formatMonth(allDates.at(0))
+    : formatDate(allDates.at(0));
+  const lastDate = isYearPicker
+    ? formatMonth(allDates.at(-1))
+    : formatDate(allDates.at(-1));
 
   if (isLoading) return <Spinner />;
 
@@ -61,18 +74,40 @@ export function DashboardLayout() {
         />
       </StyledStatusLayout>
       <StyledGraphLayout>
-        <SalesChart sales={salesByDate} allDates={allDates} />
+        <SalesChart
+          sales={salesByDate}
+          firstDate={firstDate}
+          lastDate={lastDate}
+          isYearPicker={isYearPicker}
+        />
         <PaymentMethodsChart
           paymentMethods={paymentMethodQuantity}
-          allDates={allDates}
+          firstDate={firstDate}
+          lastDate={lastDate}
         />
-        <OrdersChart orders={ordersByDate} allDates={allDates} />
-        <ProductsChart products={productsSoldByDate} allDates={allDates} />
+        <OrdersChart
+          orders={ordersByDate}
+          firstDate={firstDate}
+          lastDate={lastDate}
+          isYearPicker={isYearPicker}
+        />
+        <ProductsChart
+          products={productsSoldByDate}
+          firstDate={firstDate}
+          lastDate={lastDate}
+          isYearPicker={isYearPicker}
+        />
         <CategoriesChart
           categories={parentCategoryQuantity}
-          allDates={allDates}
+          firstDate={firstDate}
+          lastDate={lastDate}
         />
-        <UsersChart users={usersByDate} allDates={allDates} />
+        <UsersChart
+          users={usersByDate}
+          firstDate={firstDate}
+          lastDate={lastDate}
+          isYearPicker={isYearPicker}
+        />
       </StyledGraphLayout>
     </StyledDashboardLayout>
   );

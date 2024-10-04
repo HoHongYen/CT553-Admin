@@ -16,7 +16,11 @@ const StyledPaymentMethodsChart = styled(DashboardBox)`
   }
 `;
 
-function PaymentMethodsChart({ paymentMethods, allDates }) {
+function PaymentMethodsChart({
+  paymentMethods,
+  firstDate,
+  lastDate,
+}) {
   const { isDarkMode } = useDarkMode();
 
   const COD = paymentMethods.filter(
@@ -69,8 +73,7 @@ function PaymentMethodsChart({ paymentMethods, allDates }) {
   return (
     <StyledPaymentMethodsChart>
       <Heading as="h2">
-        Phương thức thanh toán từ {formatDate(allDates.at(0))} &mdash;{" "}
-        {formatDate(allDates.at(-1))}
+        Phương thức thanh toán từ {firstDate} &mdash; {lastDate}
       </Heading>
       <div className="flex w-full h-[300px]">
         <ResponsiveContainer width="100%" height={300}>

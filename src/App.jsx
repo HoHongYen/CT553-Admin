@@ -20,6 +20,8 @@ const queryClient = new QueryClient({
   },
 });
 
+import locale from 'antd/locale/vi_VN';
+
 function App() {
   return (
     <>
@@ -32,6 +34,7 @@ function App() {
                 fontFamily: "Nunito",
               },
             }}
+            locale={locale}
           >
             <ReactQueryDevtools initialIsOpen={false} />
             <BrowserRouter>

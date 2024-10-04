@@ -3,9 +3,9 @@ import { useSearchParams } from "react-router-dom";
 import { DatePicker } from "antd";
 const { RangePicker } = DatePicker;
 
-import locale from "antd/es/date-picker/locale/vi_VN";
-import moment from "moment";
-moment.locale("vi");
+import dayjs from "dayjs";
+import "dayjs/locale/vi";
+dayjs.locale("vi");
 
 function FilterDate({ label = null }) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,8 +20,6 @@ function FilterDate({ label = null }) {
   const [dateError, setDateError] = useState("");
 
   useEffect(() => {
-    console.log("beginDate", beginDate);
-    console.log("endDate", endDate);
 
     if (beginDate && endDate && beginDate <= endDate) {
       setDateError("");
@@ -45,12 +43,11 @@ function FilterDate({ label = null }) {
         {dateError}
       </span>
       <label htmlFor="beginDate">{label}</label>
+
       <RangePicker
         size="large"
-        locale={locale}
         allowEmpty={[true, true]}
         onChange={(dates, dateStrings) => {
-
           let beginDate = new Date(dates[0].toISOString());
           let endDate = new Date(dates[1].toISOString());
 

@@ -24,7 +24,7 @@ export function useReports() {
             salesByDate,
             productsSoldByDate,
             parentCategoryQuantity,
-            paymentMethodQuantity, usersByDate } } = { metadata: { ordersByDate: [], salesByDate: [], productsSoldByDat: [], parentCategoryQuantity: [], paymentMethodQuantity: [], usersByDate: [] } },
+            paymentMethodQuantity, usersByDate } } = { metadata: { ordersByDate: [], salesByDate: [], productsSoldByDate: [], parentCategoryQuantity: [], paymentMethodQuantity: [], usersByDate: [] } },
     } = useQuery({
         queryKey: ["reports", beginDate, endDate],
         queryFn: () => getAllForReport({ beginDate, endDate }),

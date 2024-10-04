@@ -38,6 +38,8 @@ const FilterButton = styled.button`
 function Filter({ filterField, options }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentFilter = searchParams.get(filterField) || options[0].value;
+  const isPicker =
+    searchParams.has("ngay-bat-dau") || searchParams.has("ngay-ket-thuc");
 
   function handleClick(value) {
     searchParams.delete("trang");
@@ -54,7 +56,7 @@ function Filter({ filterField, options }) {
         <FilterButton
           key={option.value}
           onClick={() => handleClick(option.value)}
-          active={option.value === currentFilter}
+          active={!isPicker && option.value === currentFilter}
           disabled={option.value === currentFilter}
         >
           {option.label}
