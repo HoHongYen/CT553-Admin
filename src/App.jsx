@@ -36,7 +36,7 @@ function App() {
             }}
             locale={locale}
           >
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
             <BrowserRouter>
               <ScrollToTop />
               <Routes>
