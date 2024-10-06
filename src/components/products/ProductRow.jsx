@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-
+import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
+import { calculateRating, formatDate } from "@/utils/helpers";
 import { HiEye, HiStar, HiTrash } from "react-icons/hi2";
 
 import Table from "@/components/ui/Table";
@@ -7,8 +8,7 @@ import Menus from "@/components/ui/Menus";
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import RoundImage from "@/components/ui/RoundImage";
-import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
-import { calculateRating, formatDate } from "@/utils/helpers";
+import Tag from "../ui/Tag";
 
 function ProductRow({
   product: {

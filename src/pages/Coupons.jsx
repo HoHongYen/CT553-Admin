@@ -1,7 +1,6 @@
 import Heading from "@/components/ui/Heading";
 import Row from "@/components/ui/Row";
 import CouponTable from "@/components/coupons/CouponTable";
-import AddCoupon from "@/components/coupons/AddCoupon";
 
 function Coupons() {
   return (
@@ -11,7 +10,6 @@ function Coupons() {
       </Row>
       <Row>
         <CouponTable />
-        <AddCoupon />
       </Row>
     </>
   );

@@ -1,3 +1,4 @@
+import * as XLSX from "xlsx";
 import { useUsers } from "@/hooks/users/useUsers";
 
 import { HiOutlineDownload } from "react-icons/hi";
@@ -7,7 +8,6 @@ import Menus from "@/components/ui/Menus";
 import UserRow from "./UserRow";
 import Pagination from "../ui/Pagination";
 import Button from "../ui/Button";
-import * as XLSX from "xlsx";
 
 function UserTable() {
   const { isLoading, users, totalUsers, totalPages } = useUsers();
@@ -106,8 +106,9 @@ function UserTable() {
           />
         </Table.Footer>
       </Table>
-      <div className="mt-5 flex gap-7 justify-end">
+      <div className="mt-5 flex gap-5 justify-end">
         <Button
+          variation="success"
           className="flex items-center gap-2"
           onClick={handleDownloadExcel}
         >

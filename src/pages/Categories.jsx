@@ -1,6 +1,5 @@
 import Heading from "@/components/ui/Heading";
 import Row from "@/components/ui/Row";
-import AddCategory from "@/components/categories/AddCategory";
 import CategoryTable from "@/components/categories/CategoryTable";
 import CategoryFilterOperations from "@/components/categories/CategoryFilterOperations";
 
@@ -15,7 +14,6 @@ function Categories() {
       </Row>
       <Row>
         <CategoryTable />
-        <AddCategory />
       </Row>
     </>
   );

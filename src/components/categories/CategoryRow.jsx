@@ -7,11 +7,12 @@ import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import RoundImage from "@/components/ui/RoundImage";
 import CreateCategoryForm from "./CreateCategoryForm";
+import { formatDate } from "@/utils/helpers";
 
 function CategoryRow({ category }) {
   const { isDeleting, deleteCategory } = useDeleteCategory();
 
-  const { id: categoryId, name, thumbnailImage } = category;
+  const { id: categoryId, name, thumbnailImage, createdAt } = category;
 
   return (
     <>
@@ -19,6 +20,7 @@ function CategoryRow({ category }) {
         <RoundImage path={thumbnailImage?.path} alt={name} />
         <div>#{categoryId}</div>
         <div>{name}</div>
+        <div>{formatDate(createdAt)}</div>
         <div>
           <Modal>
             <Menus.Menu>
