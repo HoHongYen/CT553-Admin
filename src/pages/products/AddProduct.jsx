@@ -18,7 +18,6 @@ import { HiCamera, HiPencil, HiTrash } from "react-icons/hi2";
 
 import Button from "@/components/ui/Button";
 import ButtonText from "@/components/ui/ButtonText";
-import Modal from "@/components/ui/Modal";
 import Form from "@/components/ui/Form";
 import FormRow from "@/components/ui/FormRow";
 import Heading from "@/components/ui/Heading";
@@ -30,7 +29,6 @@ import TickRoundIcon from "@/components/icons/TickRoundIcon";
 import EmptyRoundBoxIcon from "@/components/icons/EmptyRoundBoxIcon";
 
 import VariantTable from "@/components/products/variants/VariantTable";
-import CreateVariantForm from "@/components/products/variants/CreateVariantForm";
 import DiscountTable from "@/components/products/discounts/DiscountTable";
 import AddDiscount from "@/components/products/discounts/AddDiscount";
 import AddVariant from "@/components/products/variants/AddVariant";

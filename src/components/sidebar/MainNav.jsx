@@ -13,7 +13,14 @@ import {
   HiOutlineStar,
   HiMiniChevronRight,
   HiMiniChevronDown,
+  HiOutlineTruck,
+  HiOutlineClipboardDocumentList,
+  HiOutlineEye,
+  HiMiniArrowPathRoundedSquare,
+  HiOutlineWrench,
+  HiOutlineLockClosed,
 } from "react-icons/hi2";
+import { HiOutlineCash } from "react-icons/hi";
 
 const NavList = styled.ul`
   display: flex;
@@ -89,7 +96,8 @@ const ProductNavLink = styled(NavLink)`
 `;
 
 function MainNav() {
-  const [showChildMenu, setShowChildMenu] = useState(true);
+  const [showChildMenu, setShowChildMenu] = useState(false);
+  const [showPolicyChildMenu, setShowPolicyChildMenu] = useState(false);
 
   return (
     <nav>
@@ -142,6 +150,49 @@ function MainNav() {
             <HiOutlineStar />
             <span>Đánh giá</span>
           </StyledNavLink>
+        </li>
+        <li>
+          <ProductNavLink
+            onClick={() => setShowPolicyChildMenu((show) => !show)}
+          >
+            <HiOutlineClipboardDocumentList />
+            <div className="flex">
+              <span>Chính sách</span>
+              {showPolicyChildMenu ? (
+                <HiMiniChevronDown />
+              ) : (
+                <HiMiniChevronRight />
+              )}
+            </div>
+          </ProductNavLink>
+          {showPolicyChildMenu && (
+            <div className="ml-10">
+              <StyledNavLink to="/chinh-sach-thanh-toan">
+                <HiOutlineCash />
+                <span>Thanh toán</span>
+              </StyledNavLink>
+              <StyledNavLink to="/chinh-sach-giao-hang">
+                <HiOutlineTruck />
+                <span>Giao hàng</span>
+              </StyledNavLink>
+              <StyledNavLink to="/chinh-sach-kiem-hang">
+                <HiOutlineEye />
+                <span>Kiểm hàng</span>
+              </StyledNavLink>
+              <StyledNavLink to="/chinh-sach-doi-tra">
+                <HiMiniArrowPathRoundedSquare />
+                <span>Đổi trả</span>
+              </StyledNavLink>
+              <StyledNavLink to="/chinh-sach-bao-hanh">
+                <HiOutlineWrench />
+                <span>Bảo hành</span>
+              </StyledNavLink>
+              <StyledNavLink to="/chinh-sach-bao-mat">
+                <HiOutlineLockClosed />
+                <span>Bảo mật</span>
+              </StyledNavLink>
+            </div>
+          )}
         </li>
       </NavList>
     </nav>

@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
   },
 });
 
-import locale from 'antd/locale/vi_VN';
+import locale from "antd/locale/vi_VN";
 
 function App() {
   return (
@@ -102,6 +102,187 @@ function App() {
                     path="danh-gia"
                     element={<SuspenseWrapper path="Reviews" />}
                   />
+                  {/* Chính sách begin */}
+                  {/* thanh toan begin */}
+                  <Route
+                    path="chinh-sach-thanh-toan"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="PaymentPolicies"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-thanh-toan/tao-moi"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="AddPaymentPolicy"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-thanh-toan/:policyId"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="UpdatePaymentPolicy"
+                      />
+                    }
+                  />
+                  {/* thanh toan end */}
+                  {/* giao hang begin */}
+                  <Route
+                    path="chinh-sach-giao-hang"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="DeliveryPolicies"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-giao-hang/tao-moi"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="AddDeliveryPolicy"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-giao-hang/:policyId"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="UpdateDeliveryPolicy"
+                      />
+                    }
+                  />
+                  {/* giao hang end */}
+
+                  {/* kiem hang begin */}
+                  <Route
+                    path="chinh-sach-kiem-hang"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="CheckProductPolicies"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-kiem-hang/tao-moi"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="AddCheckProductPolicy"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-kiem-hang/:policyId"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="UpdateCheckProductPolicy"
+                      />
+                    }
+                  />
+                  {/* kiem hang end */}
+
+                  {/* doi tra begin */}
+                  <Route
+                    path="chinh-sach-doi-tra"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="ReturnPolicies"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-doi-tra/tao-moi"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="AddReturnPolicy"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-doi-tra/:policyId"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="UpdateReturnPolicy"
+                      />
+                    }
+                  />
+                  {/* doi tra end */}
+
+                  {/* bao hanh begin */}
+                  <Route
+                    path="chinh-sach-bao-hanh"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="WarrantyPolicies"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-bao-hanh/tao-moi"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="AddWarrantyPolicy"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-bao-hanh/:policyId"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="UpdateWarrantyPolicy"
+                      />
+                    }
+                  />
+                  {/* bao hanh end */}
+
+                  {/* bao mat begin */}
+                  <Route
+                    path="chinh-sach-bao-mat"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="SecurityPolicies"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-bao-mat/tao-moi"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="AddSecurityPolicy"
+                      />
+                    }
+                  />
+                  <Route
+                    path="chinh-sach-bao-mat/:policyId"
+                    element={
+                      <SuspenseWrapper
+                        level1="policies"
+                        path="UpdateSecurityPolicy"
+                      />
+                    }
+                  />
+                  {/* bao mat end */}
+
+                  {/* Chính sách end  */}
                 </Route>
                 <Route
                   path="dang-nhap"

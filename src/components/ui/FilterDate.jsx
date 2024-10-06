@@ -20,7 +20,6 @@ function FilterDate({ label = null }) {
   const [dateError, setDateError] = useState("");
 
   useEffect(() => {
-
     if (beginDate && endDate && beginDate <= endDate) {
       setDateError("");
       searchParams.delete("trang");
@@ -47,7 +46,7 @@ function FilterDate({ label = null }) {
       <RangePicker
         size="large"
         allowEmpty={[true, true]}
-        onChange={(dates, dateStrings) => {
+        onChange={(dates) => {
           let beginDate = new Date(dates[0].toISOString());
           let endDate = new Date(dates[1].toISOString());
 

@@ -7,11 +7,8 @@ import Menus from "@/components/ui/Menus";
 import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import RoundImage from "@/components/ui/RoundImage";
-import { deleteProduct } from "@/services/apiProducts";
 import { useDeleteProduct } from "@/hooks/products/useDeleteProduct";
 import { calculateRating, formatDate } from "@/utils/helpers";
-import { Rate } from "antd";
-import Tag from "../ui/Tag";
 
 function ProductRow({
   product: {
