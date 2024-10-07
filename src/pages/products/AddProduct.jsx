@@ -141,17 +141,17 @@ function AddProduct() {
       return;
     }
 
-    if (!viewImage) {
-      setErrorViewImage("Không được bỏ trống!");
-      jumpToRelevantDiv("viewImage");
-      return;
-    }
+    // if (!viewImage) {
+    //   setErrorViewImage("Không được bỏ trống!");
+    //   jumpToRelevantDiv("viewImage");
+    //   return;
+    // }
 
-    if (images.length === 0) {
-      setErrorImage("Thêm ít nhất một hình ảnh!");
-      jumpToRelevantDiv("image");
-      return;
-    }
+    // if (images.length === 0) {
+    //   setErrorImage("Thêm ít nhất một hình ảnh!");
+    //   jumpToRelevantDiv("image");
+    //   return;
+    // }
 
     if (variants.length === 0) {
       setVariantError("Thêm ít nhất một kích thước!");
@@ -186,8 +186,11 @@ function AddProduct() {
     const uploadedThumbnailImageId = await handleUploadThumbnailImage();
     console.log("uploadedThumbnailImageId", uploadedThumbnailImageId);
 
-    const uploadedViewImageId = await handleUploadViewImage();
-    console.log("uploadedViewImageId", uploadedViewImageId);
+    let uploadedViewImageId = null;
+    if (viewImage) {
+      uploadedViewImageId = await handleUploadViewImage();
+      console.log("uploadedViewImageId", uploadedViewImageId);
+    }
 
     const uploadedProductImageIds = await handleUploadProductImages();
     console.log("uploadedProductImageIds", uploadedProductImageIds);
@@ -480,7 +483,7 @@ function AddProduct() {
                   {errorViewImage}
                 </span>
               </div>
-              <div className="flex justify-center items-center border w-[232px] h-[232px] rounded p-4">
+              <div className="flex justify-center items-center border w-[232px] min-h-[232px] rounded p-4">
                 {viewImage && (
                   <div className="relative ol-span-1 flex items-center justify-center border-2 border-dashed border-slate-200">
                     <div className="overflow-hidden">

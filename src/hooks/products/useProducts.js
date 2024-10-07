@@ -7,6 +7,10 @@ export function useProducts() {
     const queryClient = useQueryClient();
     const [searchParams] = useSearchParams();
 
+    // CUSTOMER SEARCH
+    const productSearchValue = searchParams.get("san-pham") || "";
+    const productSearch = productSearchValue === "" ? "" : productSearchValue;
+
     // FILTER
     const filterValue = searchParams.get("trang-thai") || "tat-ca";
     const filter = !filterValue || filterValue === "tat-ca" ? null : { field: "trang-thai", value: filterValue };
@@ -46,21 +50,21 @@ export function useProducts() {
         data: { metadata: { products, pagination: { totalProducts, totalPages } } } = { metadata: { products: [], pagination: { totalProducts: 0, totalPages: 0 } } },
         error,
     } = useQuery({
-        queryKey: ["products", filter, filterMinPrice, filterMaxPrice, sortBy, page, limit],
-        queryFn: () => getProducts({ categoryIds: [], filter, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, page, limit }),
+        queryKey: ["products", productSearch, filter, filterMinPrice, filterMaxPrice, sortBy, page, limit],
+        queryFn: () => getProducts({ productSearch, categoryIds: [], filter, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, page, limit }),
     });
 
     // PRE_FETCHING
     if (page < totalPages) {
         queryClient.prefetchQuery({
-            queryKey: ["products", filter, filterMinPrice, filterMaxPrice, sortBy, page + 1, limit],
-            queryFn: () => getProducts({ categoryIds: [], filter, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, pge: page + 1, limit }),
+            queryKey: ["products", productSearch, filter, filterMinPrice, filterMaxPrice, sortBy, page + 1, limit],
+            queryFn: () => getProducts({ productSearch, categoryIds: [], filter, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, pge: page + 1, limit }),
         })
     }
     if (page > 1) {
         queryClient.prefetchQuery({
-            queryKey: ["products", filter, filterMinPrice, filterMaxPrice, sortBy, page - 1, limit],
-            queryFn: () => getProducts({ categoryIds: [], filter, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, page: page - 1, limit }),
+            queryKey: ["products", productSearch, filter, filterMinPrice, filterMaxPrice, sortBy, page - 1, limit],
+            queryFn: () => getProducts({ productSearch, categoryIds: [], filter, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, page: page - 1, limit }),
         })
     }
 
