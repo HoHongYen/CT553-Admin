@@ -280,8 +280,13 @@ function App() {
                       />
                     }
                   />
-                  {/* bao mat end */}
 
+                  <Route
+                    path="thong-tin-cua-hang"
+                    element={<SuspenseWrapper level1="webConfigs" path="ShopInfo" />}
+                  />
+
+                  {/* bao mat end */}
                   {/* Chính sách end  */}
                 </Route>
                 <Route

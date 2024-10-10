@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 import {
-  HiOutlineGift,
   HiOutlineNewspaper,
   HiOutlineUser,
   HiOutlineShoppingBag,
@@ -19,6 +18,10 @@ import {
   HiMiniArrowPathRoundedSquare,
   HiOutlineWrench,
   HiOutlineLockClosed,
+  HiMiniCog,
+  HiOutlineDocumentText,
+  HiOutlineTicket,
+  HiOutlineSquaresPlus,
 } from "react-icons/hi2";
 import { HiOutlineCash } from "react-icons/hi";
 
@@ -98,6 +101,7 @@ const ProductNavLink = styled(NavLink)`
 function MainNav() {
   const [showChildMenu, setShowChildMenu] = useState(false);
   const [showPolicyChildMenu, setShowPolicyChildMenu] = useState(false);
+  const [showInterfaceChildMenu, setShowInterfaceChildMenu] = useState(false);
 
   return (
     <nav>
@@ -133,7 +137,7 @@ function MainNav() {
                 <span>Danh mục</span>
               </StyledNavLink>
               <StyledNavLink to="/coupons">
-                <HiOutlineGift />
+                <HiOutlineTicket />
                 <span>Coupons</span>
               </StyledNavLink>
             </div>
@@ -193,6 +197,37 @@ function MainNav() {
               </StyledNavLink>
             </div>
           )}
+          <li>
+            <ProductNavLink
+              onClick={() => setShowInterfaceChildMenu((show) => !show)}
+            >
+              <HiMiniCog />
+              <div className="flex">
+                <span>Giao diện</span>
+                {showInterfaceChildMenu ? (
+                  <HiMiniChevronDown />
+                ) : (
+                  <HiMiniChevronRight />
+                )}
+              </div>
+            </ProductNavLink>
+            {showInterfaceChildMenu && (
+              <div className="ml-10">
+                <StyledNavLink to="/thong-tin-cua-hang">
+                  <HiOutlineDocumentText />
+                  <span>Thông tin</span>
+                </StyledNavLink>
+                <StyledNavLink to="/danh-muc">
+                  <HiOutlineSquaresPlus />
+                  <span>Banner trang chủ</span>
+                </StyledNavLink>
+                <StyledNavLink to="/coupons">
+                  <HiOutlineSquaresPlus />
+                  <span>Banner khuyến mại</span>
+                </StyledNavLink>
+              </div>
+            )}
+          </li>
         </li>
       </NavList>
     </nav>

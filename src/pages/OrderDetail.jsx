@@ -14,10 +14,12 @@ import OrderTracking from "@/components/orders/OrderTracking";
 import Button from "@/components/ui/Button";
 import Invoice from "@/components/orders/Invoice";
 import Modal from "@/components/ui/Modal";
+import { useShopInfo } from "@/hooks/shopInfo/useShopInfo";
 
 function OrderDetail() {
   const moveBack = useMoveBack();
   const { isLoading, order } = useOrder();
+  const {shopInfo} = useShopInfo();
 
   if (isLoading) return <Skeleton active />;
 
@@ -57,13 +59,13 @@ function OrderDetail() {
               </Modal.Open>
               <Modal.Window name="viewInvoice">
                 <PDFViewer width="1000" height="600">
-                  <Invoice order={order} />
+                  <Invoice order={order} logo={shopInfo.logo} />
                 </PDFViewer>
               </Modal.Window>
             </Modal>
 
             <PDFDownloadLink
-              document={<Invoice order={order} />}
+              document={<Invoice order={order} logo={shopInfo.logo} />}
               fileName="invoice.pdf"
             >
               <Button
@@ -76,7 +78,7 @@ function OrderDetail() {
               </Button>
             </PDFDownloadLink>
 
-            <BlobProvider document={<Invoice order={order} />}>
+            <BlobProvider document={<Invoice order={order} logo={shopInfo.logo} />}>
               {({ url, blob }) => (
                 <a href={url} target="_blank">
                   <Button

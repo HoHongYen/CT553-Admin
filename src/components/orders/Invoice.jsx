@@ -15,7 +15,7 @@ import Roboto from "@/styles/fonts/Roboto-Regular.ttf";
 import RobotoBold from "@/styles/fonts/Roboto-Bold.ttf";
 import RobotoItalic from "@/styles/fonts/Roboto-Italic.ttf";
 
-function Invoice({ order }) {
+function Invoice({ order, logo }) {
   Font.register({
     family: "Roboto",
     fonts: [
@@ -125,7 +125,7 @@ function Invoice({ order }) {
   const InvoiceTitle = () => (
     <View style={styles.titleContainer}>
       <View style={styles.spaceBetween}>
-        <Image style={styles.logo} src="/logo.png" />
+        <Image style={styles.logo} src={logo.path} />
         <Text style={styles.reportTitle}>Shop tranh trang trí Decorpic</Text>
       </View>
     </View>
