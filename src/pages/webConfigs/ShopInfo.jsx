@@ -32,6 +32,7 @@ function ShopInfo() {
   const [phone, setPhone] = useState("");
   const [businessCode, setBusinessCode] = useState("");
   const [isMaintaining, setIsMaintaining] = useState(false);
+  const [maintainingMessage, setMaintainingMessage] = useState("");
   const [workingTime, setWorkingTime] = useState("");
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [logoImage, setLogoImage] = useState(null);
@@ -139,6 +140,7 @@ function ShopInfo() {
           businessCode,
           workingTime,
           isMaintaining,
+          maintainingMessage,
           provinceId,
           districtId,
           wardCode,
@@ -225,12 +227,13 @@ function ShopInfo() {
   }, [provinceId, districtId]);
 
   async function handleCancel() {
-    setIsMaintaining(shopInfo?.isMaintaining);
     setName(shopInfo?.name);
     setFullName(shopInfo?.fullName);
     setEmail(shopInfo?.email);
     setPhone(shopInfo?.phone);
     setBusinessCode(shopInfo?.businessCode);
+    setIsMaintaining(shopInfo?.isMaintaining);
+    setMaintainingMessage(shopInfo?.maintainingMessage);
     setWorkingTime(shopInfo?.workingTime);
     setProvinceId(shopInfo?.provinceId);
     setDistrictId(shopInfo?.districtId);
@@ -258,9 +261,9 @@ function ShopInfo() {
       </Row>
       <Row>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid items-center grid-cols-3">
+          <div className="grid grid-cols-3">
             {/* logo image begin */}
-            <div id="logoImage" className="mt-8 flex flex-col gap-5">
+            <div id="logoImage" className="flex flex-col gap-5">
               <div className="flex gap-5">
                 <label className="font-[700] text-[1.5rem]">
                   Logo cửa hàng:
@@ -318,8 +321,8 @@ function ShopInfo() {
               </div>
             </div>
             {/* logo image end */}
-            <div className="col-span-2 flex flex-col justify-center">
-              <FormRow size="medium" label="Tên cửa hàng:" error={nameError}>
+            <div className="col-span-2 flex flex-col justify-center ">
+              <FormRow size="medium" label="Tiêu đề website:" error={nameError}>
                 <div id="name">
                   <Input
                     className="w-full"
@@ -333,7 +336,7 @@ function ShopInfo() {
 
               <FormRow
                 size="medium"
-                label="Tên đầy đủ cửa hàng:"
+                label="Tên cửa hàng:"
                 error={fullNameError}
               >
                 <div id="fullName">
@@ -370,117 +373,138 @@ function ShopInfo() {
                   />
                 </div>
               </FormRow>
+
+              <FormRow
+                size="medium"
+                label="Số đăng ký kinh doanh:"
+                error={businessCodeError}
+              >
+                <div id="businessCode">
+                  <Input
+                    className="w-full"
+                    type="text"
+                    disabled={isWorking}
+                    value={businessCode}
+                    onChange={(e) => setBusinessCode(e.target.value)}
+                  />
+                </div>
+              </FormRow>
+              <FormRow
+                size="medium"
+                label="Giờ làm việc:"
+                error={workingTimeError}
+              >
+                <div id="workingTime">
+                  <Input
+                    className="w-full"
+                    type="text"
+                    disabled={isWorking}
+                    value={workingTime}
+                    onChange={(e) => setWorkingTime(e.target.value)}
+                  />
+                </div>
+              </FormRow>
+              <FormRow size="medium" label="Trạng thái:">
+                <div
+                  id="isMaintaining"
+                  className="flex items-center justify-between px-4"
+                >
+                  <div
+                    className="flex items-center gap-5 cursor-pointer"
+                    onClick={() => setIsMaintaining(false)}
+                  >
+                    <div className="max-w-6">
+                      {!isMaintaining ? (
+                        <TickRoundIcon />
+                      ) : (
+                        <EmptyRoundBoxIcon />
+                      )}
+                    </div>
+                    <span>Đang hoạt động</span>
+                  </div>
+                  <div
+                    className="flex items-center gap-5 cursor-pointer"
+                    onClick={() => setIsMaintaining(true)}
+                  >
+                    <div className="max-w-6">
+                      {isMaintaining ? (
+                        <TickRoundIcon />
+                      ) : (
+                        <EmptyRoundBoxIcon />
+                      )}
+                    </div>
+                    <span>Đang bảo trì</span>
+                  </div>
+                </div>
+              </FormRow>
+              <FormRow size="medium" label="Thông báo bảo trì:">
+                <Textarea
+                  type="text"
+                  id="maintainingMessage"
+                  value={maintainingMessage}
+                  rows={7}
+                  onChange={(e) => setMaintainingMessage(e.target.value)}
+                />
+              </FormRow>
+              <FormRow
+                size="medium"
+                label="Tỉnh / thành phố:"
+                error={provinceError}
+              >
+                <Select
+                  className="w-full"
+                  disabled={isWorking}
+                  options={provinceOptions}
+                  value={provinceId}
+                  onChange={(e) => setProvinceId(e.target.value)}
+                />
+              </FormRow>
+              <FormRow
+                size="medium"
+                label="Quận / huyện:"
+                error={districtError}
+              >
+                <Select
+                  className="w-full"
+                  disabled={isWorking}
+                  options={districtOptions}
+                  value={districtId}
+                  onChange={(e) => setDistrictId(e.target.value)}
+                />
+              </FormRow>
+              <FormRow size="medium" label="Phường / xã:" error={wardError}>
+                <Select
+                  className="w-full"
+                  disabled={isWorking}
+                  options={wardOptions}
+                  value={wardCode}
+                  onChange={(e) => setWardcode(e.target.value)}
+                />
+              </FormRow>
+              <FormRow size="medium" label="Địa chỉ cụ thể:">
+                <Textarea
+                  type="text"
+                  id="detailAddress"
+                  disabled={isWorking}
+                  value={detailAddress}
+                  onChange={(e) => setDetailAddress(e.target.value)}
+                />
+              </FormRow>
+              <FormRow>
+                <Button
+                  type="reset"
+                  variation="secondary"
+                  disabled={isWorking}
+                  onClick={handleCancel}
+                >
+                  Hủy
+                </Button>
+                <Button disabled={isWorking}>
+                  {!isWorking ? "Lưu thông tin" : <SpinnerMini />}
+                </Button>
+              </FormRow>
             </div>
           </div>
-          <FormRow
-            size="medium"
-            label="Số đăng ký kinh doanh:"
-            error={businessCodeError}
-          >
-            <div id="businessCode">
-              <Input
-                className="w-full"
-                type="text"
-                disabled={isWorking}
-                value={businessCode}
-                onChange={(e) => setBusinessCode(e.target.value)}
-              />
-            </div>
-          </FormRow>
-          <FormRow size="medium" label="Giờ làm việc:" error={workingTimeError}>
-            <div id="workingTime">
-              <Input
-                className="w-full"
-                type="text"
-                disabled={isWorking}
-                value={workingTime}
-                onChange={(e) => setWorkingTime(e.target.value)}
-              />
-            </div>
-          </FormRow>
-          <FormRow size="medium" label="Trạng thái:">
-            <div
-              id="isMaintaining"
-              className="flex items-center justify-between px-4"
-            >
-              <div
-                className="flex items-center gap-5 cursor-pointer"
-                onClick={() => setIsMaintaining(false)}
-              >
-                <div className="max-w-6">
-                  {!isMaintaining ? <TickRoundIcon /> : <EmptyRoundBoxIcon />}
-                </div>
-                <span>Đang hoạt động</span>
-              </div>
-              <div
-                className="flex items-center gap-5 cursor-pointer"
-                onClick={() => setIsMaintaining(true)}
-              >
-                <div className="max-w-6">
-                  {isMaintaining ? <TickRoundIcon /> : <EmptyRoundBoxIcon />}
-                </div>
-                <span>Đang bảo trì</span>
-              </div>
-            </div>
-          </FormRow>
-
-          <FormRow
-            size="medium"
-            label="Tỉnh / thành phố:"
-            error={provinceError}
-          >
-            <Select
-              className="w-full"
-              disabled={isWorking}
-              options={provinceOptions}
-              value={provinceId}
-              onChange={(e) => setProvinceId(e.target.value)}
-            />
-          </FormRow>
-
-          <FormRow size="medium" label="Quận / huyện:" error={districtError}>
-            <Select
-              className="w-full"
-              disabled={isWorking}
-              options={districtOptions}
-              value={districtId}
-              onChange={(e) => setDistrictId(e.target.value)}
-            />
-          </FormRow>
-
-          <FormRow size="medium" label="Phường / xã:" error={wardError}>
-            <Select
-              className="w-full"
-              disabled={isWorking}
-              options={wardOptions}
-              value={wardCode}
-              onChange={(e) => setWardcode(e.target.value)}
-            />
-          </FormRow>
-
-          <FormRow size="medium" label="Địa chỉ cụ thể:">
-            <Textarea
-              type="text"
-              id="detailAddress"
-              disabled={isWorking}
-              value={detailAddress}
-              onChange={(e) => setDetailAddress(e.target.value)}
-            />
-          </FormRow>
-
-          <FormRow>
-            <Button
-              type="reset"
-              variation="secondary"
-              disabled={isWorking}
-              onClick={handleCancel}
-            >
-              Hủy
-            </Button>
-            <Button disabled={isWorking}>
-              {!isWorking ? "Lưu thông tin" : <SpinnerMini />}
-            </Button>
-          </FormRow>
         </Form>
       </Row>
     </>
