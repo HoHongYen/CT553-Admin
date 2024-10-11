@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useDarkMode } from "@/context/DarkModeContext";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-import { formatDate } from "@/utils/helpers";
 
 import DashboardBox from "./DashboardBox";
 import Heading from "@/components/ui/Heading";
@@ -16,11 +15,7 @@ const StyledPaymentMethodsChart = styled(DashboardBox)`
   }
 `;
 
-function PaymentMethodsChart({
-  paymentMethods,
-  firstDate,
-  lastDate,
-}) {
+function PaymentMethodsChart({ paymentMethods, firstDate, lastDate }) {
   const { isDarkMode } = useDarkMode();
 
   const COD = paymentMethods.filter(
@@ -31,8 +26,8 @@ function PaymentMethodsChart({
   );
 
   const data = [
-    { name: "Thanh toán qua VNPAY", value: VNPAY[0]?.quantity },
-    { name: "Thanh toán khi nhận hàng", value: COD[0]?.quantity },
+    { name: "Số đơn thanh toán qua VNPAY", value: VNPAY[0]?.quantity },
+    { name: "Số đơn thanh toán khi nhận hàng", value: COD[0]?.quantity },
   ];
 
   const colors = isDarkMode
@@ -110,7 +105,7 @@ function PaymentMethodsChart({
                   }}
                 ></span>
                 <span>
-                  {item.name === "Thanh toán khi nhận hàng" ? "COD" : "VNPAY"}
+                  {item.name === "Số đơn thanh toán khi nhận hàng" ? "COD" : "VNPAY"}
                 </span>
               </li>
             ))}

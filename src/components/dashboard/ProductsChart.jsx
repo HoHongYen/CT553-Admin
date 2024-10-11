@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { eachDayOfInterval, subDays } from "date-fns";
+import { subDays } from "date-fns";
 import { useDarkMode } from "@/context/DarkModeContext";
 import {
   Bar,
@@ -13,13 +13,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { formatDate, formatMonth, randomNumber } from "@/utils/helpers";
+import { formatDate, formatMonth } from "@/utils/helpers";
 
 import DashboardBox from "./DashboardBox";
 import Heading from "@/components/ui/Heading";
 
 const StyledProductsChart = styled(DashboardBox)`
-  /* grid-column: 1 / -1; */
+  grid-column: 1 / -1;
 
   /* Hack to change grid line colors */
   & .recharts-cartesian-grid-horizontal line,
@@ -63,7 +63,16 @@ function ProductsChart({ products, firstDate, lastDate, isYearPicker }) {
         <ComposedChart data={data} height={300} width={700}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="label" />
-          <YAxis />
+          <YAxis
+            tick={{ fill: colors.text }}
+            tickLine={{ stroke: colors.text }}
+            label={{
+              value: "Số sản phẩm đã bán (sản phẩm)",
+              angle: -90,
+              position: "insideBottomLeft",
+              style: { fontSize: 13 },
+            }}
+          />
           <Legend />
           <Tooltip contentStyle={{ backgroundColor: colors.background }} />
           <Bar

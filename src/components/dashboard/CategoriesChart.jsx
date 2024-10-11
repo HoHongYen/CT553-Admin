@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { eachDayOfInterval, subDays } from "date-fns";
 import { useDarkMode } from "@/context/DarkModeContext";
 import {
   Bar,
@@ -12,13 +11,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { formatDate } from "@/utils/helpers";
 
 import DashboardBox from "./DashboardBox";
 import Heading from "@/components/ui/Heading";
 
 const StyledCategoriesChart = styled(DashboardBox)`
-  /* grid-column: 1 / -1; */
+  grid-column: 1 / -1;
 
   /* Hack to change grid line colors */
   & .recharts-cartesian-grid-horizontal line,
@@ -89,7 +87,7 @@ function CategoriesChart({ categories, firstDate, lastDate }) {
   ];
 
   return (
-    <StyledCategoriesChart>
+    <StyledCategoriesChart id="page2">
       <Heading as="h2">
         Danh mục sản phẩm đã bán từ {firstDate} &mdash; {lastDate}
       </Heading>
@@ -97,7 +95,16 @@ function CategoriesChart({ categories, firstDate, lastDate }) {
         <BarChart data={data} height={300} width={700}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="label" />
-          <YAxis />
+          <YAxis
+            tick={{ fill: colors.text }}
+            tickLine={{ stroke: colors.text }}
+            label={{
+              value: "Số sản phẩm đã bán (sản phẩm)",
+              angle: -90,
+              position: "insideBottomLeft",
+              style: { fontSize: 13 },
+            }}
+          />
           <Legend />
           <Tooltip contentStyle={{ backgroundColor: colors.background }} />
           <Bar

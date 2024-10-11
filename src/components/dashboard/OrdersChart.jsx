@@ -62,7 +62,16 @@ function OrdersChart({ orders, firstDate, lastDate, isYearPicker }) {
         <BarChart data={data} height={300} width={700}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="label" />
-          <YAxis />
+          <YAxis
+            tick={{ fill: colors.text }}
+            tickLine={{ stroke: colors.text }}
+            label={{
+              value: "Số đơn hàng (đơn)",
+              angle: -90,
+              position: "insideBottomLeft",
+              style: { fontSize: 13 },
+            }}
+          />
           <Legend />
           <Tooltip contentStyle={{ backgroundColor: colors.background }} />
           <Bar

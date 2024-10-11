@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useSearchParams } from "react-router-dom";
+import { formatDate, formatMonth } from "@/utils/helpers";
 import { useReports } from "@/hooks/dashboard/useReports";
 import { eachDayOfInterval, subDays } from "date-fns";
 
@@ -11,7 +11,9 @@ import PaymentMethodsChart from "../dashboard/PaymentMethodsChart";
 import ProductsChart from "../dashboard/ProductsChart";
 import CategoriesChart from "../dashboard/CategoriesChart";
 import UsersChart from "../dashboard/UsersChart";
-import { formatDate, formatMonth } from "@/utils/helpers";
+import Row from "../ui/Row";
+import Heading from "../ui/Heading";
+import DashboardFilterOperations from "../dashboard/DashboardFilterOperations";
 
 const StyledDashboardLayout = styled.div`
   display: flex;
@@ -23,6 +25,8 @@ const StyledStatusLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 2.4rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 `;
 
 const StyledGraphLayout = styled.div`
@@ -64,27 +68,36 @@ export function DashboardLayout() {
   if (isLoading) return <Spinner />;
 
   return (
-    <StyledDashboardLayout>
-      <StyledStatusLayout>
-        <Stats
-          products={productsSoldByDate}
-          orders={ordersByDate}
-          users={usersByDate}
-          sales={salesByDate}
-        />
-      </StyledStatusLayout>
-      <StyledGraphLayout>
-        <SalesChart
-          sales={salesByDate}
-          firstDate={firstDate}
-          lastDate={lastDate}
-          isYearPicker={isYearPicker}
-        />
-        <PaymentMethodsChart
-          paymentMethods={paymentMethodQuantity}
-          firstDate={firstDate}
-          lastDate={lastDate}
-        />
+    <>
+      <Row id="page1" className="px-5">
+        <Heading as="h1" className="flex justify-center">Thống kê</Heading>
+        <div className="flex justify-end py-2">
+          <DashboardFilterOperations />
+        </div>
+        {/* </Row> */}
+        {/* <Row> */}
+        {/* <StyledDashboardLayout> */}
+        <StyledStatusLayout>
+          <Stats
+            products={productsSoldByDate}
+            orders={ordersByDate}
+            users={usersByDate}
+            sales={salesByDate}
+          />
+        </StyledStatusLayout>
+        <StyledGraphLayout>
+          <SalesChart
+            sales={salesByDate}
+            firstDate={firstDate}
+            lastDate={lastDate}
+            isYearPicker={isYearPicker}
+          />
+          <PaymentMethodsChart
+            paymentMethods={paymentMethodQuantity}
+            firstDate={firstDate}
+            lastDate={lastDate}
+          />
+        </StyledGraphLayout>
         <OrdersChart
           orders={ordersByDate}
           firstDate={firstDate}
@@ -97,6 +110,8 @@ export function DashboardLayout() {
           lastDate={lastDate}
           isYearPicker={isYearPicker}
         />
+      </Row>
+      <Row id="page2" className="px-5">
         <CategoriesChart
           categories={parentCategoryQuantity}
           firstDate={firstDate}
@@ -108,8 +123,10 @@ export function DashboardLayout() {
           lastDate={lastDate}
           isYearPicker={isYearPicker}
         />
-      </StyledGraphLayout>
-    </StyledDashboardLayout>
+        {/* </StyledGraphLayout> */}
+        {/* </StyledDashboardLayout> */}
+      </Row>
+    </>
   );
 }
 

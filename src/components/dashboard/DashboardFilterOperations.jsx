@@ -1,6 +1,5 @@
 import Filter from "@/components/ui/Filter";
 import TableOperations from "../ui/TableOperations";
-import FilterWeek from "../ui/FilterWeek";
 import FilterDateDashboard from "../ui/FilterDateDashboard";
 
 function DashboardFilterOperations() {
