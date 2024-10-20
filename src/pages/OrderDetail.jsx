@@ -4,6 +4,7 @@ import { Skeleton } from "antd";
 import { BlobProvider, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { HiOutlineDownload } from "react-icons/hi";
 import { HiEye, HiOutlinePrinter } from "react-icons/hi2";
+import { useShopInfo } from "@/hooks/shopInfo/useShopInfo";
 import Row from "@/components/ui/Row";
 import Heading from "@/components/ui/Heading";
 import ButtonText from "@/components/ui/ButtonText";
@@ -14,7 +15,6 @@ import OrderTracking from "@/components/orders/OrderTracking";
 import Button from "@/components/ui/Button";
 import Invoice from "@/components/orders/Invoice";
 import Modal from "@/components/ui/Modal";
-import { useShopInfo } from "@/hooks/shopInfo/useShopInfo";
 
 function OrderDetail() {
   const moveBack = useMoveBack();

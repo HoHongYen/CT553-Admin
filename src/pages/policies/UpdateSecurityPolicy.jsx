@@ -103,7 +103,7 @@ function UpdateSecurityPolicy() {
                 <div className="max-w-6">
                   {!visible ? <TickRoundIcon /> : <EmptyRoundBoxIcon />}
                 </div>
-                <span>Đã ẩn</span>
+                <span>Ẩn</span>
               </div>
             </div>
           </FormRow>

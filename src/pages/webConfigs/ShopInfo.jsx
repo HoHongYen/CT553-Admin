@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUpdateShopInfo } from "@/hooks/shopInfo/useUpdateShopInfo";
+import { useShopInfo } from "@/hooks/shopInfo/useShopInfo";
 import { useCreateShopInfo } from "@/hooks/shopInfo/useCreateShopInfo";
 import { handleClickElement, jumpToRelevantDiv } from "@/utils/helpers";
 import { uploadImage } from "@/services/apiUpload";
@@ -18,13 +20,11 @@ import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import Button from "@/components/ui/Button";
 import SpinnerMini from "@/components/ui/SpinnerMini";
-import { useUpdateShopInfo } from "@/hooks/shopInfo/useUpdateShopInfo";
-import { useShopInfo } from "@/hooks/shopInfo/useShopInfo";
 
 function ShopInfo() {
   const { shopInfo, isLoading: isLoadingShopInfo } = useShopInfo();
-  // const { createShopInfo, isLoading } = useCreateShopInfo();
-  const { updateShopInfo, isLoading } = useUpdateShopInfo();
+  const { createShopInfo, isLoading: isCreating } = useCreateShopInfo();
+  const { updateShopInfo, isLoading: isUpdating } = useUpdateShopInfo();
   const { handleSubmit } = useForm();
   const [name, setName] = useState("");
   const [fullName, setFullName] = useState("");
@@ -36,7 +36,8 @@ function ShopInfo() {
   const [workingTime, setWorkingTime] = useState("");
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [logoImage, setLogoImage] = useState(null);
-  const isWorking = isLoadingShopInfo || isLoading || isUploadingImage;
+  const isWorking =
+    isLoadingShopInfo || isCreating || isUpdating || isUploadingImage;
 
   const [nameError, setNameError] = useState("");
   const [fullNameError, setFullNameError] = useState("");
@@ -128,6 +129,25 @@ function ShopInfo() {
     else setWardError(null);
 
     const uploadedLogoImageId = await handleUploadLogoImage();
+
+    if (!shopInfo) {
+      createShopInfo({
+        name,
+        fullName,
+        email,
+        phone,
+        businessCode,
+        workingTime,
+        isMaintaining,
+        maintainingMessage,
+        provinceId,
+        districtId,
+        wardCode,
+        detailAddress,
+        logoId: uploadedLogoImageId,
+      });
+      return;
+    }
 
     updateShopInfo(
       {

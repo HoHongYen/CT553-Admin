@@ -217,13 +217,9 @@ function MainNav() {
                   <HiOutlineDocumentText />
                   <span>Thông tin</span>
                 </StyledNavLink>
-                <StyledNavLink to="/danh-muc">
+                <StyledNavLink to="/banner">
                   <HiOutlineSquaresPlus />
-                  <span>Banner trang chủ</span>
-                </StyledNavLink>
-                <StyledNavLink to="/coupons">
-                  <HiOutlineSquaresPlus />
-                  <span>Banner khuyến mại</span>
+                  <span>Banner</span>
                 </StyledNavLink>
               </div>
             )}

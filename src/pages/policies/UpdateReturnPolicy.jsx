@@ -19,8 +19,7 @@ import Spinner from "@/components/ui/Spinner";
 function UpdateReturnPolicy() {
   const moveBack = useMoveBack();
   const { handleSubmit } = useForm();
-  const { isLoading: isLoadingReturnPolicy, returnPolicy } =
-    useReturnPolicy();
+  const { isLoading: isLoadingReturnPolicy, returnPolicy } = useReturnPolicy();
   const { isLoading: isUpdating, updatePolicy } = useUpdateReturnPolicy();
 
   const [content, setContent] = useState("");
@@ -103,7 +102,7 @@ function UpdateReturnPolicy() {
                 <div className="max-w-6">
                   {!visible ? <TickRoundIcon /> : <EmptyRoundBoxIcon />}
                 </div>
-                <span>Đã ẩn</span>
+                <span>Ẩn</span>
               </div>
             </div>
           </FormRow>

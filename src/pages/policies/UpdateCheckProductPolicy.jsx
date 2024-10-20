@@ -36,7 +36,10 @@ function UpdateCheckProductPolicy() {
       return;
     }
 
-    updatePolicy({ policyId: checkProductPolicy.id, data: { content, visible } });
+    updatePolicy({
+      policyId: checkProductPolicy.id,
+      data: { content, visible },
+    });
   }
 
   useEffect(() => {
@@ -103,7 +106,7 @@ function UpdateCheckProductPolicy() {
                 <div className="max-w-6">
                   {!visible ? <TickRoundIcon /> : <EmptyRoundBoxIcon />}
                 </div>
-                <span>Đã ẩn</span>
+                <span>Ẩn</span>
               </div>
             </div>
           </FormRow>

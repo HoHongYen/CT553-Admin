@@ -1,3 +1,4 @@
+import { formatDate } from "@/utils/helpers";
 import { useDeleteCategory } from "@/hooks/categories/useDeleteCategory";
 
 import { HiPencil, HiTrash } from "react-icons/hi2";
@@ -7,7 +8,6 @@ import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import RoundImage from "@/components/ui/RoundImage";
 import CreateCategoryForm from "./CreateCategoryForm";
-import { formatDate } from "@/utils/helpers";
 
 function CategoryRow({ category }) {
   const { isDeleting, deleteCategory } = useDeleteCategory();

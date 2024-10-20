@@ -75,7 +75,15 @@ function CouponTable() {
   };
 
   if (isLoading) return <Skeleton />;
-  if (!coupons.length) return <p>Không có coupons nào!</p>;
+  if (!coupons.length)
+    return (
+      <p>
+        Không có coupon nào!
+        <div className="mt-5 flex gap-5 justify-end">
+          <AddCoupon />
+        </div>
+      </p>
+    );
 
   return (
     <Menus>

@@ -7,6 +7,7 @@ import { useDarkMode } from "@/context/DarkModeContext";
 import { useUploadImage } from "@/hooks/upload/useUploadImage";
 import { useDeleteImage } from "@/hooks/upload/useDeleteImage";
 import { useUpdateCategory } from "@/hooks/categories/useUpdateCategory";
+import { formatSlugify } from "@/utils/helpers";
 
 import { HiOutlineCamera } from "react-icons/hi2";
 
@@ -17,7 +18,6 @@ import FormRow from "@/components/ui/FormRow";
 import Input from "@/components/ui/Input";
 import SpinnerMini from "@/components/ui/SpinnerMini";
 import Select from "@/components/ui/Select";
-import { formatSlugify } from "@/utils/helpers";
 import Heading from "../ui/Heading";
 
 function CreateCategoryForm({ categoryToEdit = {}, onCloseModal }) {

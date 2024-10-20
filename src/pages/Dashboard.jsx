@@ -8,29 +8,52 @@ import Button from "@/components/ui/Button";
 function Dashboard() {
   const handlePrintReport = async () => {
     const pdf = new jsPDF();
-    let imgWidth = pdf.internal.pageSize.getWidth();
+    const imgWidth = 210; // A4 width in mm
+    const position = 0; // Starting position for the image
 
-    // const pdf = new jsPDF("p", "mm", "a4"); // A4 size page of PDF
-    // const imgWidth = 208;
-    const position = 0;
+    try {
+      // Capture the elements using html2canvas
+      const [canvasPage1, canvasPage2] = await Promise.all([
+        html2canvas(document.getElementById("page1")),
+        html2canvas(document.getElementById("page2")),
+      ]);
 
-    let page1 = document.getElementById("page1");
-    let page2 = document.getElementById("page2");
-    const [imgPage1, imgPage2] = await Promise.all([
-      html2canvas(page1),
-      html2canvas(page2),
-    ]);
-    // Process first image
-    let imgHeight = (imgPage1.height * imgWidth) / imgPage1.width;
-    let contentDataURL = imgPage1.toDataURL("image/png");
-    pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-    pdf.addPage();
-    // Process second image
-    imgHeight = (imgPage2.height * imgWidth) / imgPage2.width;
-    contentDataURL = imgPage2.toDataURL("image/png");
-    pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      // Convert canvas to data URL
+      const imgPage1DataURL = canvasPage1.toDataURL("image/png");
+      const imgPage2DataURL = canvasPage2.toDataURL("image/png");
 
-    pdf.save("report.pdf"); // Generated PDF
+      // Calculate image height to maintain aspect ratio
+      const imgPage1Height =
+        (canvasPage1.height * imgWidth) / canvasPage1.width;
+      const imgPage2Height =
+        (canvasPage2.height * imgWidth) / canvasPage2.width;
+
+      // Add the first image to the PDF
+      pdf.addImage(
+        imgPage1DataURL,
+        "PNG",
+        0,
+        position,
+        imgWidth,
+        imgPage1Height
+      );
+      pdf.addPage();
+
+      // Add the second image to the PDF
+      pdf.addImage(
+        imgPage2DataURL,
+        "PNG",
+        0,
+        position,
+        imgWidth,
+        imgPage2Height
+      );
+
+      // Save the PDF
+      pdf.save("report.pdf");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
   };
 
   return (

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMoveBack } from "@/hooks/common/useMoveBack";
 import { useForm } from "react-hook-form";
 import { jumpToRelevantDiv } from "@/utils/helpers";
+import { useCreatePaymentPolicy } from "@/hooks/policies/paymentPolicies/useCreatePaymentPolicy";
 import ButtonText from "@/components/ui/ButtonText";
 import Form from "@/components/ui/Form";
 import Heading from "@/components/ui/Heading";
@@ -12,7 +13,6 @@ import EmptyRoundBoxIcon from "@/components/icons/EmptyRoundBoxIcon";
 import FormRow from "@/components/ui/FormRow";
 import Button from "@/components/ui/Button";
 import SpinnerMini from "@/components/ui/SpinnerMini";
-import { useCreatePaymentPolicy } from "@/hooks/policies/paymentPolicies/useCreatePaymentPolicy";
 
 function AddPaymentPolicy() {
   const moveBack = useMoveBack();
@@ -99,7 +99,7 @@ function AddPaymentPolicy() {
                 <div className="max-w-6">
                   {!visible ? <TickRoundIcon /> : <EmptyRoundBoxIcon />}
                 </div>
-                <span>Đã ẩn</span>
+                <span>Ẩn</span>
               </div>
             </div>
           </FormRow>
