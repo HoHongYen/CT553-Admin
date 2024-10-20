@@ -283,11 +283,17 @@ function App() {
 
                   <Route
                     path="thong-tin-cua-hang"
-                    element={<SuspenseWrapper level1="webConfigs" path="ShopInfo" />}
+                    element={
+                      <SuspenseWrapper level1="webConfigs" path="ShopInfo" />
+                    }
                   />
-
                   {/* bao mat end */}
                   {/* Chính sách end  */}
+
+                  <Route
+                    path="banner"
+                    element={<SuspenseWrapper path="Banners" />}
+                  />
                 </Route>
                 <Route
                   path="dang-nhap"
