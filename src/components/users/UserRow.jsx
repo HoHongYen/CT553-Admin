@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { HiEye, HiLockClosed } from "react-icons/hi2";
+import { HiEye, HiLockClosed, HiPencil } from "react-icons/hi2";
 import { formatDate } from "@/utils/helpers";
 import { useActiveUser } from "@/hooks/users/useActiveUser";
 
@@ -10,6 +10,7 @@ import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
 import Tag from "../ui/Tag";
 import UserItem from "./UserItem";
+import CreateUserForm from "./CreateUserForm";
 
 const Avatar = styled.img`
   display: block;
@@ -63,6 +64,10 @@ function UserRow({ user }) {
                 </Modal.Open>
 
                 <Modal.Open opens="edit">
+                  <Menus.Button icon={<HiPencil />}>Chỉnh sửa</Menus.Button>
+                </Modal.Open>
+
+                <Modal.Open opens="lock">
                   <Menus.Button icon={<HiLockClosed />}>
                     {active ? "Khóa tài khoản" : "Kích hoạt lại"}
                   </Menus.Button>
@@ -75,6 +80,10 @@ function UserRow({ user }) {
             </Modal.Window>
 
             <Modal.Window name="edit">
+              <CreateUserForm userToEdit={user} />
+            </Modal.Window>
+
+            <Modal.Window name="lock">
               <ConfirmCertain
                 resourceName={`Bạn có chắc chắn muốn ${
                   active ? "khóa" : "kích hoạt"

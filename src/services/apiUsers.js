@@ -12,3 +12,12 @@ export async function getUsers({ customerSearch, active, role, gender, sortBy, p
 export async function toggleActiveUser(userId) {
     return (await api.put("/toggleActive/" + userId)).data;
 }
+
+export async function createUser(data) {
+    console.log(data);
+    return (await api.post("/", data)).data;
+}
+
+export async function updateUser(userId, data) {
+    return (await api.put("/" + userId, data)).data;
+}

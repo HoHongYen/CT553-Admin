@@ -10,15 +10,22 @@ import app from "../../firebase";
 const auth = getAuth(app);
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-import { uploadImage } from "@/services/apiUpload";
 import { useLogin } from "@/hooks/auth/useLogin";
 import { useLoginWithGoogle } from "@/hooks/profile/useLoginWithGoogle";
 
 function LoginForm() {
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("12345678");
+  const [showPassword, setShowPassword] = useState(false);
   const { login, isLoading: isLoading1 } = useLogin();
   const { loginWithGoogle, isLoading: isLoading2 } = useLoginWithGoogle();
+
+  const images = {
+    eyeOn:
+      "https://cdn0.iconfinder.com/data/icons/font-awesome-solid-vol-2/576/eye-64.png",
+    eyeOff:
+      "https://cdn3.iconfinder.com/data/icons/mix-pack-6/44/Asset_25-64.png",
+  };
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -35,7 +42,7 @@ function LoginForm() {
   }
 
   // LOGIN WITH GOOGLE
- 
+
   function handleLoginWithGoogle(e) {
     e.preventDefault();
     console.log("Login with Google");
@@ -65,14 +72,26 @@ function LoginForm() {
         />
       </FormRowVertical>
       <FormRowVertical label="Mật khẩu">
-        <Input
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={isLoading1 || isLoading2}
-        />
+        <div id="password" className="w-full relative">
+          <Input
+            className="w-full"
+            type={showPassword ? "text" : "password"}
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={isLoading1 || isLoading2}
+          />
+          {/* show password begin  */}
+          <div className="absolute right-3 top-[50%] translate-y-[-50%]">
+            <img
+              onClick={() => setShowPassword((show) => !show)}
+              src={showPassword ? images.eyeOn : images.eyeOff}
+              className="hover:cursor-pointer h-8 w-8"
+            />
+          </div>
+          {/* show password end  */}
+        </div>
       </FormRowVertical>
       <FormRowVertical>
         <Button size="large" disabled={isLoading1 || isLoading2}>

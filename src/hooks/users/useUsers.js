@@ -18,7 +18,7 @@ export function useUsers() {
     const genderValue = searchParams.get("gioi-tinh") || "tat-ca";
     const gender = genderValue === "tat-ca" ? "all" : genderValue === "nam" ? true : false;
 
-    const roleValue = searchParams.get("chuc-vu") || "tat-ca";
+    const roleValue = searchParams.get("vai-tro") || "tat-ca";
     const role = roleValue === "tat-ca" ? "all" : roleValue === "nhan-vien" ? 2 : roleValue === "khach-hang" ? 3 : 1;
 
     // // SORT

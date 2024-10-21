@@ -35,6 +35,12 @@
   width: 0;
   height: 0;
 }
+
+.required:after {
+  content: " *";
+  color: red;
+}
+
 /* CKEDITOR 5 version 1 begin */
 /* .ck-content > blockquote,
 .ck-content > dl,

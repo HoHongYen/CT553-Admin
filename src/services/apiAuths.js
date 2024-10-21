@@ -31,11 +31,6 @@ export async function getCurrentUser() {
     return loggedInAccount.metadata;
 }
 
-export async function register(data) {
-    console.log(data);
-    return (await api.post("/register", data)).data;
-}
-
 export async function updateCurrentUser(updatedInfo) { // { fullName, phone, gender, birthday }
     console.log(updatedInfo);
     return (await apiAccount.put("", updatedInfo)).data;

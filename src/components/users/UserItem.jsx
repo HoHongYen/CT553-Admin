@@ -51,7 +51,7 @@ function UserItem({ user, onCloseModal }) {
               </div>
 
               <StyledFormRow>
-                <label>Chức vụ</label>
+                <label>Vai trò</label>
                 <Input
                   value={
                     user.roleId === 1

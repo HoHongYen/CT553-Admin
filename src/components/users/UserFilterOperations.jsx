@@ -28,14 +28,14 @@ function UserFilterOperations() {
           />
 
           <FilterSelect
-            filterField="chuc-vu"
+            filterField="vai-tro"
             options={[
               { value: "tat-ca", label: "Tất cả" },
               { value: "admin", label: "Admin" },
               { value: "nhan-vien", label: "Nhân viên" },
               { value: "khach-hang", label: "Khách hàng" },
             ]}
-            label="Chức vụ"
+            label="Vai trò"
           />
 
           <FilterSelect

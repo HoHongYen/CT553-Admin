@@ -8,6 +8,7 @@ import Menus from "@/components/ui/Menus";
 import UserRow from "./UserRow";
 import Pagination from "../ui/Pagination";
 import Button from "../ui/Button";
+import AddUser from "./AddUser";
 
 function UserTable() {
   const { isLoading, users, totalUsers, totalPages } = useUsers();
@@ -66,7 +67,7 @@ function UserTable() {
           "Email",
           "Số điện thoại",
           "Giới tính",
-          "Chức vụ",
+          "Vai trò",
           "Trạng thái",
         ],
       ],
@@ -89,7 +90,7 @@ function UserTable() {
           <div>Email</div>
           <div>Số điện thoại</div>
           <div>Giới tính</div>
-          <div>Chức vụ</div>
+          <div>Vai trò</div>
           <div>Trạng thái</div>
           <div>Ngày tạo</div>
           <div></div>
@@ -107,6 +108,7 @@ function UserTable() {
         </Table.Footer>
       </Table>
       <div className="mt-5 flex gap-5 justify-end">
+        <AddUser />
         <Button
           variation="success"
           className="flex items-center gap-2"

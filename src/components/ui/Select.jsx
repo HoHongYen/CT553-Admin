@@ -14,16 +14,6 @@ const StyledSelect = styled.select`
   box-shadow: var(--shadow-sm);
 `;
 
-{
-  /* <StyledSelect value={value} {...props} onChange={onChange}>
-        {options.map((option) => (
-          <option value={option.value} key={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </StyledSelect> */
-}
-
 function Select({ options, value, onChange, ...props }) {
   return (
     <div className="relative">
