@@ -12,8 +12,11 @@ export function useProducts() {
     const productSearch = productSearchValue === "" ? "" : productSearchValue;
 
     // FILTER
-    const filterValue = searchParams.get("trang-thai") || "tat-ca";
-    const filter = !filterValue || filterValue === "tat-ca" ? null : { field: "trang-thai", value: filterValue };
+    const discountValue = searchParams.get("giam-gia") || "tat-ca";
+    const discount = !discountValue || discountValue === "tat-ca" ? "all" : discountValue;
+
+    const visibleValue = searchParams.get("trang-thai") || "tat-ca";
+    const visible = visibleValue === "tat-ca" ? "all" : visibleValue === "hien-thi" ? true : false;
 
     const filterMinPriceValue = Number(searchParams.get("gia-toi-thieu"));
     const filterMinPrice = !filterMinPriceValue ? null : { field: "gia-toi-thieu", value: filterMinPriceValue };
@@ -58,21 +61,21 @@ export function useProducts() {
         data: { metadata: { products, pagination: { totalProducts, totalPages } } } = { metadata: { products: [], pagination: { totalProducts: 0, totalPages: 0 } } },
         error,
     } = useQuery({
-        queryKey: ["products", productSearch, categoryIds, filter, filterMinPrice, filterMaxPrice, sortBy, page, limit],
-        queryFn: () => getProducts({ productSearch, categoryIds, filter, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, page, limit }),
+        queryKey: ["products", productSearch, categoryIds, discount, visible, filterMinPrice, filterMaxPrice, sortBy, page, limit],
+        queryFn: () => getProducts({ productSearch, categoryIds, discount, visible, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, page, limit }),
     });
 
     // PRE_FETCHING
     if (page < totalPages) {
         queryClient.prefetchQuery({
-            queryKey: ["products", productSearch, categoryIds, filter, filterMinPrice, filterMaxPrice, sortBy, page + 1, limit],
-            queryFn: () => getProducts({ productSearch, categoryIds, filter, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, pge: page + 1, limit }),
+            queryKey: ["products", productSearch, categoryIds, discount, visible, filterMinPrice, filterMaxPrice, sortBy, page + 1, limit],
+            queryFn: () => getProducts({ productSearch, categoryIds, discount, visible, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, page: page + 1, limit }),
         })
     }
     if (page > 1) {
         queryClient.prefetchQuery({
-            queryKey: ["products", productSearch, categoryIds, filter, filterMinPrice, filterMaxPrice, sortBy, page - 1, limit],
-            queryFn: () => getProducts({ productSearch, categoryIds, filter, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, page: page - 1, limit }),
+            queryKey: ["products", productSearch, categoryIds, discount, visible, filterMinPrice, filterMaxPrice, sortBy, page - 1, limit],
+            queryFn: () => getProducts({ productSearch, categoryIds, discount, visible, filterMinPrice: filterMinPriceValue, filterMaxPrice: filterMaxPriceValue, sortBy, page: page - 1, limit }),
         })
     }
 

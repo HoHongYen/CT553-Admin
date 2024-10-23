@@ -32,7 +32,6 @@ export function useCategoriesForTable() {
 
     const limit = searchParams.get("gioi-han") || PAGE_SIZE;
 
-
     const { isLoading, data: { metadata: { categories, pagination: { totalCategories, totalPages } } } = { metadata: { categories: [], pagination: { totalCategories: 0, totalPages: 0 } } }, } = useQuery({
         queryKey: ["categories", categorySearch, isRootCategory, sortBy, page, limit],
         queryFn: () => getCategoriesForTable({ categorySearch, isRootCategory, sortBy, page, limit }),

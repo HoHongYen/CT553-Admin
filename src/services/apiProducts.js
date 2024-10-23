@@ -7,8 +7,8 @@ export async function createProduct(data) {
   return (await api.post("/", data)).data; // name, slug, overview, material, specification, instruction, categoryIds, (array) uploadedImageIds  
 }
 
-export async function deleteProduct(id) {
-  return (await api.delete(`/${id}`)).data;
+export async function toggleHideProduct(productId) {
+  return (await api.put("/toggleHide/" + productId)).data;
 }
 
 export async function updateProduct(productId, data) {
@@ -55,8 +55,8 @@ export async function deleteCategory(id, categoryId) {
   return (await api.delete(`/${id}/delete-category/${categoryId}`)).data;
 }
 
-export async function getProducts({ productSearch, type = PRODUCT_ALL, categoryIds, filter, filterMinPrice = 0, filterMaxPrice = 0, sortBy, page = 1, limit = PAGE_SIZE }) {
-  const products = (await api.get("/", { params: { productSearch, type, categoryIds, filter, filterMinPrice, filterMaxPrice, sortBy, limit, page } })).data;
+export async function getProducts({ productSearch, type = PRODUCT_ALL, categoryIds, discount, visible, filterMinPrice = 0, filterMaxPrice = 0, sortBy, page = 1, limit = PAGE_SIZE }) {
+  const products = (await api.get("/", { params: { productSearch, type, categoryIds, discount, visible, filterMinPrice, filterMaxPrice, sortBy, limit, page } })).data;
   return products;
 }
 

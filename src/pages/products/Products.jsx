@@ -8,8 +8,10 @@ function Products() {
     <>
       <Row type="horizontal">
         <Heading as="h1">Sản phẩm</Heading>
-        <ProductFilterOperations />
       </Row>
+      <div className="flex justify-end">
+        <ProductFilterOperations />
+      </div>
       <Row>
         <ProductTable data="products" />
       </Row>

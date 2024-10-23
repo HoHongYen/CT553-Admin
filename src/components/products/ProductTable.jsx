@@ -79,13 +79,13 @@ function ProductTable() {
 
   return (
     <Menus>
-      <Table columns="1fr 1fr 4.5fr 1.5fr 1.8fr 1fr 1fr 1fr 1fr">
+      <Table columns="1fr 1fr 4.5fr 1.8fr 1.8fr 1fr 1fr 1fr 1fr">
         <Table.Header>
           <div></div>
           <div>Mã sản phẩm</div>
           <div>Tên sản phẩm</div>
-          <div>Ngày thêm</div>
           <div>Giảm giá</div>
+          <div>Trạng thái</div>
           <div>Đã bán</div>
           <div>Còn lại</div>
           <div>Đánh giá</div>
