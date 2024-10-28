@@ -1,7 +1,7 @@
 import createApiClient from "./api";
 
 const baseUrl = "/api/bannerCategories";
-const api = createApiClient(baseUrl);
+const api = createApiClient(baseUrl, { needAuth: true });
 
 export async function createBannerCategory(data) {
     console.log("data", data);

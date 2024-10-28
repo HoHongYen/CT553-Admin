@@ -2,7 +2,7 @@ import createApiClient from "./api";
 import { uploadImage } from "./apiUpload";
 
 const baseUrl = "/api/categories";
-const api = createApiClient(baseUrl);
+const api = createApiClient(baseUrl, { needAuth: true });
 
 export async function createCategory(data) {
     console.log(data);

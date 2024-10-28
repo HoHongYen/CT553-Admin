@@ -1,6 +1,6 @@
 import createApiClient from "./api";
 const baseUrl = "/api/products";
-const api = createApiClient(baseUrl);
+const api = createApiClient(baseUrl, { needAuth: true });
 import { PAGE_SIZE, PRODUCT_ALL } from "../utils/constants";
 
 export async function createProduct(data) {

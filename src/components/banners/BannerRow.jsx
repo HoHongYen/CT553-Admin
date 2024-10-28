@@ -6,7 +6,6 @@ import Modal from "@/components/ui/Modal";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Table from "@/components/ui/Table";
 import Menus from "@/components/ui/Menus";
-import RoundImage from "@/components/ui/RoundImage";
 import CreateBannerForm from "./CreateBannerForm";
 import Tag from "../ui/Tag";
 

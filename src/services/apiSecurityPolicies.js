@@ -1,7 +1,7 @@
 import createApiClient from "./api";
 
 const baseUrl = "/api/securityPolicies";
-const api = createApiClient(baseUrl);
+const api = createApiClient(baseUrl, { needAuth: true });
 
 export async function createPolicy(data) {
     console.log(data);

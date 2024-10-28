@@ -1,7 +1,7 @@
 import createApiClient from "./api";
 
 const baseUrl = "/api/shopInfo";
-const api = createApiClient(baseUrl);
+const api = createApiClient(baseUrl, { needAuth: true });
 
 export async function createShopInfo(data) {
     return (await api.post("", data)).data;
