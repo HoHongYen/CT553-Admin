@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
@@ -24,6 +24,7 @@ import {
   HiOutlineSquaresPlus,
 } from "react-icons/hi2";
 import { HiOutlineCash } from "react-icons/hi";
+import { useUser } from "@/hooks/profile/useUser";
 
 const NavList = styled.ul`
   display: flex;
@@ -99,6 +100,15 @@ const ProductNavLink = styled(NavLink)`
 `;
 
 function MainNav() {
+  const { user } = useUser();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (user.roleId === 1) {
+      setIsAdmin(true);
+    }
+  }, [user]);
+
   const [showChildMenu, setShowChildMenu] = useState(false);
   const [showPolicyChildMenu, setShowPolicyChildMenu] = useState(false);
   const [showInterfaceChildMenu, setShowInterfaceChildMenu] = useState(false);
@@ -112,12 +122,14 @@ function MainNav() {
             <span>Thống kê</span>
           </StyledNavLink>
         </li>
-        <li>
-          <StyledNavLink to="/nguoi-dung">
-            <HiOutlineUser />
-            <span>Người dùng</span>
-          </StyledNavLink>
-        </li>
+        {isAdmin && (
+          <li>
+            <StyledNavLink to="/nguoi-dung">
+              <HiOutlineUser />
+              <span>Người dùng</span>
+            </StyledNavLink>
+          </li>
+        )}
         <li>
           <ProductNavLink onClick={() => setShowChildMenu((show) => !show)}>
             <HiOutlinePhoto />
@@ -155,82 +167,86 @@ function MainNav() {
             <span>Đơn hàng</span>
           </StyledNavLink>
         </li>
-        <li>
-          <ProductNavLink
-            onClick={() => setShowPolicyChildMenu((show) => !show)}
-          >
-            <HiOutlineClipboardDocumentList />
-            <div className="flex">
-              <span>Chính sách</span>
-              {showPolicyChildMenu ? (
-                <HiMiniChevronDown />
-              ) : (
-                <HiMiniChevronRight />
+        {isAdmin && (
+          <>
+            <li>
+              <ProductNavLink
+                onClick={() => setShowPolicyChildMenu((show) => !show)}
+              >
+                <HiOutlineClipboardDocumentList />
+                <div className="flex">
+                  <span>Chính sách</span>
+                  {showPolicyChildMenu ? (
+                    <HiMiniChevronDown />
+                  ) : (
+                    <HiMiniChevronRight />
+                  )}
+                </div>
+              </ProductNavLink>
+              {showPolicyChildMenu && (
+                <div className="ml-10">
+                  <StyledNavLink to="/chinh-sach-thanh-toan">
+                    <HiOutlineCash />
+                    <span>Thanh toán</span>
+                  </StyledNavLink>
+                  <StyledNavLink to="/chinh-sach-giao-hang">
+                    <HiOutlineTruck />
+                    <span>Giao hàng</span>
+                  </StyledNavLink>
+                  <StyledNavLink to="/chinh-sach-kiem-hang">
+                    <HiOutlineEye />
+                    <span>Kiểm hàng</span>
+                  </StyledNavLink>
+                  <StyledNavLink to="/chinh-sach-doi-tra">
+                    <HiMiniArrowPathRoundedSquare />
+                    <span>Đổi trả</span>
+                  </StyledNavLink>
+                  <StyledNavLink to="/chinh-sach-bao-hanh">
+                    <HiOutlineWrench />
+                    <span>Bảo hành</span>
+                  </StyledNavLink>
+                  <StyledNavLink to="/chinh-sach-bao-mat">
+                    <HiOutlineLockClosed />
+                    <span>Bảo mật</span>
+                  </StyledNavLink>
+                </div>
               )}
-            </div>
-          </ProductNavLink>
-          {showPolicyChildMenu && (
-            <div className="ml-10">
-              <StyledNavLink to="/chinh-sach-thanh-toan">
-                <HiOutlineCash />
-                <span>Thanh toán</span>
-              </StyledNavLink>
-              <StyledNavLink to="/chinh-sach-giao-hang">
-                <HiOutlineTruck />
-                <span>Giao hàng</span>
-              </StyledNavLink>
-              <StyledNavLink to="/chinh-sach-kiem-hang">
-                <HiOutlineEye />
-                <span>Kiểm hàng</span>
-              </StyledNavLink>
-              <StyledNavLink to="/chinh-sach-doi-tra">
-                <HiMiniArrowPathRoundedSquare />
-                <span>Đổi trả</span>
-              </StyledNavLink>
-              <StyledNavLink to="/chinh-sach-bao-hanh">
-                <HiOutlineWrench />
-                <span>Bảo hành</span>
-              </StyledNavLink>
-              <StyledNavLink to="/chinh-sach-bao-mat">
-                <HiOutlineLockClosed />
-                <span>Bảo mật</span>
-              </StyledNavLink>
-            </div>
-          )}
-          <li>
-            <ProductNavLink
-              onClick={() => setShowInterfaceChildMenu((show) => !show)}
-            >
-              <HiMiniCog />
-              <div className="flex">
-                <span>Giao diện</span>
-                {showInterfaceChildMenu ? (
-                  <HiMiniChevronDown />
-                ) : (
-                  <HiMiniChevronRight />
+              <li>
+                <ProductNavLink
+                  onClick={() => setShowInterfaceChildMenu((show) => !show)}
+                >
+                  <HiMiniCog />
+                  <div className="flex">
+                    <span>Giao diện</span>
+                    {showInterfaceChildMenu ? (
+                      <HiMiniChevronDown />
+                    ) : (
+                      <HiMiniChevronRight />
+                    )}
+                  </div>
+                </ProductNavLink>
+                {showInterfaceChildMenu && (
+                  <div className="ml-10">
+                    <StyledNavLink to="/thong-tin-cua-hang">
+                      <HiOutlineDocumentText />
+                      <span>Thông tin</span>
+                    </StyledNavLink>
+                    <StyledNavLink to="/banner">
+                      <HiOutlineSquaresPlus />
+                      <span>Banner</span>
+                    </StyledNavLink>
+                  </div>
                 )}
-              </div>
-            </ProductNavLink>
-            {showInterfaceChildMenu && (
-              <div className="ml-10">
-                <StyledNavLink to="/thong-tin-cua-hang">
-                  <HiOutlineDocumentText />
-                  <span>Thông tin</span>
-                </StyledNavLink>
-                <StyledNavLink to="/banner">
-                  <HiOutlineSquaresPlus />
-                  <span>Banner</span>
-                </StyledNavLink>
-              </div>
-            )}
-          </li>
-        </li>
-        <li>
-          <StyledNavLink to="/phan-quyen">
-            <HiOutlineLockClosed />
-            <span>Phân quyền</span>
-          </StyledNavLink>
-        </li>
+              </li>
+            </li>
+            <li>
+              <StyledNavLink to="/phan-quyen">
+                <HiOutlineLockClosed />
+                <span>Phân quyền</span>
+              </StyledNavLink>
+            </li>
+          </>
+        )}
       </NavList>
     </nav>
   );

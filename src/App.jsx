@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 
 import { DarkModeProvider } from "./context/DarkModeContext";
 import GlobalStyles from "@/styles/GlobalStyles";
+import ProtectedRoute2 from "@/components/ui/ProtectedRoute2";
 import ProtectedRoute from "@/components/ui/ProtectedRoute";
 import AppLayout from "@/components/layouts/AppLayout";
 import ScrollToTop from "./components/ui/ScrollToTop";
@@ -40,18 +41,14 @@ function App() {
             <BrowserRouter>
               <ScrollToTop />
               <Routes>
+                {/* admin only */}
                 <Route
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute2>
                       <AppLayout />
-                    </ProtectedRoute>
+                    </ProtectedRoute2>
                   }
                 >
-                  <Route index element={<Navigate replace to="/dashboard" />} />
-                  <Route
-                    path="dashboard"
-                    element={<SuspenseWrapper path="Dashboard" />}
-                  />
                   <Route
                     path="tai-khoan"
                     element={<SuspenseWrapper path="Account" />}
@@ -64,44 +61,7 @@ function App() {
                     path="/nguoi-dung/tao-moi"
                     element={<SuspenseWrapper path="CreateEmployee" />}
                   />
-                  <Route
-                    path="san-pham"
-                    element={
-                      <SuspenseWrapper level1="products" path="Products" />
-                    }
-                  />
-                  <Route
-                    path="san-pham/tao-moi"
-                    element={
-                      <SuspenseWrapper level1="products" path="AddProduct" />
-                    }
-                  />
-                  <Route
-                    path="san-pham/:slug"
-                    element={
-                      <SuspenseWrapper level1="products" path="UpdateProduct" />
-                    }
-                  />
-                  <Route
-                    path="danh-muc"
-                    element={<SuspenseWrapper path="Categories" />}
-                  />
-                  <Route
-                    path="coupons"
-                    element={<SuspenseWrapper path="Coupons" />}
-                  />
-                  <Route
-                    path="don-hang"
-                    element={<SuspenseWrapper path="Orders" />}
-                  />
-                  <Route
-                    path="don-hang/:orderId"
-                    element={<SuspenseWrapper path="OrderDetail" />}
-                  />
-                  <Route
-                    path="danh-gia"
-                    element={<SuspenseWrapper path="Reviews" />}
-                  />
+
                   {/* Chính sách begin */}
                   {/* thanh toan begin */}
                   <Route
@@ -298,6 +258,58 @@ function App() {
                   <Route
                     path="phan-quyen"
                     element={<SuspenseWrapper path="Authorization" />}
+                  />
+                </Route>
+                {/* admin and employee only */}
+                <Route
+                  element={
+                    <ProtectedRoute>
+                      <AppLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<Navigate replace to="/dashboard" />} />
+                  <Route
+                    path="dashboard"
+                    element={<SuspenseWrapper path="Dashboard" />}
+                  />
+                  <Route
+                    path="san-pham"
+                    element={
+                      <SuspenseWrapper level1="products" path="Products" />
+                    }
+                  />
+                  <Route
+                    path="san-pham/tao-moi"
+                    element={
+                      <SuspenseWrapper level1="products" path="AddProduct" />
+                    }
+                  />
+                  <Route
+                    path="san-pham/:slug"
+                    element={
+                      <SuspenseWrapper level1="products" path="UpdateProduct" />
+                    }
+                  />
+                  <Route
+                    path="danh-muc"
+                    element={<SuspenseWrapper path="Categories" />}
+                  />
+                  <Route
+                    path="coupons"
+                    element={<SuspenseWrapper path="Coupons" />}
+                  />
+                  <Route
+                    path="don-hang"
+                    element={<SuspenseWrapper path="Orders" />}
+                  />
+                  <Route
+                    path="don-hang/:orderId"
+                    element={<SuspenseWrapper path="OrderDetail" />}
+                  />
+                  <Route
+                    path="danh-gia"
+                    element={<SuspenseWrapper path="Reviews" />}
                   />
                 </Route>
                 <Route

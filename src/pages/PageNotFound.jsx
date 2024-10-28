@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { useMoveBack } from "@/hooks/common/useMoveBack";
+import { useNavigate } from "react-router-dom";
 import Heading from "@/components/ui/Heading";
 
 const StyledPageNotFound = styled.main`
@@ -28,13 +28,13 @@ const Box = styled.div`
 `;
 
 function PageNotFound() {
-  const moveBack = useMoveBack();
-
+  const navigate = useNavigate();
+  
   return (
     <StyledPageNotFound>
       <Box>
         <Heading as="h1">Trang bạn tìm kiếm không tồn tại! 😢</Heading>
-        <button onClick={moveBack} size="large">
+        <button onClick={() => navigate("/")} size="large">
           &larr; Quay về trang chủ
         </button>
       </Box>
