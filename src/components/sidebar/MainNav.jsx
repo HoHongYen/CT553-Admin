@@ -140,6 +140,12 @@ function MainNav() {
                 <HiOutlineTicket />
                 <span>Coupons</span>
               </StyledNavLink>
+              <li>
+                <StyledNavLink to="/danh-gia">
+                  <HiOutlineStar />
+                  <span>Đánh giá</span>
+                </StyledNavLink>
+              </li>
             </div>
           )}
         </li>
@@ -147,12 +153,6 @@ function MainNav() {
           <StyledNavLink to="/don-hang">
             <HiOutlineShoppingBag />
             <span>Đơn hàng</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/danh-gia">
-            <HiOutlineStar />
-            <span>Đánh giá</span>
           </StyledNavLink>
         </li>
         <li>
@@ -224,6 +224,12 @@ function MainNav() {
               </div>
             )}
           </li>
+        </li>
+        <li>
+          <StyledNavLink to="/phan-quyen">
+            <HiOutlineLockClosed />
+            <span>Phân quyền</span>
+          </StyledNavLink>
         </li>
       </NavList>
     </nav>

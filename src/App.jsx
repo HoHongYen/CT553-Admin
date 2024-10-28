@@ -294,6 +294,11 @@ function App() {
                     path="banner"
                     element={<SuspenseWrapper path="Banners" />}
                   />
+
+                  <Route
+                    path="phan-quyen"
+                    element={<SuspenseWrapper path="Authorization" />}
+                  />
                 </Route>
                 <Route
                   path="dang-nhap"
