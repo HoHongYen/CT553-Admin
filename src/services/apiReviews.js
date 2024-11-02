@@ -5,7 +5,7 @@ const api = createApiClient(baseUrl, { needAuth: true });
 
 export async function createReview(data) {
     console.log("data", data);
-    return (await api.post("", data)).data;
+    return (await api.post("/reply", data)).data;
 }
 
 export async function getAllReviews({ customerSearch, visible, hasReply, sortBy, page, limit }) {
@@ -32,13 +32,5 @@ export async function deleteImage(reviewImageId) {
 }
 
 export async function updateReview(reviewId, updatedReview) {
-    return (await api.put("/" + reviewId, updatedReview)).data;
+    return (await api.put("/reply/" + reviewId, updatedReview)).data;
 }
-
-// export async function getAddressesOfCurrentUser() {
-//     return (await api.get("/current-account")).data;
-// }
-
-// export async function deleteAddress(addressId) {
-//     return (await api.delete("/" + addressId)).data;
-// }

@@ -9,6 +9,7 @@ import Tag from "@/components/ui/Tag";
 import ConfirmCertain from "@/components/ui/ConfirmCertain";
 import Menus from "@/components/ui/Menus";
 import CommentItem from "./CommentItem";
+import CreateReviewForm from "./CreateReviewForm";
 
 function ReviewRow({ review }) {
   const {
@@ -68,7 +69,11 @@ function ReviewRow({ review }) {
                 </Modal.Open>
 
                 <Modal.Open opens="reply">
-                  <Menus.Button icon={<HiPlus />}>Thêm phản hồi</Menus.Button>
+                  {review.replyByReview.length > 0 ? (
+                    <Menus.Button icon={<HiEye />}>Xem phản hồi</Menus.Button>
+                  ) : (
+                    <Menus.Button icon={<HiPlus />}>Thêm phản hồi</Menus.Button>
+                  )}
                 </Modal.Open>
 
                 <Modal.Open opens="edit">
@@ -84,7 +89,18 @@ function ReviewRow({ review }) {
             </Modal.Window>
 
             <Modal.Window name="reply">
-              {/* <CreateCategoryForm categoryToEdit={category} /> */}
+              {review.replyByReview.length > 0 ? (
+                <CreateReviewForm
+                  orderDetail={review.orderDetail}
+                  replyToReview={review}
+                  reviewToEdit={review.replyByReview[0]}
+                />
+              ) : (
+                <CreateReviewForm
+                  orderDetail={review.orderDetail}
+                  replyToReview={review}
+                />
+              )}
             </Modal.Window>
 
             <Modal.Window name="edit">

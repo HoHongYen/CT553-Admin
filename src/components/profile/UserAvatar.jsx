@@ -23,7 +23,7 @@ const Avatar = styled.img`
 
 function UserAvatar() {
   const { user } = useUser();
-  const { fullName, avatar } = user;
+  const { fullName, avatar, roleId } = user;
 
   return (
     <StyledUserAvatar>
@@ -31,7 +31,9 @@ function UserAvatar() {
         src={avatar?.path || "/default-user.jpg"}
         alt={`Avatar of ${fullName}`}
       />
-      <span>{fullName}</span>
+      <span>
+        {fullName} ({roleId == 1 ? "Admin" : "Nhân viên"})
+      </span>
     </StyledUserAvatar>
   );
 }

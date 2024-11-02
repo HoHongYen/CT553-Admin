@@ -217,7 +217,7 @@ function MainNav() {
                 >
                   <HiMiniCog />
                   <div className="flex">
-                    <span>Giao diện</span>
+                    <span>Cấu hình</span>
                     {showInterfaceChildMenu ? (
                       <HiMiniChevronDown />
                     ) : (
