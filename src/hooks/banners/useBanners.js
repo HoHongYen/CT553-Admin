@@ -14,6 +14,9 @@ export function useBanners() {
     const bannerCategoryIdValue = searchParams.get("loai") || "tat-ca";
     const bannerCategoryId = bannerCategoryIdValue === "tat-ca" ? "all" : bannerCategoryIdValue;
 
+    const visibleValue = searchParams.get("trang-thai") || "tat-ca";
+    const visible = visibleValue === "tat-ca" ? "all" : visibleValue === "hien-thi" ? true : false;
+
     // // SORT
     const sortByRaw = searchParams.get("thu-tu") || "thu-tu-tang-dan";
     let sortBy = { field: "priority", direction: "asc" };
@@ -38,8 +41,8 @@ export function useBanners() {
 
 
     const { isLoading, data: { metadata: { banners, pagination: { totalBanners, totalPages } } } = { metadata: { banners: [], pagination: { totalBanners: 0, totalPages: 0 } } }, } = useQuery({
-        queryKey: ["banners", bannerSearch, bannerCategoryId, sortBy, page, limit],
-        queryFn: () => getBanners({ bannerSearch, bannerCategoryId, sortBy, page, limit }),
+        queryKey: ["banners", bannerSearch, bannerCategoryId, visible, sortBy, page, limit],
+        queryFn: () => getBanners({ bannerSearch, bannerCategoryId, visible, sortBy, page, limit }),
     })
 
     return { isLoading, banners, totalBanners, totalPages };

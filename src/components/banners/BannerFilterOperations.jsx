@@ -7,7 +7,9 @@ import SearchBarCustomer from "../ui/SearchBar";
 
 function BannerFilterOperations() {
   const { bannerCategories } = useBannerCategories();
-  const [options, setOptions] = useState([{ value: "tat-ca", label: "Tất cả" }]);
+  const [options, setOptions] = useState([
+    { value: "tat-ca", label: "Tất cả" },
+  ]);
   useEffect(() => {
     if (bannerCategories?.length > 0) {
       setOptions([
@@ -42,6 +44,16 @@ function BannerFilterOperations() {
             filterField="loai"
             options={options}
             label="Loại danh mục"
+          />
+
+          <FilterSelect
+            filterField="trang-thai"
+            options={[
+              { value: "tat-ca", label: "Tất cả" },
+              { value: "hien-thi", label: "Hiển thị" },
+              { value: "da-an", label: "Đã ẩn" },
+            ]}
+            label="Trạng thái"
           />
 
           <SortBy
