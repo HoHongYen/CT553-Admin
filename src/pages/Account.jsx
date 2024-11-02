@@ -4,9 +4,12 @@ import UpdatePasswordForm from "@/components/profile/UpdatePasswordForm";
 import UpdateUserDataForm from "@/components/profile/UpdateUserDataForm";
 import Heading from "@/components/ui/Heading";
 import Row from "@/components/ui/Row";
+import Spinner from "@/components/ui/Spinner";
 
 function Account() {
-  const { user } = useUser();
+  const { isLoading, user } = useUser();
+  
+  if (isLoading) return <Spinner active />;
 
   return (
     <>

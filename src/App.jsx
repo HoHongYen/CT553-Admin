@@ -50,10 +50,6 @@ function App() {
                   }
                 >
                   <Route
-                    path="tai-khoan"
-                    element={<SuspenseWrapper path="Account" />}
-                  />
-                  <Route
                     path="/nguoi-dung"
                     element={<SuspenseWrapper path="Users" />}
                   />
@@ -244,7 +240,7 @@ function App() {
                   <Route
                     path="thong-tin-cua-hang"
                     element={
-                      <SuspenseWrapper level1="webConfigs" path="ShopInfo" />
+                      <SuspenseWrapper path="ShopInfo" />
                     }
                   />
                   {/* bao mat end */}
@@ -269,6 +265,10 @@ function App() {
                   }
                 >
                   <Route index element={<Navigate replace to="/dashboard" />} />
+                  <Route
+                    path="/tai-khoan"
+                    element={<SuspenseWrapper path="Account" />}
+                  />
                   <Route
                     path="dashboard"
                     element={<SuspenseWrapper path="Dashboard" />}

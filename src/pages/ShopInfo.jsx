@@ -30,6 +30,7 @@ function ShopInfo() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [slogan, setSlogan] = useState("");
   const [businessCode, setBusinessCode] = useState("");
   const [isMaintaining, setIsMaintaining] = useState(false);
   const [maintainingMessage, setMaintainingMessage] = useState("");
@@ -43,6 +44,7 @@ function ShopInfo() {
   const [fullNameError, setFullNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [sloganError, setSloganError] = useState("");
   const [businessCodeError, setBusinessCodeError] = useState("");
   const [workingTimeError, setWorkingTimeError] = useState("");
   const [logoImageError, setLogoImageError] = useState("");
@@ -107,6 +109,11 @@ function ShopInfo() {
       jumpToRelevantDiv("phone");
       return;
     }
+    if (!slogan) {
+      setSloganError("Không được bỏ trống!");
+      jumpToRelevantDiv("slogan");
+      return;
+    }
     if (!businessCode) {
       setBusinessCodeError("Không được bỏ trống!");
       jumpToRelevantDiv("businessCode");
@@ -136,6 +143,7 @@ function ShopInfo() {
         fullName,
         email,
         phone,
+        slogan,
         businessCode,
         workingTime,
         isMaintaining,
@@ -157,6 +165,7 @@ function ShopInfo() {
           fullName,
           email,
           phone,
+          slogan,
           businessCode,
           workingTime,
           isMaintaining,
@@ -181,10 +190,20 @@ function ShopInfo() {
     if (fullName) setFullNameError(null);
     if (email) setEmailError(null);
     if (phone) setPhoneError(null);
+    if (slogan) setSloganError(null);
     if (businessCode) setBusinessCodeError(null);
     if (workingTime) setWorkingTimeError(null);
     if (logoImage) setLogoImageError(null);
-  }, [name, fullName, email, phone, businessCode, workingTime, logoImage]);
+  }, [
+    name,
+    fullName,
+    email,
+    phone,
+    slogan,
+    businessCode,
+    workingTime,
+    logoImage,
+  ]);
 
   useEffect(() => {
     async function helper() {
@@ -251,6 +270,7 @@ function ShopInfo() {
     setFullName(shopInfo?.fullName);
     setEmail(shopInfo?.email);
     setPhone(shopInfo?.phone);
+    setSlogan(shopInfo?.slogan);
     setBusinessCode(shopInfo?.businessCode);
     setIsMaintaining(shopInfo?.isMaintaining);
     setMaintainingMessage(shopInfo?.maintainingMessage);
@@ -465,6 +485,17 @@ function ShopInfo() {
                   rows={7}
                   onChange={(e) => setMaintainingMessage(e.target.value)}
                 />
+              </FormRow>
+              <FormRow size="medium" label="Slogan" error={sloganError}>
+                <div id="slogan">
+                  <Textarea
+                    type="text"
+                    id="slogan"
+                    value={slogan}
+                    rows={3}
+                    onChange={(e) => setSlogan(e.target.value)}
+                  />
+                </div>
               </FormRow>
               <FormRow
                 size="medium"
