@@ -46,7 +46,7 @@ function CouponTable() {
 
     // add header row
 
-    XLSX.utils.sheet_add_aoa(worksheet, [["Danh sách coupons"]], {
+    XLSX.utils.sheet_add_aoa(worksheet, [["Danh sách mã giảm giá"]], {
       origin: "A1",
     });
 
@@ -59,7 +59,7 @@ function CouponTable() {
       worksheet,
       [
         [
-          "Mã coupon",
+          "Mã",
           "Loại giảm giá",
           "Giá trị giảm",
           "Số lượng",
@@ -78,7 +78,7 @@ function CouponTable() {
   if (!coupons.length)
     return (
       <p>
-        Không có coupon nào!
+        Không có mã giảm giá nào!
         <div className="mt-5 flex gap-5 justify-end">
           <AddCoupon />
         </div>
@@ -89,7 +89,7 @@ function CouponTable() {
     <Menus>
       <Table columns="1fr 1.5fr 1fr 1fr 1fr 1fr 1fr 0.5fr">
         <Table.Header>
-          <div>Mã coupon</div>
+          <div>Mã</div>
           <div>Loại giảm giá</div>
           <div>Giá trị giảm</div>
           <div>Số lượng</div>

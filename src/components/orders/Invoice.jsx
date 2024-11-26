@@ -276,7 +276,7 @@ function Invoice({ order, logo }) {
         <Text></Text>
       </View>
       <View style={styles.tbodyOtherPrice}>
-        <Text>Áp dụng coupon:</Text>
+        <Text>Áp dụng mã giảm giá:</Text>
       </View>
       <View style={styles.tbodyOtherPrice}>
         <Text>-{formatCurrency(order.totalDiscount)}</Text>

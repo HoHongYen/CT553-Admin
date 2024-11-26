@@ -4,6 +4,11 @@ const baseUrl = "/api/auth";
 const api = createApiClient(baseUrl);
 const apiAccount = createApiClient("/api/accounts", { needAuth: true });
 
+export async function register(data) {
+    console.log(data);
+    return (await api.post("/register", data)).data;
+}
+
 export async function login(data) {
     return (await api.post("/adminLogin", data)).data;
 }

@@ -8,12 +8,12 @@ export function useUpdateCoupon() {
         mutationFn: ({ couponId, updatedCoupon }) => updateCouponApi(couponId, updatedCoupon),
         onSuccess: (coupon) => {
             console.log(coupon);
-            toast.success("Cập nhật coupon thành công!");
+            toast.success("Cập nhật mã giảm giá thành công!");
             queryClient.invalidateQueries({ queryKey: ["coupons"] });
         },
         onError: (error) => {
             console.log(error);
-            toast.error("Lỗi cập nhật coupon!");
+            toast.error("Lỗi cập nhật mã giảm giá!");
         }
     })
 

@@ -8,7 +8,7 @@ function AddCoupon() {
       <Modal>
         <Modal.Open opens="coupon-form">
           <Button>
-            <span className="mr-2">+</span>Thêm coupon
+            <span className="mr-2">+</span>Thêm mã giảm giá
           </Button>
         </Modal.Open>
         <Modal.Window name="coupon-form">

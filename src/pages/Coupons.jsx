@@ -6,7 +6,7 @@ function Coupons() {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Coupons</Heading>
+        <Heading as="h1">Mã giảm giá</Heading>
       </Row>
       <Row>
         <CouponTable />

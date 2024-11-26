@@ -150,7 +150,7 @@ function MainNav() {
               </StyledNavLink>
               <StyledNavLink to="/coupons">
                 <HiOutlineTicket />
-                <span>Coupons</span>
+                <span>Mã giảm giá</span>
               </StyledNavLink>
               <li>
                 <StyledNavLink to="/danh-gia">

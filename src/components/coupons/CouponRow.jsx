@@ -49,7 +49,7 @@ function CouponRow({ coupon }) {
                 </Modal.Open>
 
                 <Modal.Open opens="delete">
-                  <Menus.Button icon={<HiTrash />}>Xóa coupon</Menus.Button>
+                  <Menus.Button icon={<HiTrash />}>Xóa mã giảm giá</Menus.Button>
                 </Modal.Open>
               </Menus.List>
             </Menus.Menu>
@@ -60,7 +60,7 @@ function CouponRow({ coupon }) {
 
             <Modal.Window name="delete">
               <ConfirmCertain
-                resourceName="Bạn có chắc chắn muốn xóa coupon này?"
+                resourceName="Bạn có chắc chắn muốn xóa mã giảm giá này?"
                 disabled={isDeleting}
                 onConfirm={() => deleteCoupon(couponId)}
               />

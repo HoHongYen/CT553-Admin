@@ -8,12 +8,12 @@ export function useCreateCoupon() {
         mutationFn: (data) => createCouponApi(data),
         onSuccess: (coupon) => {
             console.log(coupon);
-            toast.success("Thêm coupon thành công!");
+            toast.success("Thêm mã giảm giá thành công!");
             queryClient.invalidateQueries({ queryKey: ["coupons"] });
         },
         onError: (error) => {
             console.log(error);
-            toast.error("Lỗi thêm coupon!");
+            toast.error("Lỗi thêm mã giảm giá!");
         }
     })
 

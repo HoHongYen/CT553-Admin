@@ -8,11 +8,11 @@ export function useDeleteCoupon() {
     const { isLoading, mutate: deleteCoupon } = useMutation({
         mutationFn: deleteCouponApi,
         onSuccess: () => {
-            toast.success("Xóa coupon thành công!");
+            toast.success("Xóa mã giảm giá thành công!");
             queryClient.invalidateQueries({ queryKey: ["coupons"] });
         },
         onError: () => {
-            toast.error("Lỗi xóa coupon!");
+            toast.error("Lỗi xóa mã giảm giá!");
         },
     });
 

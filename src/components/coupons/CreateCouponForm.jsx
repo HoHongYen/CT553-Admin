@@ -114,10 +114,10 @@ function CreateCouponForm({ couponToEdit = {}, onCloseModal }) {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col mb-5">
         <div className="flex justify-center">
-          <Heading as="h2">Thêm coupon</Heading>
+          <Heading as="h2">Thêm mã giảm giá</Heading>
         </div>
 
-        <FormRow size="medium" label="Mã coupon:" error={errors?.code?.message}>
+        <FormRow size="medium" label="Mã:" error={errors?.code?.message}>
           <Input
             type="text"
             id="code"
@@ -221,7 +221,7 @@ function CreateCouponForm({ couponToEdit = {}, onCloseModal }) {
 
         <FormRow
           size="medium"
-          label="Số lượng coupon:"
+          label="Số lượng:"
           error={errors?.quantity?.message}
         >
           <Input
@@ -232,7 +232,7 @@ function CreateCouponForm({ couponToEdit = {}, onCloseModal }) {
               required: "Không được để trống",
               min: {
                 value: 1,
-                message: "Số lượng coupon phải lớn hơn 0",
+                message: "Số lượng phải lớn hơn 0",
               },
             })}
           />
@@ -277,7 +277,7 @@ function CreateCouponForm({ couponToEdit = {}, onCloseModal }) {
             handleSubmit(onSubmit)();
           }}
         >
-          Lưu coupon
+          Lưu mã giảm giá
         </Button>
       </FormRow>
     </Form>
