@@ -14,8 +14,8 @@ import { useLogin } from "@/hooks/auth/useLogin";
 import { useLoginWithGoogle } from "@/hooks/profile/useLoginWithGoogle";
 
 function LoginForm() {
-  const [email, setEmail] = useState("test@gmail.com");
-  const [password, setPassword] = useState("12345678");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { login, isLoading: isLoading1 } = useLogin();
   const { loginWithGoogle, isLoading: isLoading2 } = useLoginWithGoogle();
